@@ -637,6 +637,12 @@ let state = {
 window.addEventListener('load', async () => {
   hideLoader();
 
+  // If Supabase isn't configured yet, go straight to payment page
+  if (CONFIG.SUPABASE_URL.includes('your-project') || CONFIG.SUPABASE_ANON_KEY.includes('your-supabase')) {
+    show('pg-pay');
+    return;
+  }
+
   // Handle magic link callback — Supabase puts tokens in URL hash
   const hash = window.location.hash;
   if (hash.includes('access_token')) {
@@ -654,11 +660,16 @@ window.addEventListener('load', async () => {
   }
 
   // Check for existing valid session in localStorage
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
-    state.session = session;
-    state.user    = session.user;
-    await loadDashboard(false);
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      state.session = session;
+      state.user    = session.user;
+      await loadDashboard(false);
+      return;
+    }
+  } catch (e) {
+    show('pg-pay');
     return;
   }
 
