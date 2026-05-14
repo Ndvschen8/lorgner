@@ -582,7 +582,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
    Replace these three values before deploying.
 ══════════════════════════════════════════════ */
 const CONFIG = {
-  SUPABASE_URL:      'https://your-project.supabase.co',
+  SUPABASE_URL:      'https://your-project.sb.co',
   SUPABASE_ANON_KEY: 'your-supabase-anon-key',
   PROXY_URL:         'https://lorgner-production.up.railway.app/chat',
   MAX_PAIRS:         8,
@@ -594,8 +594,8 @@ const CONFIG = {
    All sensitive operations go through RLS.
 ══════════════════════════════════════════════ */
 const supabaseReady = !CONFIG.SUPABASE_URL.includes('your-project') && !CONFIG.SUPABASE_ANON_KEY.includes('your-supabase');
-const supabase = supabaseReady
-  ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY)
+const sb = supabaseReady
+  ? window.sb.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY)
   : null;
 
 /* ══════════════════════════════════════════════
@@ -630,7 +630,7 @@ window.addEventListener('load', async () => {
   const hash = window.location.hash;
   if (hash.includes('access_token')) {
     showLoader();
-    const { data, error } = await supabase.auth.getSession();
+    const { data, error } = await sb.auth.getSession();
     if (data?.session) {
       state.session = data.session;
       state.user    = data.session.user;
@@ -644,7 +644,7 @@ window.addEventListener('load', async () => {
 
   // Check for existing valid session in localStorage
   try {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await sb.auth.getSession();
     if (session) {
       state.session = session;
       state.user    = session.user;
@@ -671,7 +671,7 @@ window.addEventListener('load', async () => {
    Supabase fires this when a user signs in,
    signs out, or the token refreshes automatically.
 ══════════════════════════════════════════════ */
-supabase?.auth.onAuthStateChange(async (event, session) => {
+sb?.auth.onAuthStateChange(async (event, session) => {
   if (event === 'SIGNED_IN' && session) {
     state.session = session;
     state.user    = session.user;
@@ -776,7 +776,7 @@ async function handleSignIn() {
   btn.disabled    = true;
   btn.textContent = 'Sending…';
 
-  const { error } = await supabase.auth.signInWithOtp({
+  const { error } = await sb.auth.signInWithOtp({
     email,
     options: {
       emailRedirectTo: window.location.origin
@@ -801,7 +801,7 @@ async function handleSignIn() {
 ══════════════════════════════════════════════ */
 async function handleSignOut() {
   showLoader();
-  await supabase.auth.signOut();
+  await sb.auth.signOut();
   // onAuthStateChange fires SIGNED_OUT → resets state and shows payment page
   hideLoader();
 }
@@ -829,7 +829,7 @@ async function loadDashboard(isNew) {
   // Fetch glasses collection from Supabase
   // RLS policy: "SELECT WHERE user_id = auth.uid()"
   // This means the query only ever returns rows owned by this user
-  const { data: glasses, error } = await supabase
+  const { data: glasses, error } = await sb
     .from('glasses')
     .select('*')
     .eq('user_id', state.user.id)
@@ -839,7 +839,7 @@ async function loadDashboard(isNew) {
     // For each pair, get a signed URL for the photo from Storage
     for (const pair of glasses) {
       if (pair.photo_path) {
-        const { data: urlData } = await supabase
+        const { data: urlData } = await sb
           .storage
           .from('glasses-photos')
           .createSignedUrl(pair.photo_path, 3600); // 1-hour expiry
@@ -913,7 +913,7 @@ async function uploadGlassesPair(file) {
   const ext      = file.type.split('/')[1] || 'jpg';
   const filePath = `${state.user.id}/${Date.now()}.${ext}`;
 
-  const { error: storageError } = await supabase
+  const { error: storageError } = await sb
     .storage
     .from('glasses-photos')
     .upload(filePath, file, { contentType: file.type, upsert: false });
@@ -926,14 +926,14 @@ async function uploadGlassesPair(file) {
   }
 
   // 3. Get signed URL for display (1-hour expiry)
-  const { data: urlData } = await supabase
+  const { data: urlData } = await sb
     .storage
     .from('glasses-photos')
     .createSignedUrl(filePath, 3600);
 
   // 4. Insert row into glasses table
   // RLS: row is tagged with auth.uid() automatically
-  const { data: row, error: dbError } = await supabase
+  const { data: row, error: dbError } = await sb
     .from('glasses')
     .insert({
       user_id:    state.user.id,
@@ -1265,7 +1265,7 @@ function logSession(userMsg, aiReply) {
   // Write to Supabase sessions table
   // RLS: INSERT WHERE user_id = auth.uid()
   if (state.user?.id) {
-    supabase.from('sessions').insert({
+    sb.from('sessions').insert({
       user_id:   state.user.id,
       occasion:  userMsg.slice(0, 200),
       ai_reply:  aiReply.slice(0, 500),
