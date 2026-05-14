@@ -328,8 +328,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .chat-hint{text-align:center;margin-top:8px;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--ivory4);text-transform:uppercase;}
 
 /* Loading overlay */
-.loading-overlay{position:fixed;inset:0;z-index:100;background:var(--void);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
-.loading-overlay.off{display:none;}
+.loading-overlay{position:fixed;inset:0;z-index:100;background:var(--void);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+.loading-overlay.on{display:flex;}
 .lo-glyph{font-family:'Cormorant Garamond',serif;font-size:48px;color:var(--gold);animation:pulse 1.5s ease-in-out infinite;}
 .lo-text{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--ivory3);text-transform:uppercase;}
 
@@ -620,8 +620,6 @@ let state = {
    If no session → show payment / sign in.
 ══════════════════════════════════════════════ */
 window.addEventListener('load', async () => {
-  hideLoader();
-
   // If Supabase isn't configured yet, go straight to payment page
   if (CONFIG.SUPABASE_URL.includes('your-project') || CONFIG.SUPABASE_ANON_KEY.includes('your-supabase')) {
     show('pg-pay');
@@ -699,8 +697,8 @@ function show(id) {
   window.scrollTo(0, 0);
 }
 
-function showLoader() { document.getElementById('loadingOverlay').classList.remove('off'); }
-function hideLoader() { document.getElementById('loadingOverlay').classList.add('off'); }
+function showLoader() { document.getElementById('loadingOverlay').classList.add('on'); }
+function hideLoader() { document.getElementById('loadingOverlay').classList.remove('on'); }
 
 function showSignIn() { show('pg-signin'); }
 function showPayment() { show('pg-pay'); }
