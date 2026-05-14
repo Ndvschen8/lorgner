@@ -593,10 +593,10 @@ const CONFIG = {
    Uses only the public anon key.
    All sensitive operations go through RLS.
 ══════════════════════════════════════════════ */
-const supabase = window.supabase.createClient(
-  CONFIG.SUPABASE_URL,
-  CONFIG.SUPABASE_ANON_KEY
-);
+const supabaseReady = !CONFIG.SUPABASE_URL.includes('your-project') && !CONFIG.SUPABASE_ANON_KEY.includes('your-supabase');
+const supabase = supabaseReady
+  ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY)
+  : null;
 
 /* ══════════════════════════════════════════════
    APPLICATION STATE
@@ -673,7 +673,7 @@ window.addEventListener('load', async () => {
    Supabase fires this when a user signs in,
    signs out, or the token refreshes automatically.
 ══════════════════════════════════════════════ */
-supabase.auth.onAuthStateChange(async (event, session) => {
+supabase?.auth.onAuthStateChange(async (event, session) => {
   if (event === 'SIGNED_IN' && session) {
     state.session = session;
     state.user    = session.user;
