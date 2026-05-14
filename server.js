@@ -384,6 +384,42 @@ app.post('/chat',
 });
 
 /* ══════════════════════════════════════════════
+   STRIPE CHECKOUT ENDPOINT
+   POST /create-checkout-session
+   Creates a Stripe Checkout URL for the founding
+   member subscription. Frontend redirects the
+   user to this URL. Stripe handles the payment
+   form and calls the webhook on success.
+══════════════════════════════════════════════ */
+app.post('/create-checkout-session', async (req, res) => {
+  const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+  const { email, name } = req.body;
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: 'subscription',
+      payment_method_types: ['card'],
+      customer_email: email || undefined,
+      line_items: [
+        {
+          price: 'price_1TWQXtJdJONprYpJe1EanHDz',
+          quantity: 1,
+        }
+      ],
+      success_url: `${CONFIG.ALLOWED_ORIGIN}/?subscribed=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url:  `${CONFIG.ALLOWED_ORIGIN}/`,
+      metadata: { full_name: name || '' },
+    });
+
+    res.json({ checkoutUrl: session.url });
+
+  } catch (err) {
+    console.error('[LORGNER] Stripe checkout error:', err.message);
+    res.status(500).json({ error: true, message: 'Checkout unavailable. Please try again.' });
+  }
+});
+
+/* ══════════════════════════════════════════════
    SESSION ENDPOINT
    POST /session
    Receives session metadata from frontend.

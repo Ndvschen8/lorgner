@@ -390,21 +390,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
       <label class="field-label">Email Address</label>
       <input type="email" class="field-input" id="f-email" placeholder="Your membership confirmation goes here">
     </div>
-    <div class="form-field">
-      <label class="field-label">Card Number</label>
-      <input type="text" class="field-input" id="f-card" placeholder="•••• •••• •••• ••••" maxlength="19" oninput="fmtCard(this)">
-    </div>
-    <div class="form-field field-split">
-      <div>
-        <label class="field-label">Expiry</label>
-        <input type="text" class="field-input" id="f-exp" placeholder="MM / YY" maxlength="7" oninput="fmtExp(this)">
-      </div>
-      <div>
-        <label class="field-label">CVC</label>
-        <input type="text" class="field-input" id="f-cvc" placeholder="•••" maxlength="4">
-      </div>
-    </div>
-
     <button class="primary-btn" id="payBtn" onclick="handlePayment()">Begin Your Membership</button>
     <div class="notice">Secured by Stripe · Cancel at any time · No hidden fees</div>
     <div class="auth-toggle">Already a member? <a onclick="showSignIn()">Sign in here</a></div>
@@ -733,13 +718,12 @@ function showPayment() { show('pg-pay'); }
 async function handlePayment() {
   const name  = document.getElementById('f-name').value.trim();
   const email = document.getElementById('f-email').value.trim();
-  const card  = document.getElementById('f-card').value.trim();
   const errEl = document.getElementById('payError');
 
   errEl.classList.remove('on');
 
-  if (!name || !email || card.length < 18) {
-    errEl.textContent = 'Please complete all fields.';
+  if (!name || !email) {
+    errEl.textContent = 'Please enter your name and email address.';
     errEl.classList.add('on');
     return;
   }
@@ -748,55 +732,28 @@ async function handlePayment() {
   btn.disabled    = true;
   btn.textContent = 'A moment…';
 
-  /* ── PRODUCTION FLOW ──────────────────────────
-     In production, replace this block with:
+  try {
+    const res  = await fetch(CONFIG.PROXY_URL.replace('/chat', '/create-checkout-session'), {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ email, name }),
+    });
+    const data = await res.json();
 
-     const { data, error } = await fetch('/create-checkout-session', {
-       method: 'POST',
-       headers: {'Content-Type':'application/json'},
-       body: JSON.stringify({ email, name })
-     }).then(r => r.json());
-
-     window.location.href = data.checkoutUrl;
-
-     Stripe handles payment, calls your Railway
-     webhook which creates the Supabase account
-     and sends the magic link.
-  ─────────────────────────────────────────────
-     PROTOTYPE: Create Supabase account directly
-     so you can experience the full flow.
-  ─────────────────────────────────────────────*/
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password: generateTempPassword(),
-    options: {
-      data: {
-        full_name: name,
-        member_tier: 'founding',
-        member_since: new Date().toISOString(),
-      }
+    if (data.checkoutUrl) {
+      window.location.href = data.checkoutUrl;
+      return;
     }
-  });
 
-  if (error) {
-    errEl.textContent = error.message;
+    errEl.textContent = data.message || 'Checkout unavailable. Please try again.';
     errEl.classList.add('on');
-    btn.disabled    = false;
-    btn.textContent = 'Begin Your Membership';
-    return;
+  } catch (err) {
+    errEl.textContent = 'Could not reach checkout. Please try again.';
+    errEl.classList.add('on');
   }
 
-  // Account created — send magic link for passwordless access
-  await supabase.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: window.location.origin }
-  });
-
-  state.isNewMember = true;
-  state.user = data.user;
-
-  // Show welcome screen for new members
-  show('pg-welcome');
+  btn.disabled    = false;
+  btn.textContent = 'Begin Your Membership';
 }
 
 /* ══════════════════════════════════════════════
