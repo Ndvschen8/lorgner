@@ -858,10 +858,11 @@ async function loadDashboard(isNew) {
     // For each pair, get a signed URL for the photo from Storage
     for (const pair of glasses) {
       if (pair.photo_path) {
-        const { data: urlData } = await sb
+        const { data: urlData, error: urlErr } = await sb
           .storage
           .from('glasses-photos')
           .createSignedUrl(pair.photo_path, 3600); // 1-hour expiry
+        if (urlErr) console.error('signedUrl error:', urlErr.message, 'path:', pair.photo_path);
         pair.dataUrl = urlData?.signedUrl || null;
       }
     }
