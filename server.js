@@ -202,7 +202,7 @@ app.use(express.json({ limit: '50mb' }));
 // Layer 7 — CORS: only Lorgner's frontend can call this proxy
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin || CONFIG.ALLOWED_ORIGINS[0]S.includes(origin)) {
+    if (!origin || CONFIG.ALLOWED_ORIGINS.includes(origin)) {
       cb(null, true);
     } else {
       console.warn(`[LORGNER] CORS blocked: ${origin}`);
