@@ -620,6 +620,19 @@ let state = {
    If no session → show payment / sign in.
 ══════════════════════════════════════════════ */
 window.addEventListener('load', async () => {
+  const params = new URLSearchParams(window.location.search);
+
+  // Stripe success redirect — show sign-in before any Supabase calls
+  if (params.get('subscribed') === 'true') {
+    show('pg-signin');
+    const note = document.createElement('p');
+    note.style.cssText = 'text-align:center;color:#c9a96e;margin-bottom:1.5rem;font-size:.95rem;';
+    note.textContent = 'Payment received — enter your email to activate your membership.';
+    const form = document.querySelector('#pg-signin form') || document.querySelector('#pg-signin');
+    form && form.insertBefore(note, form.firstChild);
+    return;
+  }
+
   // If Supabase isn't configured yet, go straight to payment page
   if (CONFIG.SUPABASE_URL.includes('your-project') || CONFIG.SUPABASE_ANON_KEY.includes('your-supabase')) {
     show('pg-pay');
@@ -657,17 +670,7 @@ window.addEventListener('load', async () => {
   }
 
   // No session — decide which page to show
-  // If URL param ?signin=1 show sign in, otherwise payment
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('subscribed') === 'true') {
-    show('pg-signin');
-    document.getElementById('signinNote')?.remove();
-    const note = document.createElement('p');
-    note.style.cssText = 'text-align:center;color:#c9a96e;margin-bottom:1.5rem;font-size:.95rem;';
-    note.textContent = 'Payment received — enter your email to activate your membership.';
-    const form = document.querySelector('#pg-signin form') || document.querySelector('#pg-signin');
-    form && form.insertBefore(note, form.firstChild);
-  } else if (params.get('signin') === '1') {
+  if (params.get('signin') === '1') {
     show('pg-signin');
   } else {
     show('pg-pay');
