@@ -502,9 +502,14 @@ app.post('/moderate-image', requireAuth, async (req, res) => {
         }]
       })
     });
+    if (!response.ok) {
+      console.error('[LORGNER] Moderation API error:', response.status);
+      return res.json({ ok: true }); // Fail open on API errors
+    }
     const data   = await response.json();
     const answer = data.content?.[0]?.text?.trim().toUpperCase();
-    const ok     = answer === 'YES';
+    if (!answer) return res.json({ ok: true }); // Fail open if no response
+    const ok     = answer.startsWith('YES');
     if (!ok) console.log(`[LORGNER] Image rejected (not eyewear) | user:${req.lorgnerUser.id.slice(0,8)}`);
     res.json({ ok, reason: ok ? null : 'Please upload a photo of your glasses.' });
   } catch (err) {
