@@ -690,11 +690,11 @@ sb?.auth.onAuthStateChange(async (event, session) => {
     state.user    = session.user;
   }
   if (event === 'SIGNED_OUT') {
+    const wasSignedIn = !!state.user;
     state.session = null;
     state.user    = null;
     state.glasses = [];
-    // Only redirect to payment if user was previously signed in (not on initial load)
-    if (state.didLoad) show('pg-pay');
+    if (wasSignedIn) show('pg-pay');
   }
   if (event === 'TOKEN_REFRESHED' && session) {
     state.session = session;
