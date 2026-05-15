@@ -490,7 +490,7 @@ app.post('/moderate-image', requireAuth, async (req, res) => {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: 'claude-sonnet-4-6',
         max_tokens: 10,
         system: 'You are a strict image classifier. Respond only with YES or NO — no other text.',
         messages: [{
@@ -503,17 +503,19 @@ app.post('/moderate-image', requireAuth, async (req, res) => {
       })
     });
     if (!response.ok) {
-      console.error('[LORGNER] Moderation API error:', response.status);
-      return res.json({ ok: true }); // Fail open on API errors
+      const errBody = await response.text();
+      console.error('[LORGNER] Moderation API error:', response.status, errBody.slice(0, 200));
+      return res.json({ ok: false, reason: 'Image validation unavailable. Please try again.' });
     }
     const data   = await response.json();
     const answer = data.content?.[0]?.text?.trim().toUpperCase();
-    if (!answer) return res.json({ ok: true }); // Fail open if no response
-    const ok     = answer.startsWith('YES');
-    if (!ok) console.log(`[LORGNER] Image rejected (not eyewear) | user:${req.lorgnerUser.id.slice(0,8)}`);
-    res.json({ ok, reason: ok ? null : 'Please upload a photo of your glasses.' });
+    console.log(`[LORGNER] Moderation answer: "${answer}" | user:${req.lorgnerUser.id.slice(0,8)}`);
+    if (!answer) return res.json({ ok: false, reason: 'Image validation unavailable. Please try again.' });
+    const ok = answer.startsWith('YES');
+    res.json({ ok, reason: ok ? null : 'Please upload a photo of your glasses or sunglasses.' });
   } catch (err) {
-    res.json({ ok: true }); // Fail open on moderation errors
+    console.error('[LORGNER] Moderation exception:', err.message);
+    res.json({ ok: false, reason: 'Image validation unavailable. Please try again.' });
   }
 });
 
