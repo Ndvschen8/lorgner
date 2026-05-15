@@ -625,6 +625,7 @@ window.addEventListener('load', async () => {
   // Stripe success redirect — show sign-in before any Supabase calls
   if (params.get('subscribed') === 'true') {
     show('pg-signin');
+    state.didLoad = true;
     const note = document.createElement('p');
     note.style.cssText = 'text-align:center;color:#c9a96e;margin-bottom:1.5rem;font-size:.95rem;';
     note.textContent = 'Payment received — enter your email to activate your membership.';
@@ -675,6 +676,7 @@ window.addEventListener('load', async () => {
   } else {
     show('pg-pay');
   }
+  state.didLoad = true;
 });
 
 /* ══════════════════════════════════════════════
@@ -691,7 +693,8 @@ sb?.auth.onAuthStateChange(async (event, session) => {
     state.session = null;
     state.user    = null;
     state.glasses = [];
-    show('pg-pay');
+    // Only redirect to payment if user was previously signed in (not on initial load)
+    if (state.didLoad) show('pg-pay');
   }
   if (event === 'TOKEN_REFRESHED' && session) {
     state.session = session;
