@@ -595,7 +595,7 @@ const CONFIG = {
 ══════════════════════════════════════════════ */
 const supabaseReady = !CONFIG.SUPABASE_URL.includes('your-project') && !CONFIG.SUPABASE_ANON_KEY.includes('your-supabase');
 const sb = supabaseReady
-  ? window.sb.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY)
+  ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY)
   : null;
 
 /* ══════════════════════════════════════════════
