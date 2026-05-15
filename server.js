@@ -476,41 +476,41 @@ app.post('/session', requireAuth, async (req, res) => {
    Uses Claude Haiku for cost efficiency.
    Uncomment when ready to activate.
 ══════════════════════════════════════════════ */
-// app.post('/moderate-image', requireAuth, async (req, res) => {
-//   const { base64, mime } = req.body;
-//   if (!base64 || !ALLOWED_MIMES.includes(mime)) {
-//     return res.status(400).json({ ok: false, reason: 'Invalid image format.' });
-//   }
-//   try {
-//     const response = await fetch('https://api.anthropic.com/v1/messages', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'x-api-key': CONFIG.ANTHROPIC_KEY,
-//         'anthropic-version': '2023-06-01',
-//       },
-//       body: JSON.stringify({
-//         model: 'claude-haiku-4-5-20251001',
-//         max_tokens: 10,
-//         system: 'Respond only YES or NO.',
-//         messages: [{
-//           role: 'user',
-//           content: [
-//             { type: 'image', source: { type: 'base64', media_type: mime, data: base64 } },
-//             { type: 'text', text: 'Does this image show eyewear (glasses, sunglasses, frames)?' }
-//           ]
-//         }]
-//       })
-//     });
-//     const data   = await response.json();
-//     const answer = data.content?.[0]?.text?.trim().toUpperCase();
-//     const ok     = answer === 'YES';
-//     if (!ok) console.log(`[LORGNER] Image rejected (not eyewear) | user:${req.lorgnerUser.id.slice(0,8)}`);
-//     res.json({ ok, reason: ok ? null : 'Please upload a photo of your glasses.' });
-//   } catch (err) {
-//     res.json({ ok: true }); // Fail open on moderation errors
-//   }
-// });
+app.post('/moderate-image', requireAuth, async (req, res) => {
+  const { base64, mime } = req.body;
+  if (!base64 || !ALLOWED_MIMES.includes(mime)) {
+    return res.status(400).json({ ok: false, reason: 'Invalid image format.' });
+  }
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': CONFIG.ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 10,
+        system: 'Respond only YES or NO.',
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: mime, data: base64 } },
+            { type: 'text', text: 'Does this image show eyewear (glasses, sunglasses, frames)?' }
+          ]
+        }]
+      })
+    });
+    const data   = await response.json();
+    const answer = data.content?.[0]?.text?.trim().toUpperCase();
+    const ok     = answer === 'YES';
+    if (!ok) console.log(`[LORGNER] Image rejected (not eyewear) | user:${req.lorgnerUser.id.slice(0,8)}`);
+    res.json({ ok, reason: ok ? null : 'Please upload a photo of your glasses.' });
+  } catch (err) {
+    res.json({ ok: true }); // Fail open on moderation errors
+  }
+});
 
 /* ══════════════════════════════════════════════
    STRIPE WEBHOOK ENDPOINT

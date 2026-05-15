@@ -927,7 +927,27 @@ async function uploadGlassesPair(file) {
   const dataUrl = await readFile(file);
   const base64  = dataUrl.split(',')[1];
 
-  // 2. Upload photo to Supabase Storage
+  // 2. Validate image contains eyewear via Claude before uploading
+  try {
+    const checkRes = await fetch(CONFIG.PROXY_URL.replace('/chat', '/moderate-image'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.session.access_token}`,
+      },
+      body: JSON.stringify({ base64, mime: file.type }),
+    });
+    const checkData = await checkRes.json();
+    if (!checkData.ok) {
+      alert(checkData.reason || 'Please upload a photo of eyewear — glasses, sunglasses, or frames only.');
+      updateSyncStatus(true);
+      return;
+    }
+  } catch (e) {
+    // Fail open — if validation call fails, allow upload to proceed
+  }
+
+  // 3. Upload photo to Supabase Storage
   // Path: user-id/timestamp.jpg — unique per user per upload
   const ext      = file.type.split('/')[1] || 'jpg';
   const filePath = `${state.user.id}/${Date.now()}.${ext}`;
