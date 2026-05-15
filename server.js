@@ -393,6 +393,9 @@ app.post('/chat',
    form and calls the webhook on success.
 ══════════════════════════════════════════════ */
 app.post('/create-checkout-session', async (req, res) => {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return res.status(500).json({ error: true, message: 'STRIPE_SECRET_KEY not configured on server.' });
+  }
   const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
   const { email, name } = req.body;
 
@@ -415,8 +418,8 @@ app.post('/create-checkout-session', async (req, res) => {
     res.json({ checkoutUrl: session.url });
 
   } catch (err) {
-    console.error('[LORGNER] Stripe checkout error:', err.message);
-    res.status(500).json({ error: true, message: err.message || 'Checkout unavailable. Please try again.' });
+    console.error('[LORGNER] Stripe checkout error:', JSON.stringify(err));
+    res.status(500).json({ error: true, message: err.message || err.toString() || 'Checkout unavailable.' });
   }
 });
 
