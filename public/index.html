@@ -1047,7 +1047,9 @@ function card(p) {
     : `<span style="font-size:32px;">👓</span>`;
   return `
     <div class="coll-card">
-      <div class="cc-photo">${img}</div>
+      <div class="cc-photo" style="position:relative;">${img}
+        <button onclick="deletePair('${p.id}')" title="Remove" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);border:none;color:#fff;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:14px;line-height:26px;padding:0;">✕</button>
+      </div>
       <div class="cc-body">
         <div class="cc-brand">${p.brand || 'Your collection'}</div>
         <div class="cc-name">${p.name}</div>
@@ -1057,6 +1059,17 @@ function card(p) {
         </div>
       </div>
     </div>`;
+}
+
+async function deletePair(id) {
+  if (!confirm('Remove this pair from your collection?')) return;
+  const pair = state.glasses.find(g => g.id === id);
+  if (pair?.photo_path) {
+    await sb.storage.from('glasses-photos').remove([pair.photo_path]);
+  }
+  await sb.from('glasses').delete().eq('id', id);
+  state.glasses = state.glasses.filter(g => g.id !== id);
+  renderAll();
 }
 
 function updatePairCounts() {
