@@ -863,6 +863,7 @@ async function loadDashboard(isNew) {
           .from('glasses-photos')
           .createSignedUrl(pair.photo_path, 3600); // 1-hour expiry
         if (urlErr) console.error('signedUrl error:', urlErr.message, 'path:', pair.photo_path);
+        console.log('signedUrl result:', urlData?.signedUrl?.slice(0, 80));
         pair.dataUrl = urlData?.signedUrl || null;
       }
     }
