@@ -403,7 +403,7 @@ app.post('/create-checkout-session', async (req, res) => {
       customer_email: email || undefined,
       line_items: [
         {
-          price: 'price_1TWQXtJdJONprYpJe1EanHDz',
+          price: process.env.STRIPE_PRICE_ID || 'price_1TX9YYJdJONprYpJHpVIcF6p',
           quantity: 1,
         }
       ],
