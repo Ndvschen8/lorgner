@@ -416,7 +416,7 @@ app.post('/create-checkout-session', async (req, res) => {
 
   } catch (err) {
     console.error('[LORGNER] Stripe checkout error:', err.message);
-    res.status(500).json({ error: true, message: 'Checkout unavailable. Please try again.' });
+    res.status(500).json({ error: true, message: err.message || 'Checkout unavailable. Please try again.' });
   }
 });
 
