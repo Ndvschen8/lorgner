@@ -492,12 +492,12 @@ app.post('/moderate-image', requireAuth, async (req, res) => {
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 10,
-        system: 'Respond only YES or NO.',
+        system: 'You are a strict image classifier. Respond only with YES or NO — no other text.',
         messages: [{
           role: 'user',
           content: [
             { type: 'image', source: { type: 'base64', media_type: mime, data: base64 } },
-            { type: 'text', text: 'Does this image show eyewear (glasses, sunglasses, frames)?' }
+            { type: 'text', text: 'Is the PRIMARY subject of this image a pair of eyeglasses, sunglasses, or optical frames — meaning glasses are the main focus, clearly visible and identifiable as wearable eyewear? Answer YES only if glasses or sunglasses are the dominant subject. Answer NO if glasses are absent, in the background, or if the image is of anything else (people, scenery, clothing, accessories, patterns, etc).' }
           ]
         }]
       })
