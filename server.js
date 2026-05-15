@@ -47,7 +47,8 @@ const CONFIG = {
   ANTHROPIC_KEY:        process.env.ANTHROPIC_API_KEY,     // Claude API key — server only
   SUPABASE_URL:         process.env.SUPABASE_URL,          // Supabase project URL
   SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,  // Service role key for JWT verification
-  ALLOWED_ORIGIN:       process.env.ALLOWED_ORIGIN || 'https://lorgner.com',
+  ALLOWED_ORIGINS:      (process.env.ALLOWED_ORIGIN || 'https://lorgner.vercel.app')
+                          .split(',').map(o => o.trim()),
   RATE_LIMIT_MAX:       parseInt(process.env.RATE_LIMIT_MAX || '20'),
   MODEL:                'claude-sonnet-4-20250514',
   MAX_TOKENS:           800,
@@ -201,7 +202,7 @@ app.use(express.json({ limit: '50mb' }));
 // Layer 7 — CORS: only Lorgner's frontend can call this proxy
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin || origin === CONFIG.ALLOWED_ORIGIN) {
+    if (!origin || CONFIG.ALLOWED_ORIGINS[0]S.includes(origin)) {
       cb(null, true);
     } else {
       console.warn(`[LORGNER] CORS blocked: ${origin}`);
@@ -406,8 +407,8 @@ app.post('/create-checkout-session', async (req, res) => {
           quantity: 1,
         }
       ],
-      success_url: `${CONFIG.ALLOWED_ORIGIN}/?subscribed=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url:  `${CONFIG.ALLOWED_ORIGIN}/`,
+      success_url: `${CONFIG.ALLOWED_ORIGINS[0]}/?subscribed=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url:  `${CONFIG.ALLOWED_ORIGINS[0]}/`,
       metadata: { full_name: name || '' },
     });
 
@@ -631,7 +632,7 @@ app.post('/stripe-webhook', async (req, res) => {
           type:       'magiclink',
           email,
           options: {
-            redirect_to: `${CONFIG.ALLOWED_ORIGIN}/?signin=1`,
+            redirect_to: `${CONFIG.ALLOWED_ORIGINS[0]}/?signin=1`,
           }
         })
       });
@@ -710,7 +711,7 @@ app.listen(PORT, () => {
   ╔════════════════════════════════════════╗
   ║  LORGNER — Backend Proxy               ║
   ║  Port    : ${String(PORT).padEnd(28)}  ║
-  ║  Origin  : ${CONFIG.ALLOWED_ORIGIN.slice(0,28).padEnd(28)}  ║
+  ║  Origin  : ${CONFIG.ALLOWED_ORIGINS[0].slice(0,28).padEnd(28)}  ║
   ╚════════════════════════════════════════╝
 
   Security layers active:
