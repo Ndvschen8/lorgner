@@ -688,13 +688,18 @@ sb?.auth.onAuthStateChange(async (event, session) => {
   if (event === 'SIGNED_IN' && session) {
     state.session = session;
     state.user    = session.user;
+    const onStripeReturn = new URLSearchParams(location.search).get('subscribed') === 'true';
+    if (!onStripeReturn && !document.getElementById('pg-dash').classList.contains('on')) {
+      await loadDashboard(false);
+    }
   }
   if (event === 'SIGNED_OUT') {
     const wasSignedIn = !!state.user;
+    const onStripeReturn = new URLSearchParams(location.search).get('subscribed') === 'true';
     state.session = null;
     state.user    = null;
     state.glasses = [];
-    if (wasSignedIn) show('pg-pay');
+    if (wasSignedIn && !onStripeReturn) show('pg-pay');
   }
   if (event === 'TOKEN_REFRESHED' && session) {
     state.session = session;
