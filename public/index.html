@@ -333,15 +333,23 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .lo-glyph{font-family:'Cormorant Garamond',serif;font-size:48px;color:var(--gold);animation:pulse 1.5s ease-in-out infinite;}
 .lo-text{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--ivory3);text-transform:uppercase;}
 
+/* Mobile bottom nav */
+.mob-nav{display:none;}
 @media(max-width:768px){
-  .dash-grid{grid-template-columns:1fr;}
+  .dash-grid{grid-template-columns:1fr;height:calc(100vh - 62px - 56px);overflow-y:auto;}
   .dash-left{display:none;}
-  .view{padding:28px 20px;}
-  .chat-msgs{padding:24px 20px;}
-  .chat-bottom{padding:14px 20px;}
-  .chat-top{padding:16px 20px;}
-  .topbar{padding:0 18px;}
-  .consult-banner{flex-direction:column;gap:18px;}
+  .view{padding:20px 16px;}
+  .chat-msgs{padding:16px;}
+  .chat-bottom{padding:10px 16px;}
+  .chat-top{padding:14px 16px;}
+  .topbar{padding:0 16px;}
+  .tb-right .tb-btn,.tb-sep,.tb-tier{display:none;}
+  .consult-banner{flex-direction:column;gap:14px;}
+  .coll-grid{grid-template-columns:repeat(2,1fr);}
+  .mob-nav{display:flex;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--deep);border-top:1px solid var(--line);z-index:100;align-items:stretch;}
+  .mob-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;color:var(--ivory4);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;cursor:pointer;transition:color .2s;padding:0;}
+  .mob-nav-btn.on{color:var(--gold);}
+  .mob-nav-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;}
 }
 </style>
 </head>
@@ -555,6 +563,27 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 
     </div>
   </div>
+
+  <!-- Mobile bottom nav (hidden on desktop via CSS) -->
+  <nav class="mob-nav" id="mobNav">
+    <button class="mob-nav-btn on" id="mn-overview" onclick="switchView('overview')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Overview
+    </button>
+    <button class="mob-nav-btn" id="mn-chat" onclick="switchView('chat')">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Consult
+    </button>
+    <button class="mob-nav-btn" id="mn-collection" onclick="switchView('collection')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/></svg>
+      Collection
+    </button>
+    <button class="mob-nav-btn" onclick="handleSignOut()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Sign Out
+    </button>
+  </nav>
+
 </div>
 
 <!-- ══════════════════════════════════════════════
@@ -894,13 +923,16 @@ function enterDash() {
 function switchView(v) {
   document.querySelectorAll('.view, .chat-view').forEach(el => el.classList.remove('on'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('on'));
+  document.querySelectorAll('.mob-nav-btn').forEach(n => n.classList.remove('on'));
   if (v === 'chat') {
     document.getElementById('v-chat').classList.add('on');
     document.getElementById('ni-chat')?.classList.add('on');
+    document.getElementById('mn-chat')?.classList.add('on');
     scrollMsgs();
   } else {
     document.getElementById('v-' + v)?.classList.add('on');
     document.getElementById('ni-' + v)?.classList.add('on');
+    document.getElementById('mn-' + v)?.classList.add('on');
   }
 }
 
