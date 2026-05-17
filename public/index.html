@@ -707,16 +707,21 @@ window.addEventListener('load', async () => {
   const hash = window.location.hash;
   if (hash.includes('access_token')) {
     showLoader();
-    const { data, error } = await sb.auth.getSession();
-    if (data?.session) {
-      state.session = data.session;
-      state.user    = data.session.user;
-      // Clean URL
-      history.replaceState(null, '', window.location.pathname);
-      await loadDashboard(false);
-      return;
+    try {
+      const { data } = await sb.auth.getSession();
+      if (data?.session) {
+        state.session = data.session;
+        state.user    = data.session.user;
+        history.replaceState(null, '', window.location.pathname);
+        await loadDashboard(false);
+        return;
+      }
+    } catch (e) {
+      console.error('Magic link error:', e);
     }
     hideLoader();
+    show('pg-signin');
+    return;
   }
 
   // Check for existing valid session in localStorage
@@ -896,7 +901,15 @@ async function handleSignOut() {
 ══════════════════════════════════════════════ */
 async function loadDashboard(isNew) {
   showLoader();
+  try {
+    await _loadDashboard(isNew);
+  } catch (e) {
+    console.error('Dashboard load error:', e);
+    hideLoader();
+  }
+}
 
+async function _loadDashboard(isNew) {
   // Populate member info
   const meta = state.user?.user_metadata || {};
   const name = meta.full_name || state.user?.email?.split('@')[0] || 'Member';
