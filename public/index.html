@@ -470,7 +470,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
         <div class="mt-badge">Founding Member</div>
         <div class="mt-name" id="memberName">—</div>
         <div class="mt-since" id="memberSince">—</div>
-        <div class="mt-sync" id="syncStatus">● Synced with Supabase</div>
+        <div class="mt-sync" id="syncStatus">● Synced</div>
       </div>
       <div class="nav-sec">
         <div class="nav-sec-label">Your Lorgner</div>
@@ -1094,7 +1094,7 @@ function updateChatPairs() {
 function updateSyncStatus(synced) {
   const el = document.getElementById('syncStatus');
   if (synced) {
-    el.textContent = '● Synced with Supabase';
+    el.textContent = '● Synced';
     el.classList.add('synced');
   } else {
     el.textContent = '○ Saving…';
