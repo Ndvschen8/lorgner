@@ -384,7 +384,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
       <div class="ib-title">What membership includes</div>
       <div class="inc-row"><span class="inc-num">I</span><div><div class="inc-title-t">Unlimited consultations with Lorgner</div><div class="inc-desc">Your private intelligence service for collection styling. Available whenever you need a considered second opinion.</div></div></div>
       <div class="inc-row"><span class="inc-num">II</span><div><div class="inc-title-t">Permanent collection archive</div><div class="inc-desc">Your glasses collection catalogued and remembered. Every pair, every occasion it suits, everything Lorgner has observed about it.</div></div></div>
-      <div class="inc-row"><span class="inc-num">III</span><div><div class="inc-title-t">The Monthly Letter</div><div class="inc-desc">A considered editorial note from Lorgner each month. Frames worth knowing. Makers worth following.</div></div></div>
+      <div class="inc-row"><span class="inc-num">III</span><div><div class="inc-title-t">The Eyewear Style Guide</div><div class="inc-desc">A standing reference on how to choose, wear, and think about eyewear. Updated as the canon of good taste requires.</div></div></div>
       <div class="inc-row"><span class="inc-num">IV</span><div><div class="inc-title-t">First access to acquisition recommendations</div><div class="inc-desc">Founding members receive curated suggestions before general release when Lorgner identifies a gap worth filling.</div></div></div>
     </div>
 
@@ -489,7 +489,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
       </div>
       <div class="nav-sec">
         <div class="nav-sec-label">Editorial</div>
-        <div class="nav-item" onclick="switchView('letter')"><span class="nav-ico">◑</span>Monthly Letters<span class="nav-pill">New</span></div>
+        <div class="nav-item" onclick="switchView('letter')"><span class="nav-ico">◑</span>Style Guide</div>
         <div class="nav-item"><span class="nav-ico">◇</span>Acquisitions</div>
       </div>
       <div class="nav-sec">
@@ -513,11 +513,11 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
         </div>
         <div class="sec-hdr"><div class="sec-title">Your <em>Collection</em></div><div class="sec-rule"></div><div class="sec-sub" id="collCountOv">0 pairs</div></div>
         <div class="coll-grid" id="ovGrid"></div>
-        <div class="sec-hdr"><div class="sec-title">The <em>Monthly Letter</em></div><div class="sec-rule"></div><div class="sec-sub">May 2026</div></div>
+        <div class="sec-hdr"><div class="sec-title">The <em>Style Guide</em></div><div class="sec-rule"></div><div class="sec-sub">A Standing Reference</div></div>
         <div class="letter" style="cursor:pointer;" onclick="switchView('letter')">
-          <div class="letter-hdr"><div><div class="lh-issue">Issue No. 1 · May 2026</div><div class="lh-title">On <em>restraint,</em> and the frames that understand it</div></div><div class="lh-date">01 May 2026</div></div>
-          <div class="letter-body"><p>There is a particular quality to frames designed by people who understand that the best eyewear is noticed only in retrospect — when someone turns to you after the evening is over and says they liked your glasses. Not during. After.</p><p>This month I have been paying attention to three makers who understand this better than most...</p></div>
-          <div class="letter-sig">— Lorgner</div>
+          <div class="letter-hdr"><div><div class="lh-issue">I · On Fit</div><div class="lh-title">The frame should not be noticed — it should simply <em>belong</em></div></div></div>
+          <div class="letter-body"><p>The single most important criterion in selecting frames is fit. Not colour, not brand, not shape — fit. A frame that sits too wide on the face creates the impression of weight where none exists. One that sits too narrow suggests effort. The correct frame disappears into the face and makes the face more coherent.</p></div>
+          <div class="letter-sig" style="font-size:11px;color:var(--ivory4);">Continue reading in Style Guide →</div>
         </div>
         <div class="sec-hdr"><div class="sec-title">Recent <em>Consultations</em></div><div class="sec-rule"></div></div>
         <div class="sessions" id="sessionList"><div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--ivory3);font-style:italic;padding:8px 0;">Your first consultation awaits.</div></div>
@@ -531,14 +531,48 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 
       <!-- LETTER VIEW -->
       <div class="view" id="v-letter">
-        <div class="sec-hdr"><div class="sec-title">The <em>Monthly Letter</em></div><div class="sec-rule"></div></div>
+        <div class="sec-hdr"><div class="sec-title">The <em>Style Guide</em></div><div class="sec-rule"></div><div class="sec-sub">Eyewear · A Standing Reference</div></div>
+
         <div class="letter">
-          <div class="letter-hdr"><div><div class="lh-issue">Issue No. 1 · May 2026</div><div class="lh-title">On <em>restraint,</em> and the frames that understand it</div></div><div class="lh-date">01 May 2026</div></div>
+          <div class="letter-hdr"><div><div class="lh-issue">I · On Fit</div><div class="lh-title">The frame should not be noticed — it should simply <em>belong</em></div></div></div>
           <div class="letter-body">
-            <p>There is a particular quality to frames designed by people who understand that the best eyewear is noticed only in retrospect — when someone turns to you after the evening is over and says they liked your glasses. Not during. After.</p>
-            <p>This month I have been paying attention to three makers who understand this better than most. The first is <em>Barton Perreira</em>, whose spring collection includes a rectangular acetate in a colour they call Camouflage — a brown so quiet it disappears into the face and yet somehow makes the face more interesting.</p>
-            <p>The second is <em>Anglo American Optical</em>, a British house that has been making frames since 1882 and has no interest in being discovered by anyone who wasn't already looking. Their current model, the 429, is the kind of frame that improves by increments over years of wear. You will look better in it in five years than you do today.</p>
-            <p>The third I will save for next month. Some things are worth the wait.</p>
+            <p>The single most important criterion in selecting frames is fit. Not colour, not brand, not shape — fit. A frame that sits too wide on the face creates the impression of weight where none exists. One that sits too narrow suggests effort. The correct frame disappears into the face and makes the face more coherent.</p>
+            <p>The temple arms should rest without pressure along the side of the head. The nose pads or bridge should distribute weight evenly. The lower rim of the lens should not intersect the cheek when smiling. None of this is vanity. It is simply the precondition for everything else.</p>
+          </div>
+        </div>
+
+        <div class="letter">
+          <div class="letter-hdr"><div><div class="lh-issue">II · On Face Shape</div><div class="lh-title">Rules exist to be <em>understood,</em> not followed</div></div></div>
+          <div class="letter-body">
+            <p>The received wisdom — round faces take angular frames, square faces take rounded ones — is approximately correct and almost entirely useless. It describes a kind of compensatory logic that results in frames chosen against the face rather than with it.</p>
+            <p>A more useful principle: identify the feature of your face you find most interesting, and find frames that allow it to remain interesting. Strong brows warrant frames that sit at or just below the brow line. A distinctive jawline is best left uncontested. The face is not a problem to be solved.</p>
+          </div>
+        </div>
+
+        <div class="letter">
+          <div class="letter-hdr"><div><div class="lh-issue">III · On Colour</div><div class="lh-title">The colours that endure are rarely the ones that <em>announce themselves</em></div></div></div>
+          <div class="letter-body">
+            <p>Tortoiseshell, black, warm brown, and translucent grey are not conservative choices — they are considered ones. They persist because they do not compete with skin tone, clothing, or setting. They function across contexts. This is not timidity. It is intelligence.</p>
+            <p>Colour frames work when the colour is specific rather than general. A particular olive, a very precise burgundy, a blue so dark it reads as charcoal in certain light — these are worth pursuing. Bright red, bright blue, and novelty colourways rarely survive the first season of wear.</p>
+            <p>As a rule: if the colour is the most memorable thing about the frame, reconsider.</p>
+          </div>
+        </div>
+
+        <div class="letter">
+          <div class="letter-hdr"><div><div class="lh-issue">IV · On Materials</div><div class="lh-title">Acetate ages. Titanium <em>endures.</em> Both are correct.</div></div></div>
+          <div class="letter-body">
+            <p>Acetate develops character over time. The colour deepens slightly at the edges. The surface acquires a patina. A well-chosen acetate frame worn for a decade is more interesting than the same frame new. This is a feature, not a defect.</p>
+            <p>Titanium and beta-titanium offer something different: structural integrity at minimal weight. Frames in these materials are often the correct choice for daily wear, particularly for those who find acetate heavy or warm. They require less adjustment and maintain their geometry over years of use.</p>
+            <p>Avoid frames where the material is primarily decorative — where the hinge is a separate piece glued on for effect, or where the bridge is plated rather than solid. These fail in proportion to how often they are worn.</p>
+          </div>
+        </div>
+
+        <div class="letter">
+          <div class="letter-hdr"><div><div class="lh-issue">V · On Building a Collection</div><div class="lh-title">The second pair is more revealing than the <em>first</em></div></div></div>
+          <div class="letter-body">
+            <p>The first pair of glasses a person selects carefully tells you what they aspire to. The second tells you who they actually are. The second pair must do something different — different light, different context, different register — or it is simply a backup, which is a waste of a frame.</p>
+            <p>A considered collection of three pairs covers most occasions: one frame that works everywhere and asks nothing of anyone; one that is appropriate for formal or professional contexts; one that is personal, perhaps slightly unexpected, worn when the occasion permits a considered choice. Beyond three, each addition should earn its place by doing something the others cannot.</p>
+            <p>Lorgner exists to help you think through exactly this.</p>
           </div>
           <div class="letter-sig">— Lorgner</div>
         </div>
