@@ -970,13 +970,17 @@ async function _loadDashboard(isNew) {
   }
 
   // Fetch past sessions
-  const { data: sessions } = await sb
-    .from('sessions')
-    .select('occasion, ai_reply, created_at')
-    .eq('user_id', state.user.id)
-    .order('created_at', { ascending: false })
-    .limit(5);
-  state.sessions = sessions || [];
+  try {
+    const { data: sessions } = await sb
+      .from('sessions')
+      .select('occasion, ai_reply, created_at')
+      .eq('user_id', state.user.id)
+      .order('created_at', { ascending: false })
+      .limit(5);
+    state.sessions = sessions || [];
+  } catch (e) {
+    state.sessions = [];
+  }
 
   hideLoader();
   updateSyncStatus(true);
