@@ -453,7 +453,7 @@ app.post('/create-portal-session', requireAuth, async (req, res) => {
     res.json({ portalUrl: session.url });
   } catch (err) {
     console.error('[LORGNER] Portal session error:', err.message);
-    res.status(500).json({ error: true, message: 'Could not open billing portal.' });
+    res.status(500).json({ error: true, message: err.message || 'Could not open billing portal.' });
   }
 });
 
