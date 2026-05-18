@@ -668,6 +668,7 @@ let state = {
   user:        null,   // Supabase user object — contains id, email, metadata
   session:     null,   // Supabase session — contains JWT, refresh token
   glasses:     [],     // [{id, name, brand, photo_url, dataUrl, occasions, tags}]
+  sessions:    [],     // recent consultations from Supabase
   history:     [],     // Claude conversation history for current session
   firstSent:   false,  // Whether images have been sent in current chat
   busy:        false,  // Whether waiting for Claude response
@@ -968,6 +969,15 @@ async function _loadDashboard(isNew) {
     state.glasses = glasses;
   }
 
+  // Fetch past sessions
+  const { data: sessions } = await sb
+    .from('sessions')
+    .select('occasion, ai_reply, created_at')
+    .eq('user_id', state.user.id)
+    .order('created_at', { ascending: false })
+    .limit(5);
+  state.sessions = sessions || [];
+
   hideLoader();
   updateSyncStatus(true);
 
@@ -1131,6 +1141,24 @@ function renderOverview() {
   const preview = state.glasses.slice(0, 3).map(card).join('');
   const addBtn = `<div class="add-pair" onclick="switchView('collection')"><div class="ap-plus">${state.glasses.length > 3 ? '+' + (state.glasses.length - 3) : '+'}</div><div class="ap-label">${state.glasses.length === 0 ? 'Begin your collection' : state.glasses.length > 3 ? 'more pairs' : 'Add a pair'}</div></div>`;
   grid.innerHTML = preview + addBtn;
+
+  const list = document.getElementById('sessionList');
+  if (!state.sessions?.length) {
+    list.innerHTML = `<div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--ivory3);font-style:italic;padding:8px 0;">Your first consultation awaits.</div>`;
+    return;
+  }
+  list.innerHTML = state.sessions.map(s => {
+    const date = new Date(s.created_at);
+    const label = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return `<div class="session-row">
+      <div class="sr-date">${label}</div>
+      <div class="sr-body">
+        <div class="sr-occ">${(s.occasion||'').slice(0,60)}${(s.occasion||'').length>60?'…':''}</div>
+        <div class="sr-rec">Lorgner: <em>${(s.ai_reply||'').slice(0,80)}${(s.ai_reply||'').length>80?'…':''}</em></div>
+      </div>
+      <div class="sr-arr">→</div>
+    </div>`;
+  }).join('');
 }
 
 function renderCollectionGrid() {
