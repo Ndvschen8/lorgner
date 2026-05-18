@@ -440,9 +440,10 @@ app.post('/create-portal-session', requireAuth, async (req, res) => {
     );
     const members = await memberRes.json();
     const customerId = members?.[0]?.stripe_customer_id;
+    console.log('[LORGNER] Portal lookup:', { userId, memberCount: Array.isArray(members) ? members.length : members, customerId: customerId ? 'found' : 'missing' });
 
     if (!customerId) {
-      return res.status(404).json({ error: true, message: 'No billing account found.' });
+      return res.status(404).json({ error: true, message: `No billing account found. (looked up: ${userId}, got: ${JSON.stringify(members)?.slice(0,80)})` });
     }
 
     const session = await stripe.billingPortal.sessions.create({
