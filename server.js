@@ -432,7 +432,7 @@ app.post('/create-checkout-session', async (req, res) => {
 app.post('/create-portal-session', requireAuth, async (req, res) => {
   try {
     const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-    const userId = req.lorgnerUser.sub;
+    const userId = req.lorgnerUser.id;
 
     const memberRes = await fetch(
       `${CONFIG.SUPABASE_URL}/rest/v1/members?id=eq.${userId}&select=stripe_customer_id`,
