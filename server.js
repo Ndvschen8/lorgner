@@ -345,7 +345,7 @@ app.post('/chat',
       console.error(`[LORGNER] Anthropic error | user:${user.id} |`, data.error?.message);
       return res.status(500).json({
         error: true,
-        message: 'Lorgner is momentarily unavailable. Please try again.'
+        message: data.error?.message || 'Lorgner is momentarily unavailable. Please try again.'
       });
     }
 
