@@ -50,7 +50,7 @@ const CONFIG = {
   ALLOWED_ORIGINS:      (process.env.ALLOWED_ORIGIN || 'https://lorgner.vercel.app')
                           .split(',').map(o => o.trim()),
   RATE_LIMIT_MAX:       parseInt(process.env.RATE_LIMIT_MAX || '20'),
-  MODEL:                'claude-sonnet-4-20250514',
+  MODEL:                'claude-sonnet-4-6',
   MAX_TOKENS:           800,
   MAX_IMG_SIZE_MB:      5,
   MAX_PAIRS:            8,
