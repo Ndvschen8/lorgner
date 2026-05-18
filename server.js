@@ -631,11 +631,17 @@ app.post('/stripe-webhook', async (req, res) => {
         })
       });
 
-      const authUser = await signUpRes.json();
+      let authUser = await signUpRes.json();
 
       if (!authUser?.id) {
-        // User may already exist — try to find them
-        console.log(`[LORGNER] User may already exist: ${email}`);
+        // User already exists — look them up by email
+        console.log(`[LORGNER] User may already exist, looking up: ${email}`);
+        const listRes = await fetch(
+          `${CONFIG.SUPABASE_URL}/auth/v1/admin/users?email=${encodeURIComponent(email)}`,
+          { headers: { apikey: CONFIG.SUPABASE_SERVICE_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}` } }
+        );
+        const listData = await listRes.json();
+        authUser = listData?.users?.[0] || listData?.[0] || authUser;
       }
 
       const userId = authUser?.id;
