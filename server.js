@@ -435,7 +435,7 @@ app.post('/create-portal-session', requireAuth, async (req, res) => {
     const userId = req.user.sub;
 
     const memberRes = await fetch(
-      `${CONFIG.SUPABASE_URL}/rest/v1/members?user_id=eq.${userId}&select=stripe_customer_id`,
+      `${CONFIG.SUPABASE_URL}/rest/v1/members?id=eq.${userId}&select=stripe_customer_id`,
       { headers: { apikey: CONFIG.SUPABASE_SERVICE_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}` } }
     );
     const members = await memberRes.json();
