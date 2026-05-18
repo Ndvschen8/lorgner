@@ -424,6 +424,40 @@ app.post('/create-checkout-session', async (req, res) => {
 });
 
 /* ══════════════════════════════════════════════
+   BILLING PORTAL ENDPOINT
+   POST /create-portal-session
+   Looks up Stripe customer ID from Supabase members table,
+   then creates a Stripe Customer Portal session.
+══════════════════════════════════════════════ */
+app.post('/create-portal-session', requireAuth, async (req, res) => {
+  try {
+    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    const userId = req.user.sub;
+
+    const memberRes = await fetch(
+      `${CONFIG.SUPABASE_URL}/rest/v1/members?user_id=eq.${userId}&select=stripe_customer_id`,
+      { headers: { apikey: CONFIG.SUPABASE_SERVICE_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}` } }
+    );
+    const members = await memberRes.json();
+    const customerId = members?.[0]?.stripe_customer_id;
+
+    if (!customerId) {
+      return res.status(404).json({ error: true, message: 'No billing account found.' });
+    }
+
+    const session = await stripe.billingPortal.sessions.create({
+      customer:   customerId,
+      return_url: CONFIG.ALLOWED_ORIGINS[0],
+    });
+
+    res.json({ portalUrl: session.url });
+  } catch (err) {
+    console.error('[LORGNER] Portal session error:', err.message);
+    res.status(500).json({ error: true, message: 'Could not open billing portal.' });
+  }
+});
+
+/* ══════════════════════════════════════════════
    SESSION ENDPOINT
    POST /session
    Receives session metadata from frontend.

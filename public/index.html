@@ -492,7 +492,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
       </div>
       <div class="nav-sec">
         <div class="nav-sec-label">Account</div>
-        <div class="nav-item"><span class="nav-ico">○</span>Preferences</div>
+        <div class="nav-item" onclick="openBillingPortal()"><span class="nav-ico">○</span>Manage Subscription</div>
         <div class="nav-item" onclick="handleSignOut()"><span class="nav-ico">◌</span>Sign Out</div>
       </div>
     </nav>
@@ -879,6 +879,30 @@ async function handleSignIn() {
   // Show confirmation — email sent
   document.getElementById('signinForm').style.display   = 'none';
   document.getElementById('magicSent').classList.add('on');
+}
+
+/* ══════════════════════════════════════════════
+   BILLING PORTAL
+══════════════════════════════════════════════ */
+async function openBillingPortal() {
+  showLoader();
+  try {
+    const token = state.session?.access_token;
+    const res = await fetch(CONFIG.PROXY_URL.replace('/chat', '/create-portal-session'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    });
+    const { portalUrl, message } = await res.json();
+    if (portalUrl) {
+      window.location.href = portalUrl;
+    } else {
+      hideLoader();
+      alert(message || 'Could not open billing portal. Please try again.');
+    }
+  } catch {
+    hideLoader();
+    alert('Could not reach billing portal. Please try again.');
+  }
 }
 
 /* ══════════════════════════════════════════════
