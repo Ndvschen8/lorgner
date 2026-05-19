@@ -282,8 +282,7 @@ async function sendMagicLinkEmail(email, name = '') {
               <a href="${actionLink}" style="color:#000000;text-decoration:none;font-family:Georgia,serif;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;">Enter Lorgner</a>
             </td></tr>
           </table>
-          <p style="margin:0 0 8px;font-size:11px;line-height:1.6;color:#333333;">If the button does not work, copy this link into your browser:</p>
-          <p style="margin:0;font-size:11px;line-height:1.6;color:#555555;word-break:break-all;">${actionLink}</p>
+          <p style="margin:0;font-size:11px;line-height:1.6;color:#333333;">If the button does not work, <a href="${actionLink}" style="color:#9a7d3a;text-decoration:underline;">click here</a> to access your account.</p>
         </td></tr>
         <tr><td align="center" style="padding-top:32px;">
           <p style="margin:0;font-size:11px;color:#333333;letter-spacing:0.05em;">LORGNER &middot; PRIVATE INTELLIGENCE FOR YOUR COLLECTION</p>
