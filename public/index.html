@@ -731,7 +731,7 @@ window.addEventListener('load', async () => {
         if (data?.session) {
           state.session = data.session;
           state.user    = data.session.user;
-          history.replaceState(null, '', window.location.pathname);
+          history.replaceState(null, '', '/');
           await loadDashboard(false);
           return;
         }
@@ -946,13 +946,19 @@ async function handleSignOut() {
    Supabase RLS ensures only their own rows return.
    JWT in request header is verified server-side.
 ══════════════════════════════════════════════ */
+let _dashboardLoading = false;
 async function loadDashboard(isNew) {
+  if (_dashboardLoading) return;
+  _dashboardLoading = true;
   showLoader();
   try {
     await _loadDashboard(isNew);
   } catch (e) {
     console.error('Dashboard load error:', e);
     hideLoader();
+    show('pg-signin');
+  } finally {
+    _dashboardLoading = false;
   }
 }
 
