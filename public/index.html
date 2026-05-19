@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lorgner — A Private Intelligence Service</title>
+<title>Lorgner — A Private Intelligence Service for Your Glasses Collection</title>
+<link rel="icon" type="image/png" href="/favicon.png">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-X3VM9B57WC"></script>
 <script>
@@ -868,15 +869,17 @@ async function handleSignIn() {
   btn.disabled    = true;
   btn.textContent = 'Sending…';
 
-  const { error } = await sb.auth.signInWithOtp({
-    email,
-    options: {
-      emailRedirectTo: window.location.origin
-    }
-  });
-
-  if (error) {
-    errEl.textContent = error.message;
+  try {
+    const backendUrl = new URL(CONFIG.PROXY_URL).origin;
+    const r = await fetch(`${backendUrl}/send-magic-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await r.json();
+    if (!r.ok || data.error) throw new Error(data.message || 'Could not send link.');
+  } catch (err) {
+    errEl.textContent = err.message || 'Something went wrong. Please try again.';
     errEl.classList.add('on');
     btn.disabled    = false;
     btn.textContent = 'Send My Access Link';
