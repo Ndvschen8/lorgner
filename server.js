@@ -231,10 +231,107 @@ const chatLimiter = rateLimit({
 });
 
 /* ══════════════════════════════════════════════
+   SHARED HELPER — SEND MAGIC LINK VIA RESEND
+══════════════════════════════════════════════ */
+async function sendMagicLinkEmail(email, name = '') {
+  const magicRes = await fetch(`${CONFIG.SUPABASE_URL}/auth/v1/admin/generate_link`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
+      'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
+    },
+    body: JSON.stringify({
+      type:  'magiclink',
+      email,
+      options: { redirect_to: `${CONFIG.ALLOWED_ORIGINS[0]}/?signin=1` }
+    })
+  });
+
+  const magicData  = await magicRes.json();
+  const actionLink = magicData.action_link || magicData.properties?.action_link;
+
+  if (!actionLink) return false;
+
+  const { Resend } = require('resend');
+  const resend = new Resend(CONFIG.RESEND_KEY);
+
+  await resend.emails.send({
+    from:    'Lorgner <hello@lorgner.co>',
+    to:      email,
+    subject: 'Your Lorgner access link',
+    html: `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#000000;font-family:Georgia,serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#000000;padding:60px 20px;">
+    <tr><td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+        <tr><td align="center" style="padding-bottom:48px;">
+          <span style="font-family:Georgia,serif;font-size:28px;letter-spacing:0.15em;color:#9a7d3a;text-transform:uppercase;">Lorgner</span>
+        </td></tr>
+        <tr><td style="background:#0a0a0a;border:1px solid #1a1a1a;padding:48px 40px;">
+          <p style="margin:0 0 24px;font-size:16px;line-height:1.7;color:#c8b87a;">${name ? `Dear ${name},` : 'Welcome,'}</p>
+          <p style="margin:0 0 24px;font-size:15px;line-height:1.8;color:#888888;">Your membership is confirmed. Use the link below to access your private intelligence service.</p>
+          <p style="margin:0 0 40px;font-size:13px;line-height:1.8;color:#555555;">This link expires in 24 hours and may only be used once.</p>
+          <table cellpadding="0" cellspacing="0" style="margin:0 auto 40px;">
+            <tr><td align="center" style="background:#9a7d3a;padding:14px 40px;">
+              <a href="${actionLink}" style="color:#000000;text-decoration:none;font-family:Georgia,serif;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;">Enter Lorgner</a>
+            </td></tr>
+          </table>
+          <p style="margin:0 0 8px;font-size:11px;line-height:1.6;color:#333333;">If the button does not work, copy this link into your browser:</p>
+          <p style="margin:0;font-size:11px;line-height:1.6;color:#555555;word-break:break-all;">${actionLink}</p>
+        </td></tr>
+        <tr><td align="center" style="padding-top:32px;">
+          <p style="margin:0;font-size:11px;color:#333333;letter-spacing:0.05em;">LORGNER &middot; PRIVATE INTELLIGENCE FOR YOUR COLLECTION</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
+  });
+
+  return true;
+}
+
+/* ══════════════════════════════════════════════
    HEALTH CHECK
 ══════════════════════════════════════════════ */
 app.get('/health', (req, res) => {
   res.json({ status: 'Lorgner is ready.', timestamp: new Date().toISOString() });
+});
+
+/* ══════════════════════════════════════════════
+   MAGIC LINK ENDPOINT
+   POST /send-magic-link
+   Called by the sign-in form. Generates a token
+   via Supabase admin API and sends it via Resend.
+   Always returns 200 to prevent email enumeration.
+══════════════════════════════════════════════ */
+const magicLinkLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => res.status(429).json({ error: true, message: 'Too many requests. Please wait before trying again.' }),
+});
+
+app.post('/send-magic-link', magicLinkLimiter, async (req, res) => {
+  const { email } = req.body;
+  if (!email || typeof email !== 'string') {
+    return res.status(400).json({ error: true, message: 'Email required.' });
+  }
+
+  try {
+    await sendMagicLinkEmail(email.trim().toLowerCase());
+    console.log(`[LORGNER] Magic link sent: ${email}`);
+  } catch (err) {
+    console.error('[LORGNER] send-magic-link error:', err.message);
+  }
+
+  // Always 200 — prevents account enumeration
+  res.json({ ok: true });
 });
 
 /* ══════════════════════════════════════════════
@@ -665,76 +762,12 @@ app.post('/stripe-webhook', async (req, res) => {
         });
       }
 
-      // 3. Generate magic link token via Supabase (does not send email)
-      const magicRes = await fetch(`${CONFIG.SUPABASE_URL}/auth/v1/admin/generate_link`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
-          'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
-        },
-        body: JSON.stringify({
-          type:  'magiclink',
-          email,
-          options: {
-            redirect_to: `${CONFIG.ALLOWED_ORIGINS[0]}/?signin=1`,
-          }
-        })
-      });
-
-      const magicData  = await magicRes.json();
-      const actionLink = magicData.action_link || magicData.properties?.action_link;
-
-      // 4. Send the magic link email via Resend
-      if (actionLink && CONFIG.RESEND_KEY) {
-        const { Resend } = require('resend');
-        const resend = new Resend(CONFIG.RESEND_KEY);
-
-        await resend.emails.send({
-          from:    'Lorgner <hello@lorgner.co>',
-          to:      email,
-          subject: 'Your Lorgner access link',
-          html: `<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#000000;font-family:Georgia,serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#000000;padding:60px 20px;">
-    <tr><td align="center">
-      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
-
-        <tr><td align="center" style="padding-bottom:48px;">
-          <span style="font-family:Georgia,serif;font-size:28px;letter-spacing:0.15em;color:#9a7d3a;text-transform:uppercase;">Lorgner</span>
-        </td></tr>
-
-        <tr><td style="background:#0a0a0a;border:1px solid #1a1a1a;padding:48px 40px;">
-          <p style="margin:0 0 24px;font-size:16px;line-height:1.7;color:#c8b87a;">${name ? `Dear ${name},` : 'Welcome,'}</p>
-          <p style="margin:0 0 24px;font-size:15px;line-height:1.8;color:#888888;">Your membership is confirmed. Use the link below to access your private intelligence service.</p>
-          <p style="margin:0 0 40px;font-size:13px;line-height:1.8;color:#555555;">This link expires in 24 hours and may only be used once.</p>
-
-          <table cellpadding="0" cellspacing="0" style="margin:0 auto 40px;">
-            <tr><td align="center" style="background:#9a7d3a;padding:14px 40px;">
-              <a href="${actionLink}" style="color:#000000;text-decoration:none;font-family:Georgia,serif;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;">Enter Lorgner</a>
-            </td></tr>
-          </table>
-
-          <p style="margin:0 0 8px;font-size:11px;line-height:1.6;color:#333333;">If the button does not work, copy this link into your browser:</p>
-          <p style="margin:0;font-size:11px;line-height:1.6;color:#555555;word-break:break-all;">${actionLink}</p>
-        </td></tr>
-
-        <tr><td align="center" style="padding-top:32px;">
-          <p style="margin:0;font-size:11px;color:#333333;letter-spacing:0.05em;">LORGNER &middot; PRIVATE INTELLIGENCE FOR YOUR COLLECTION</p>
-        </td></tr>
-
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`,
-        });
-
+      // 3. Send magic link via Resend
+      const sent = await sendMagicLinkEmail(email, name);
+      if (sent) {
         console.log(`[LORGNER] ✓ Account created, magic link sent via Resend: ${email}`);
       } else {
-        console.error(`[LORGNER] ✗ Could not send magic link — actionLink:${!!actionLink} resendKey:${!!CONFIG.RESEND_KEY}`);
+        console.error(`[LORGNER] ✗ Magic link generation failed for: ${email}`);
       }
 
     } catch (err) {
