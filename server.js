@@ -251,7 +251,10 @@ async function sendMagicLinkEmail(email, name = '') {
   const magicData  = await magicRes.json();
   const actionLink = magicData.action_link || magicData.properties?.action_link;
 
-  if (!actionLink) return false;
+  if (!actionLink) {
+    console.error('[LORGNER] generate_link failed:', JSON.stringify(magicData).slice(0, 300));
+    return false;
+  }
 
   const { Resend } = require('resend');
   const resend = new Resend(CONFIG.RESEND_KEY);
