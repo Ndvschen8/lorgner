@@ -2,11 +2,15 @@
   "version": 2,
   "builds": [
     {
-      "src": "public/index.html",
+      "src": "public/*.html",
       "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/journal",
+      "dest": "/public/journal.html"
+    },
     {
       "src": "/(.*)",
       "dest": "/public/index.html"
