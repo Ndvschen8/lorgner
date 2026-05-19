@@ -49,6 +49,7 @@ const CONFIG = {
   SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,  // Service role key for JWT verification
   ALLOWED_ORIGINS:      (process.env.ALLOWED_ORIGIN || 'https://lorgner.vercel.app')
                           .split(',').map(o => o.trim()),
+  FRONTEND_URL:         process.env.FRONTEND_URL || 'https://lorgner.vercel.app',
   RESEND_KEY:           process.env.RESEND_API_KEY,
   RATE_LIMIT_MAX:       parseInt(process.env.RATE_LIMIT_MAX || '20'),
   MODEL:                'claude-sonnet-4-6',
@@ -244,7 +245,7 @@ async function sendMagicLinkEmail(email, name = '') {
     body: JSON.stringify({
       type:  'magiclink',
       email,
-      options: { redirect_to: `${CONFIG.ALLOWED_ORIGINS[0]}/?signin=1` }
+      options: { redirect_to: `${CONFIG.FRONTEND_URL}/?signin=1` }
     })
   });
 
@@ -510,8 +511,8 @@ app.post('/create-checkout-session', async (req, res) => {
           quantity: 1,
         }
       ],
-      success_url: `${CONFIG.ALLOWED_ORIGINS[0]}/?subscribed=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url:  `${CONFIG.ALLOWED_ORIGINS[0]}/`,
+      success_url: `${CONFIG.FRONTEND_URL}/?subscribed=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url:  `${CONFIG.FRONTEND_URL}/`,
       metadata: { full_name: name || '' },
     });
 
@@ -542,7 +543,7 @@ app.post('/create-portal-session', requireAuth, async (req, res) => {
 
     const session = await stripe.billingPortal.sessions.create({
       customer:   customerId,
-      return_url: CONFIG.ALLOWED_ORIGINS[0],
+      return_url: CONFIG.FRONTEND_URL,
     });
 
     res.json({ portalUrl: session.url });
@@ -842,7 +843,7 @@ app.listen(PORT, () => {
   ╔════════════════════════════════════════╗
   ║  LORGNER — Backend Proxy               ║
   ║  Port    : ${String(PORT).padEnd(28)}  ║
-  ║  Origin  : ${CONFIG.ALLOWED_ORIGINS[0].slice(0,28).padEnd(28)}  ║
+  ║  Origin  : ${CONFIG.FRONTEND_URL.slice(0,28).padEnd(28)}  ║
   ╚════════════════════════════════════════╝
 
   Security layers active:
