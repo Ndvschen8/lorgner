@@ -717,24 +717,11 @@ window.addEventListener('load', async () => {
     return;
   }
 
-  // Handle magic link callback — Supabase puts tokens in URL hash
+  // Handle magic link callback — Supabase processes the hash asynchronously,
+  // so just show a loader and let onAuthStateChange fire SIGNED_IN to load the dashboard.
   const hash = window.location.hash;
   if (hash.includes('access_token')) {
     showLoader();
-    try {
-      const { data } = await sb.auth.getSession();
-      if (data?.session) {
-        state.session = data.session;
-        state.user    = data.session.user;
-        history.replaceState(null, '', window.location.pathname);
-        await loadDashboard(false);
-        return;
-      }
-    } catch (e) {
-      console.error('Magic link error:', e);
-    }
-    hideLoader();
-    show('pg-signin');
     return;
   }
 
