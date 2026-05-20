@@ -743,7 +743,13 @@ window.addEventListener('load', async () => {
       console.error('Magic link error:', e);
     }
     hideLoader();
+    history.replaceState(null, '', '/');
     show('pg-signin');
+    const linkErr = document.getElementById('signinError');
+    if (linkErr) {
+      linkErr.textContent = 'Your access link has expired or was already used. Enter your email to receive a new one.';
+      linkErr.classList.add('on');
+    }
     return;
   }
 
