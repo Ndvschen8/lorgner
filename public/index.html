@@ -965,7 +965,7 @@ async function loadDashboard(isNew) {
 }
 
 async function _loadDashboard(isNew) {
-  // Populate member info
+  // Populate member info from JWT — no network call needed
   const meta = state.user?.user_metadata || {};
   const name = meta.full_name || state.user?.email?.split('@')[0] || 'Member';
   const initial = name[0].toUpperCase();
@@ -976,32 +976,46 @@ async function _loadDashboard(isNew) {
   document.getElementById('memberSince').textContent =
     'Member since ' + new Date(meta.member_since || state.user?.created_at).toLocaleDateString('en-US', {month:'long', year:'numeric'});
 
-  // Fetch glasses collection from Supabase
-  // RLS policy: "SELECT WHERE user_id = auth.uid()"
-  // This means the query only ever returns rows owned by this user
-  const { data: glasses, error } = await sb
-    .from('glasses')
-    .select('*')
-    .eq('user_id', state.user.id)
-    .order('created_at', { ascending: true });
-
-  if (!error && glasses) {
-    // For each pair, get a signed URL for the photo from Storage
-    for (const pair of glasses) {
-      if (pair.photo_path) {
-        const { data: urlData, error: urlErr } = await sb
-          .storage
-          .from('glasses-photos')
-          .createSignedUrl(pair.photo_path, 3600); // 1-hour expiry
-        if (urlErr) console.error('signedUrl error:', urlErr.message, 'path:', pair.photo_path);
-        console.log('signedUrl result:', urlData?.signedUrl?.slice(0, 80));
-        pair.dataUrl = urlData?.signedUrl || null;
-      }
-    }
-    state.glasses = glasses;
+  // Show dashboard immediately — don't block on DB wake-up
+  hideLoader();
+  updateSyncStatus(false);
+  if (isNew || state.isNewMember) {
+    show('pg-welcome');
+  } else {
+    show('pg-dash');
+    renderAll();
+    initChat();
   }
 
-  // Fetch past sessions
+  // Load collection + sessions in background (DB may be waking from sleep)
+  _refreshCollection();
+}
+
+async function _refreshCollection() {
+  try {
+    const { data: glasses } = await sb
+      .from('glasses')
+      .select('*')
+      .eq('user_id', state.user.id)
+      .order('created_at', { ascending: true });
+
+    if (glasses) {
+      for (const pair of glasses) {
+        if (pair.photo_path) {
+          const { data: urlData } = await sb
+            .storage
+            .from('glasses-photos')
+            .createSignedUrl(pair.photo_path, 3600);
+          pair.dataUrl = urlData?.signedUrl || null;
+        }
+      }
+      state.glasses = glasses;
+      renderAll();
+    }
+  } catch (e) {
+    console.error('Collection load error:', e);
+  }
+
   try {
     const { data: sessions } = await sb
       .from('sessions')
@@ -1014,16 +1028,7 @@ async function _loadDashboard(isNew) {
     state.sessions = [];
   }
 
-  hideLoader();
   updateSyncStatus(true);
-
-  if (isNew || state.isNewMember) {
-    show('pg-welcome');
-  } else {
-    show('pg-dash');
-    renderAll();
-    initChat();
-  }
 }
 
 function enterDash() {
