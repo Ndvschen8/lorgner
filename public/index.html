@@ -1014,7 +1014,9 @@ async function _refreshCollection() {
             .storage
             .from('glasses-photos')
             .createSignedUrl(pair.photo_path, 3600);
-          pair.dataUrl = urlData?.signedUrl || null;
+          const existing = state.glasses.find(g => g.id === pair.id);
+          pair.dataUrl = urlData?.signedUrl || existing?.dataUrl || null;
+          if (existing?.base64) { pair.base64 = existing.base64; pair.mime = existing.mime; }
         }
       }
       state.glasses = glasses;
@@ -1149,6 +1151,7 @@ async function uploadGlassesPair(file) {
 
   if (dbError) {
     console.error('DB insert failed:', dbError.message);
+    alert('Could not save this pair. Please try again. (' + dbError.message + ')');
     updateSyncStatus(true);
     return;
   }
