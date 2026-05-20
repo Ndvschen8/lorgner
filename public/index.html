@@ -528,6 +528,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
         </div>
         <div class="sec-hdr"><div class="sec-title">Your <em>Collection</em></div><div class="sec-rule"></div><div class="sec-sub" id="collCountOv">0 pairs</div></div>
         <div class="coll-grid" id="ovGrid"></div>
+        <div class="sec-hdr"><div class="sec-title">Recent <em>Consultations</em></div><div class="sec-rule"></div></div>
+        <div id="sessionList" style="margin-bottom:32px;"></div>
         <div class="sec-hdr"><div class="sec-title">The <em>Style Guide</em></div><div class="sec-rule"></div><div class="sec-sub">A Standing Reference</div></div>
         <div class="letter" style="cursor:pointer;" onclick="switchView('letter')">
           <div class="letter-hdr"><div><div class="lh-issue">I · On Fit</div><div class="lh-title">The frame should not be noticed — it should simply <em>belong</em></div></div></div>
@@ -989,7 +991,7 @@ async function _loadDashboard(isNew) {
     show('pg-welcome');
   } else {
     show('pg-dash');
-    renderAll();
+    try { renderAll(); } catch(e) { console.error('renderAll error:', e); }
     initChat();
   }
 
@@ -1016,7 +1018,7 @@ async function _refreshCollection() {
         }
       }
       state.glasses = glasses;
-      renderAll();
+      try { renderAll(); } catch(e) { console.error('renderAll error:', e); }
     }
   } catch (e) {
     console.error('Collection load error:', e);
