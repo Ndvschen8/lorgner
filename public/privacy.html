@@ -128,6 +128,11 @@
     left: 0;
     color: var(--gold-d);
   }
+  .section a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .section a:hover { text-decoration: underline; }
 
   .doc-footer {
     margin-top: 64px;
@@ -165,19 +170,25 @@
 
   <div class="section">
     <h2 class="section-title">1. Information We Collect</h2>
-    <p>Lorgner collects only the following:</p>
+    <p>Lorgner collects the following information:</p>
     <ul>
-      <li>Images you upload: Photos of your eyewear collection that you voluntarily submit for AI analysis.</li>
-      <li>AI chat interactions: The conversation exchanges between you and the Lorgner recommendation assistant.</li>
-      <li>Basic usage data: Standard app analytics such as session duration and feature usage (no personally identifiable information).</li>
+      <li><strong>Email address:</strong> Collected at account creation and used for authentication and account access.</li>
+      <li><strong>Name:</strong> Collected during the subscription process and stored with your account profile.</li>
+      <li><strong>Payment information:</strong> Your billing details are collected and processed by our payment provider. We do not store your card number or full payment details on our systems; however, we receive confirmation of your subscription status and billing history.</li>
+      <li><strong>Eyewear photos:</strong> Images of your eyewear collection that you voluntarily upload for AI analysis.</li>
+      <li><strong>AI chat interactions:</strong> The conversation exchanges between you and the Lorgner recommendation assistant.</li>
+      <li><strong>Basic usage data:</strong> Standard session analytics such as session duration and feature usage.</li>
     </ul>
-    <p>We do not collect your name, email, location, prescription information, payment details, or any biometric data.</p>
+    <p>We do not collect location data, prescription information, or biometric data.</p>
   </div>
 
   <div class="section">
     <h2 class="section-title">2. How We Use Your Information</h2>
     <p>The information collected is used solely to:</p>
     <ul>
+      <li>Create and manage your Lorgner membership account.</li>
+      <li>Authenticate your identity and deliver secure access to the Service.</li>
+      <li>Process your subscription and manage billing.</li>
       <li>Process your uploaded eyewear images through our AI system.</li>
       <li>Generate personalized outfit-pairing recommendations.</li>
       <li>Improve the performance and accuracy of the Lorgner AI assistant.</li>
@@ -187,48 +198,68 @@
 
   <div class="section">
     <h2 class="section-title">3. Image Data</h2>
-    <p>Photos you upload are processed by our AI system to identify eyewear characteristics. Images are used only for recommendation purposes within your session. We do not use your uploaded images to train external AI models without your explicit consent, and we do not share your images with third parties.</p>
+    <p>Photos you upload are processed by our AI system to identify eyewear characteristics. Images are used only for recommendation purposes within your account. We do not use your uploaded images to train external AI models without your explicit consent, and we do not share your images with third parties.</p>
   </div>
 
   <div class="section">
-    <h2 class="section-title">4. Data Retention</h2>
-    <p>Uploaded images and chat interactions may be retained temporarily to deliver and improve the Service. You may request deletion of your data at any time by contacting us through the app's support channel. Upon verified request, we will delete your data within 30 days.</p>
+    <h2 class="section-title">4. Cookies and Authentication</h2>
+    <p>Lorgner uses authentication tokens and session cookies to keep you securely signed in. These are strictly necessary for the Service to function and do not track you across third-party websites. By using Lorgner, you consent to the use of these authentication cookies.</p>
   </div>
 
   <div class="section">
-    <h2 class="section-title">5. Data Security</h2>
-    <p>Digital Junction LLC implements reasonable technical and organizational measures to protect your data from unauthorized access, disclosure, or loss. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.</p>
+    <h2 class="section-title">5. Third-Party Service Providers</h2>
+    <p>Lorgner uses the following categories of third-party service providers to operate the Service:</p>
+    <ul>
+      <li>A cloud database and authentication provider to store user accounts and collection data.</li>
+      <li>An AI processing infrastructure provider to power the recommendation assistant.</li>
+      <li>A transactional email delivery provider to send account access links.</li>
+      <li>A payment processing provider to handle subscription billing.</li>
+    </ul>
+    <p>Each provider is contractually obligated to protect your data and may not use it for their own purposes. Payment processing is handled entirely by our payment provider — Lorgner does not store your card details.</p>
+    <p>Our payment provider retains billing and transaction records in accordance with their own privacy policy and applicable financial regulations, which may require retention for up to seven years.</p>
   </div>
 
   <div class="section">
-    <h2 class="section-title">6. Children's Privacy</h2>
-    <p>Lorgner is not intended for use by children under the age of 13. We do not knowingly collect data from children. If you believe a child has submitted data through the app, please contact us immediately and we will delete it.</p>
+    <h2 class="section-title">6. Data Retention</h2>
+    <p>Your account data, uploaded images, and chat interactions are retained for as long as your membership is active. You may request deletion of your data at any time by contacting us at <a href="mailto:privacy@lorgner.co">privacy@lorgner.co</a>. Upon verified request, we will delete your data within 30 days, except where retention is required by law.</p>
   </div>
 
   <div class="section">
-    <h2 class="section-title">7. Third-Party Services</h2>
-    <p>Lorgner may use third-party service providers (such as cloud hosting or AI infrastructure providers) to operate the app. These providers are contractually obligated to protect your data and may not use it for their own purposes.</p>
+    <h2 class="section-title">7. Data Security</h2>
+    <p>Digital Junction LLC implements reasonable technical and organizational measures to protect your data from unauthorized access, disclosure, or loss. In the event of a data breach that is likely to result in a risk to your rights and freedoms, we will notify affected users without undue delay and in accordance with applicable law.</p>
+    <p>However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.</p>
   </div>
 
   <div class="section">
-    <h2 class="section-title">8. Your Rights</h2>
+    <h2 class="section-title">8. Children's Privacy</h2>
+    <p>Lorgner is not intended for use by children under the age of 13. We do not knowingly collect data from children. If you believe a child has submitted data through the app, please contact us at <a href="mailto:privacy@lorgner.co">privacy@lorgner.co</a> and we will delete it immediately.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">9. Your Rights</h2>
     <p>Depending on your location, you may have the right to:</p>
     <ul>
       <li>Access the personal data we hold about you.</li>
       <li>Request correction or deletion of your data.</li>
       <li>Object to or restrict certain processing of your data.</li>
+      <li>Receive a copy of your data in a portable format.</li>
     </ul>
-    <p>To exercise any of these rights, contact us through the Lorgner app support channel.</p>
+    <p>To exercise any of these rights, contact us at <a href="mailto:privacy@lorgner.co">privacy@lorgner.co</a>.</p>
   </div>
 
   <div class="section">
-    <h2 class="section-title">9. Changes to This Policy</h2>
+    <h2 class="section-title">10. California Residents (CCPA)</h2>
+    <p>If you are a California resident, you have additional rights under the California Consumer Privacy Act (CCPA), including the right to know what personal information we collect, the right to delete your personal information, and the right to opt out of the sale of your personal information. We do not sell your personal information. To exercise your California privacy rights, contact us at <a href="mailto:privacy@lorgner.co">privacy@lorgner.co</a>.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">11. Changes to This Policy</h2>
     <p>We may update this Privacy Policy from time to time. We will notify you of significant changes via in-app notice. Your continued use of Lorgner after changes take effect constitutes acceptance of the updated policy.</p>
   </div>
 
   <div class="section">
-    <h2 class="section-title">10. Contact</h2>
-    <p>For privacy-related questions or requests, please contact Digital Junction LLC through the official Lorgner app support channel.</p>
+    <h2 class="section-title">12. Contact</h2>
+    <p>For privacy-related questions or requests, please contact Digital Junction LLC at <a href="mailto:privacy@lorgner.co">privacy@lorgner.co</a>.</p>
   </div>
 
   <div class="doc-footer">© 2026 Lorgner &nbsp;·&nbsp; Powered by Digital Junction LLC</div>
