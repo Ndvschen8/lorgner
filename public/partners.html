@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lorgner — For Partners</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void:    #060608;
+  --deep:    #0b0b0f;
+  --surface: #131318;
+  --lift:    #1a1a22;
+  --line:    rgba(212,192,152,0.11);
+  --line2:   rgba(212,192,152,0.22);
+  --line3:   rgba(212,192,152,0.40);
+  --gold:    #C9A96E;
+  --gold-l:  #DFC090;
+  --gold-d:  #9A7A48;
+  --gold-bg: rgba(201,169,110,0.07);
+  --gold-b2: rgba(201,169,110,0.14);
+  --ivory:   #EEE9DF;
+  --ivory2:  #D5CEBC;
+  --ivory3:  #8A8272;
+  --ivory4:  #4A4438;
+  --white:   #F9F6F0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--void);color:var(--ivory);min-height:100vh;overflow-x:hidden;cursor:default;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");background-size:256px;opacity:.55;}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 65% 50% at 15% 10%,rgba(201,169,110,0.05) 0%,transparent 60%),radial-gradient(ellipse 50% 45% at 85% 90%,rgba(201,169,110,0.04) 0%,transparent 60%);}
+.page{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:80px 40px 120px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes lineGrow{from{width:0}to{width:100%}}
+.reveal{opacity:0;animation:fadeUp .8s ease forwards;}
+.header{margin-bottom:72px;animation:fadeUp .8s ease .1s both;}
+.wordmark{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:12px;letter-spacing:9px;text-transform:uppercase;color:var(--gold);margin-bottom:52px;display:block;}
+.header-rule{width:0;height:1px;background:linear-gradient(90deg,var(--gold),transparent);animation:lineGrow 1.2s ease .4s forwards;margin-bottom:44px;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;animation:fadeUp .8s ease .3s both;opacity:0;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,58px);font-weight:300;line-height:1.15;color:var(--ivory);margin-bottom:24px;animation:fadeUp .9s ease .4s both;opacity:0;}
+.hero-title em{font-style:italic;color:var(--gold-l);}
+.hero-sub{font-size:16px;font-weight:300;color:var(--ivory3);line-height:1.85;max-width:560px;animation:fadeUp .9s ease .55s both;opacity:0;}
+.sec-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--line2),transparent);}
+.what-block{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:40px 44px;margin-bottom:60px;animation:fadeUp .8s ease .65s both;opacity:0;}
+.what-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--ivory);margin-bottom:18px;line-height:1.3;}
+.what-title em{font-style:italic;color:var(--gold-l);}
+.what-body{font-size:15px;font-weight:300;color:var(--ivory3);line-height:1.9;margin-bottom:28px;}
+.what-body p{margin-bottom:14px;}
+.what-body p:last-child{margin-bottom:0;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);margin-top:32px;}
+.stat{padding:20px 24px 16px;border-right:1px solid var(--line);}
+.stat:last-child{border-right:none;}
+.stat-val{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:5px;}
+.stat-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory4);line-height:1.5;}
+.experience{margin-bottom:60px;animation:fadeUp .8s ease .75s both;opacity:0;}
+.exp-screen{background:var(--deep);border:1px solid var(--line2);border-radius:4px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 0 1px var(--line);}
+.exp-chrome{background:var(--lift);padding:11px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);}
+.exp-dots{display:flex;gap:6px;}
+.exp-dot{width:10px;height:10px;border-radius:50%;}
+.exp-dot:nth-child(1){background:#FF5F57;}
+.exp-dot:nth-child(2){background:#FEBC2E;}
+.exp-dot:nth-child(3){background:#28C840;}
+.exp-url{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:4px 12px;font-family:'DM Mono',monospace;font-size:10px;color:var(--ivory3);letter-spacing:.3px;max-width:320px;margin:0 auto;text-align:center;}
+.exp-body{display:grid;grid-template-columns:220px 1fr;height:340px;}
+.exp-left{border-right:1px solid var(--line);padding:18px;background:var(--deep);}
+.exp-right{padding:20px 24px;background:var(--void);display:flex;flex-direction:column;gap:14px;}
+.mock-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory4);margin-bottom:11px;}
+.mock-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.mock-card{background:var(--surface);border:1px solid var(--line);border-radius:3px;overflow:hidden;}
+.mock-card-img{height:52px;background:var(--lift);display:flex;align-items:center;justify-content:center;font-size:20px;border-bottom:1px solid var(--line);}
+.mock-card-body{padding:6px 7px;}
+.mock-card-name{font-size:9px;font-weight:600;color:var(--ivory2);}
+.mock-card-tag{font-family:'DM Mono',monospace;font-size:7px;background:var(--gold-bg);color:var(--gold);padding:1px 4px;border-radius:2px;display:inline-block;margin-top:3px;}
+.mock-chat-msg{background:var(--surface);border:1px solid var(--line);border-radius:3px 12px 12px 12px;padding:11px 14px;max-width:90%;}
+.mock-chat-msg.user{align-self:flex-end;background:var(--lift);border:1px solid var(--line2);border-radius:12px 3px 12px 12px;}
+.mock-chat-text{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:300;color:var(--ivory2);line-height:1.65;}
+.mock-chat-text em{font-style:italic;color:var(--gold-l);}
+.mock-chat-text.user-t{font-family:'Jost',sans-serif;font-size:12px;color:var(--ivory3);}
+.mock-rec{background:var(--lift);border:1px solid var(--line2);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:center;margin-top:8px;}
+.mock-rec-ico{width:36px;height:32px;background:var(--gold-bg);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.mock-rec-name{font-size:11px;font-weight:600;color:var(--gold-l);margin-bottom:2px;}
+.mock-rec-why{font-size:10px;color:var(--ivory3);line-height:1.4;}
+.how-block{margin-bottom:60px;animation:fadeUp .8s ease .85s both;opacity:0;}
+.steps-list{display:flex;flex-direction:column;gap:0;}
+.step-row{display:flex;gap:24px;align-items:flex-start;padding:24px 0;border-bottom:1px solid var(--line);}
+.step-row:last-child{border-bottom:none;}
+.step-num{width:32px;height:32px;border-radius:50%;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--gold);flex-shrink:0;margin-top:2px;}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--ivory);margin-bottom:5px;}
+.step-title em{font-style:italic;color:var(--gold-l);}
+.step-desc{font-size:13px;font-weight:300;color:var(--ivory3);line-height:1.7;}
+.partners-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:60px;animation:fadeUp .8s ease .9s both;opacity:0;}
+.partner-card{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:24px 26px;transition:border-color .25s;}
+.partner-card:hover{border-color:var(--line2);}
+.pc-icon{font-size:24px;margin-bottom:12px;}
+.pc-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--ivory);margin-bottom:7px;}
+.pc-desc{font-size:12px;font-weight:300;color:var(--ivory3);line-height:1.7;}
+.pricing-block{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:36px 44px;margin-bottom:60px;animation:fadeUp .8s ease .95s both;opacity:0;}
+.pricing-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--ivory);margin-bottom:6px;}
+.pricing-sub{font-size:13px;font-weight:300;color:var(--ivory3);margin-bottom:28px;}
+.price-tiers{display:flex;flex-direction:column;gap:0;}
+.price-row{display:flex;align-items:center;gap:20px;padding:16px 0;border-bottom:1px solid var(--line);}
+.price-row:last-child{border-bottom:none;}
+.pr-label{flex:1;}
+.pr-title{font-size:14px;font-weight:400;color:var(--ivory);margin-bottom:2px;}
+.pr-desc{font-size:11px;font-weight:300;color:var(--ivory3);}
+.pr-price{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--gold);white-space:nowrap;text-align:right;min-width:140px;}
+.pr-price small{font-size:12px;color:var(--ivory4);font-family:'DM Mono',monospace;display:block;margin-top:2px;letter-spacing:.5px;}
+.pricing-note{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;font-weight:300;color:var(--ivory4);line-height:1.7;font-style:italic;}
+.cta-block{text-align:center;animation:fadeUp .8s ease 1s both;opacity:0;}
+.cta-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ivory4);margin-bottom:18px;}
+.cta-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--ivory);margin-bottom:14px;line-height:1.2;}
+.cta-title em{font-style:italic;color:var(--gold-l);}
+.cta-sub{font-size:14px;font-weight:300;color:var(--ivory3);margin-bottom:36px;line-height:1.7;}
+.contact-form{max-width:480px;margin:0 auto;text-align:left;}
+.field{margin-bottom:14px;}
+.field-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory3);display:block;margin-bottom:7px;}
+.field-input,.field-select,.field-ta{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:13px 15px;font-family:'Jost',sans-serif;font-size:14px;font-weight:300;color:var(--ivory);outline:none;transition:border-color .25s;letter-spacing:.3px;}
+.field-input::placeholder,.field-ta::placeholder{color:var(--ivory4);}
+.field-input:focus,.field-select:focus,.field-ta:focus{border-color:var(--line2);}
+.field-select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8272' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
+.field-select option{background:var(--surface);color:var(--ivory);}
+.field-ta{resize:none;line-height:1.6;}
+.submit-btn{width:100%;margin-top:8px;background:var(--gold);border:none;border-radius:2px;padding:16px;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--void);cursor:pointer;transition:all .3s;}
+.submit-btn:hover{background:var(--gold-l);transform:translateY(-1px);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.form-note{text-align:center;margin-top:13px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ivory4);}
+.form-success{display:none;text-align:center;padding:32px;background:var(--surface);border:1px solid var(--line);border-radius:2px;}
+.form-success.on{display:block;}
+.fs-glyph{font-family:'Cormorant Garamond',serif;font-size:42px;color:var(--gold);margin-bottom:14px;}
+.fs-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--ivory);margin-bottom:8px;}
+.fs-sub{font-size:13px;font-weight:300;color:var(--ivory3);line-height:1.7;}
+.footer{margin-top:80px;padding-top:28px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;animation:fadeIn 1s ease 1.1s both;opacity:0;}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);}
+.footer-note{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--ivory4);text-transform:uppercase;}
+.conf-banner{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--lift);border-top:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:12px;}
+.conf-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+.conf-text{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory4);}
+@media(max-width:640px){
+  .page{padding:48px 24px 100px;}
+  .what-block,.pricing-block{padding:28px 24px;}
+  .exp-body{grid-template-columns:1fr;height:auto;}
+  .exp-left{display:none;}
+  .partners-grid{grid-template-columns:1fr;}
+  .stats{grid-template-columns:1fr;}
+  .stat{border-right:none;border-bottom:1px solid var(--line);}
+  .footer{flex-direction:column;gap:10px;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <span class="wordmark">L O R G N E R</span>
+    <div class="header-rule"></div>
+    <div class="eyebrow">Private Partner Briefing</div>
+    <h1 class="hero-title">The styling intelligence<br>your customers<br><em>don't know they're missing.</em></h1>
+    <p class="hero-sub">Lorgner is a private AI intelligence service that helps people style the glasses they already own. We build it. You brand it. Your customers never know we exist.</p>
+  </div>
+
+  <div class="what-block">
+    <div class="sec-label">What Lorgner is</div>
+    <h2 class="what-title">A private stylist for<br><em>eyewear collectors.</em></h2>
+    <div class="what-body">
+      <p>Your customers own multiple pairs of glasses. They spent $250 on one pair and $195 on another and they reach for the same one every morning out of habit. Nobody has ever helped them think about which pair to wear to a board meeting versus a dinner versus a weekend morning.</p>
+      <p>Lorgner does exactly that. A member uploads photos of their collection, tells Lorgner the occasion, and receives a specific recommendation — with a real reason behind it — in seconds. When Lorgner identifies a gap in their collection it recommends exactly the right frame to fill it. Under your brand name.</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-val">8</div><div class="stat-lbl">Pairs max per<br>consultation</div></div>
+      <div class="stat"><div class="stat-val">~6s</div><div class="stat-lbl">Average response<br>time</div></div>
+      <div class="stat"><div class="stat-val">0</div><div class="stat-lbl">Photos stored<br>on our servers</div></div>
+    </div>
+  </div>
+
+  <div class="experience">
+    <div class="sec-label">The experience</div>
+    <div class="exp-screen">
+      <div class="exp-chrome">
+        <div class="exp-dots"><div class="exp-dot"></div><div class="exp-dot"></div><div class="exp-dot"></div></div>
+        <div class="exp-url">yourbrand.com/stylist</div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-left">
+          <div class="mock-label">Your collection</div>
+          <div class="mock-cards">
+            <div class="mock-card"><div class="mock-card-img">👓</div><div class="mock-card-body"><div class="mock-card-name">The Miklos</div><div class="mock-card-tag">✓ Pick</div></div></div>
+            <div class="mock-card"><div class="mock-card-img">🕶️</div><div class="mock-card-body"><div class="mock-card-name">The Durante</div></div></div>
+            <div class="mock-card"><div class="mock-card-img">👓</div><div class="mock-card-body"><div class="mock-card-name">The Bixby</div></div></div>
+            <div class="mock-card" style="border:1px dashed var(--line2);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:88px;"><div style="font-size:16px;color:var(--gold);margin-bottom:4px;">+</div><div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ivory4);letter-spacing:1px;">Add pair</div></div>
+          </div>
+          <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory4);margin-bottom:8px;">Occasion</div>
+          <div style="background:var(--gold-bg);border:1px solid var(--line2);border-radius:4px;padding:6px 10px;font-size:11px;color:var(--gold);font-weight:500;">✓ Board Meeting</div>
+        </div>
+        <div class="exp-right">
+          <div class="mock-chat-msg">
+            <div class="mock-chat-text">I've looked at your three pairs carefully. For a board meeting the choice is clear — the <em>Miklos.</em><br><br>The rectangular frame reads as authoritative without being stiff. It says you've made decisions before and you'll make more.<div class="mock-rec"><div class="mock-rec-ico">👓</div><div><div class="mock-rec-name">The Miklos — 96% match</div><div class="mock-rec-why">Classic rectangular acetate · reads as authoritative · right for the room</div></div></div></div>
+          </div>
+          <div class="mock-chat-msg user"><div class="mock-chat-text user-t">What about the Durante for evenings?</div></div>
+          <div class="mock-chat-msg" style="max-width:80%;"><div class="mock-chat-text">The Durante is the right answer for almost anything that happens after 6pm. Rounded square, slightly bolder — it has personality without trying too hard.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="how-block">
+    <div class="sec-label">How white-label works</div>
+    <div class="steps-list">
+      <div class="step-row"><div class="step-num">I</div><div class="step-body"><div class="step-title">You provide your brand assets</div><div class="step-desc">Logo, color palette, brand voice, and your frame catalog. A simple spreadsheet with frame names and descriptions is enough. We do the rest.</div></div></div>
+      <div class="step-row"><div class="step-num">II</div><div class="step-body"><div class="step-title">We build your <em>branded experience</em></div><div class="step-desc">Your name. Your colors. Your voice. Your frames. The AI learns your catalog and speaks in your register. No mention of Lorgner anywhere in the product.</div></div></div>
+      <div class="step-row"><div class="step-num">III</div><div class="step-body"><div class="step-title">It lives on your domain</div><div class="step-desc">A simple DNS record points yourbrand.com/stylist at our infrastructure. Your customers see only your domain. SSL handled automatically. Live within 5 business days.</div></div></div>
+      <div class="step-row"><div class="step-num">IV</div><div class="step-body"><div class="step-title">Your customers' data stays <em>yours</em></div><div class="step-desc">All end-user data belongs to you. We never sell it, share it, or use it for any purpose beyond running the service. Full export available any time.</div></div></div>
+    </div>
+  </div>
+
+  <div class="partners-grid">
+    <div style="grid-column:1/-1;"><div class="sec-label">Who this is for</div></div>
+    <div class="partner-card"><div class="pc-icon">👓</div><div class="pc-title">Independent Optical Boutiques</div><div class="pc-desc">Keep clients engaged between visits. When the stylist identifies a gap it recommends your frames, not a competitor's. The tool pays for itself with one additional pair sold per month.</div></div>
+    <div class="partner-card"><div class="pc-icon">✦</div><div class="pc-title">Eyewear Brands</div><div class="pc-desc">A post-purchase experience that increases lifetime value. Your customers who own three pairs buy a fourth because the stylist showed them what they were missing.</div></div>
+    <div class="partner-card"><div class="pc-icon">🌿</div><div class="pc-title">Luxury Wellness & Spa Clubs</div><div class="pc-desc">A member benefit that extends your lifestyle offering into personal style. Position it as a private styling service available exclusively to your members.</div></div>
+    <div class="partner-card"><div class="pc-icon">◈</div><div class="pc-title">Private Membership Organizations</div><div class="pc-desc">A genuinely useful exclusive benefit for your membership. Something members actually use rather than a discount they ignore.</div></div>
+  </div>
+
+  <div class="pricing-block">
+    <div class="sec-label">Investment</div>
+    <h3 class="pricing-title">Straightforward pricing.</h3>
+    <p class="pricing-sub">No revenue share. No per-user fees. No surprises.</p>
+    <div class="price-tiers">
+      <div class="price-row"><div class="pr-label"><div class="pr-title">One-Time Setup</div><div class="pr-desc">Branding, catalog integration, subdomain configuration, staging review, launch</div></div><div class="pr-price">$999<small>one time</small></div></div>
+      <div class="price-row"><div class="pr-label"><div class="pr-title">Monthly Platform Fee</div><div class="pr-desc">Unlimited member sessions · hosting · updates · support · full data ownership</div></div><div class="pr-price">$799<small>per month</small></div></div>
+      <div class="price-row" style="background:var(--gold-bg);margin:0 -44px;padding:16px 44px;"><div class="pr-label"><div class="pr-title" style="color:var(--gold);">Annual Prepay</div><div class="pr-desc">Two months free — save $1,598 annually</div></div><div class="pr-price" style="color:var(--gold-l);">$7,990<small>per year</small></div></div>
+    </div>
+    <div class="pricing-note">Founding partner rate available for our first five white-label clients — locked permanently at $599/month in exchange for reference permission in private sales conversations. Inquire when you reach out.</div>
+  </div>
+
+  <div class="cta-block">
+    <div class="sec-label" style="justify-content:center;">Get in touch</div>
+    <h2 class="cta-title">Interested in a<br><em>live demo?</em></h2>
+    <p class="cta-sub">We've built demos for specific brands. Tell us who you are and we'll show you what your version looks like.</p>
+
+    <div class="contact-form" id="contactForm">
+      <div class="field"><label class="field-label">Your Name</label><input type="text" class="field-input" id="cf-name" placeholder="Full name"></div>
+      <div class="field"><label class="field-label">Email</label><input type="email" class="field-input" id="cf-email" placeholder="your@company.com"></div>
+      <div class="field"><label class="field-label">Company</label><input type="text" class="field-input" id="cf-company" placeholder="Your brand or organization"></div>
+      <div class="field">
+        <label class="field-label">You are a</label>
+        <select class="field-select" id="cf-type">
+          <option value="" disabled selected>Select your category</option>
+          <option>Independent optical boutique</option>
+          <option>Eyewear brand</option>
+          <option>Luxury wellness or spa club</option>
+          <option>Private membership organization</option>
+          <option>Hotel or resort</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field"><label class="field-label">Anything else (optional)</label><textarea class="field-ta" id="cf-note" rows="3" placeholder="What you're hoping to achieve, questions about the product, or anything else worth mentioning…"></textarea></div>
+      <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">Request a Demo</button>
+      <div class="form-note">We respond within one business day · No sales calls unless you request one</div>
+    </div>
+
+    <div class="form-success" id="formSuccess">
+      <div class="fs-glyph">✦</div>
+      <div class="fs-title">Thank you.</div>
+      <div class="fs-sub">We'll be in touch within one business day.<br>If you'd like to speak sooner, email us directly at<br>partnerships@lorgner.co</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-brand">Lorgner</div>
+    <div class="footer-note">partnerships@lorgner.co · lorgner.co</div>
+  </div>
+
+</div>
+
+<div class="conf-banner">
+  <div class="conf-dot"></div>
+  <div class="conf-text">Private · Not indexed by search engines · For partners only</div>
+  <div class="conf-dot"></div>
+</div>
+
+<script>
+async function handleSubmit() {
+  const name    = document.getElementById('cf-name').value.trim();
+  const email   = document.getElementById('cf-email').value.trim();
+  const company = document.getElementById('cf-company').value.trim();
+  const type    = document.getElementById('cf-type').value;
+  const note    = document.getElementById('cf-note').value.trim();
+  const btn     = document.getElementById('submitBtn');
+
+  [
+    { id: 'cf-name',    val: name },
+    { id: 'cf-email',   val: email },
+    { id: 'cf-company', val: company },
+  ].forEach(f => {
+    const el = document.getElementById(f.id);
+    el.style.borderColor = f.val ? '' : 'rgba(201,169,110,0.6)';
+    if (!f.val) setTimeout(() => el.style.borderColor = '', 2000);
+  });
+
+  if (!name || !email || !company || !type) return;
+
+  btn.disabled    = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    await fetch('https://lorgner-production.up.railway.app/partner-inquiry', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, company, type, note, timestamp: new Date().toISOString() })
+    });
+  } catch (e) {
+    console.error('Submission error:', e);
+  }
+
+  document.getElementById('contactForm').style.display = 'none';
+  document.getElementById('formSuccess').classList.add('on');
+  document.getElementById('formSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>

@@ -24,6 +24,10 @@
       "dest": "/public/caddis-stylist-demo.html"
     },
     {
+      "src": "/partners",
+      "dest": "/public/partners.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/index.html"
     }

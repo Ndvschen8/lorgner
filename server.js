@@ -486,6 +486,45 @@ app.post('/chat',
 });
 
 /* ══════════════════════════════════════════════
+   PARTNER INQUIRY ENDPOINT
+   POST /partner-inquiry
+   Emails inquiry to partnerships@lorgner.co via Resend.
+══════════════════════════════════════════════ */
+app.post('/partner-inquiry', async (req, res) => {
+  const { name, email, company, type, note, timestamp } = req.body;
+  if (!name || !email || !company || !type) {
+    return res.status(400).json({ error: true, message: 'Missing required fields.' });
+  }
+  try {
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+      from:    'Lorgner Partners <hello@lorgner.co>',
+      to:      'partnerships@lorgner.co',
+      replyTo: email,
+      subject: `Partner inquiry — ${company}`,
+      html: `
+        <div style="font-family:Georgia,serif;max-width:520px;margin:0 auto;background:#060608;color:#EEE9DF;padding:40px 36px;">
+          <p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#C9A96E;margin-bottom:24px;">New Partner Inquiry</p>
+          <table style="width:100%;border-collapse:collapse;font-size:14px;line-height:1.8;">
+            <tr><td style="color:#8A8272;padding:6px 0;width:100px;">Name</td><td style="color:#EEE9DF;">${name}</td></tr>
+            <tr><td style="color:#8A8272;padding:6px 0;">Email</td><td style="color:#C9A96E;"><a href="mailto:${email}" style="color:#C9A96E;">${email}</a></td></tr>
+            <tr><td style="color:#8A8272;padding:6px 0;">Company</td><td style="color:#EEE9DF;">${company}</td></tr>
+            <tr><td style="color:#8A8272;padding:6px 0;">Type</td><td style="color:#EEE9DF;">${type}</td></tr>
+            ${note ? `<tr><td style="color:#8A8272;padding:6px 0;vertical-align:top;">Note</td><td style="color:#EEE9DF;">${note}</td></tr>` : ''}
+            <tr><td style="color:#8A8272;padding:6px 0;">Submitted</td><td style="color:#4A4438;font-size:12px;">${timestamp || new Date().toISOString()}</td></tr>
+          </table>
+        </div>`
+    });
+    console.log(`[LORGNER] Partner inquiry from ${company} (${email})`);
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error('[LORGNER] Partner inquiry email error:', err.message);
+    res.status(200).json({ ok: true });
+  }
+});
+
+/* ══════════════════════════════════════════════
    DEMO CHAT ENDPOINT — white-label demos only
    POST /demo-chat
    No auth required. Tighter rate limit (5/hr per IP).
