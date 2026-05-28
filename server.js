@@ -486,6 +486,63 @@ app.post('/chat',
 });
 
 /* ══════════════════════════════════════════════
+   DEMO CHAT ENDPOINT — white-label demos only
+   POST /demo-chat
+   No auth required. Tighter rate limit (5/hr per IP).
+══════════════════════════════════════════════ */
+const demoLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({ error: true, message: 'Demo limit reached. Visit lorgner.co to get full access.' });
+  }
+});
+
+app.post('/demo-chat', demoLimiter, async (req, res) => {
+  const { system, messages, max_tokens } = req.body;
+
+  if (!messages || !Array.isArray(messages) || messages.length === 0) {
+    return res.status(400).json({ error: true, message: 'Invalid request.' });
+  }
+
+  const latest = messages[messages.length - 1];
+  if (latest?.role === 'user') {
+    const textParts = Array.isArray(latest.content)
+      ? latest.content.filter(c => c.type === 'text').map(c => c.text).join(' ')
+      : (typeof latest.content === 'string' ? latest.content : '');
+    if (isBlocked(textParts)) {
+      return res.status(200).json({ error: true, code: 'BLOCKED', message: 'Please keep questions about eyewear styling.' });
+    }
+  }
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type':      'application/json',
+        'x-api-key':         CONFIG.ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model:      CONFIG.MODEL,
+        max_tokens: max_tokens || CONFIG.MAX_TOKENS,
+        system: [{ type: 'text', text: system }],
+        messages,
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) return res.status(500).json({ error: true, message: 'Service momentarily unavailable.' });
+    res.status(200).json(data);
+    console.log(`[LORGNER] Demo chat | ip:${req.ip} | in:${data.usage?.input_tokens} out:${data.usage?.output_tokens}`);
+  } catch (err) {
+    res.status(500).json({ error: true, message: 'Service momentarily unavailable.' });
+  }
+});
+
+/* ══════════════════════════════════════════════
    STRIPE CHECKOUT ENDPOINT
    POST /create-checkout-session
    Creates a Stripe Checkout URL for the founding
