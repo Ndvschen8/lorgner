@@ -276,7 +276,7 @@ async function sendMagicLinkEmail(email, name = '') {
         </td></tr>
         <tr><td style="background:#0a0a0a;border:1px solid #1a1a1a;padding:48px 40px;">
           <p style="margin:0 0 24px;font-size:16px;line-height:1.7;color:#c8b87a;">${name ? `Dear ${name},` : 'Welcome,'}</p>
-          <p style="margin:0 0 24px;font-size:15px;line-height:1.8;color:#888888;">Your membership is confirmed. Use the link below to access your private intelligence service.</p>
+          <p style="margin:0 0 24px;font-size:15px;line-height:1.8;color:#888888;">Your membership is confirmed. Use the link below to access your private intelligence service for your glasses collection.</p>
           <p style="margin:0 0 40px;font-size:13px;line-height:1.8;color:#555555;">This link expires in 24 hours and may only be used once.</p>
           <table cellpadding="0" cellspacing="0" style="margin:0 auto 40px;">
             <tr><td align="center" style="background:#9a7d3a;padding:14px 40px;">
