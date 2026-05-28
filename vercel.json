@@ -20,6 +20,10 @@
       "dest": "/public/terms.html"
     },
     {
+      "src": "/caddis-stylist-demo",
+      "dest": "/public/caddis-stylist-demo.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/index.html"
     }
