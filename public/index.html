@@ -108,12 +108,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .primary-btn{width:100%;background:var(--gold);border:none;border-radius:2px;padding:18px;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--void);cursor:pointer;transition:all .3s;margin-top:6px;}
 .primary-btn:hover{background:var(--gold-l);transform:translateY(-1px);}
 .primary-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-.pay-divider{display:flex;align-items:center;gap:12px;margin:20px 0 14px;}
-.pd-line{flex:1;height:1px;background:var(--border);}
-.pd-or{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ivory4);}
-.paypal-btn{width:100%;background:#003087;border:none;border-radius:2px;padding:18px;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fff;cursor:pointer;transition:all .3s;}
-.paypal-btn:hover{background:#00256b;transform:translateY(-1px);}
-.paypal-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
 
 .ghost-btn{width:100%;background:transparent;border:1px solid var(--line);border-radius:2px;padding:14px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ivory3);cursor:pointer;transition:all .25s;margin-top:8px;}
 .ghost-btn:hover{border-color:var(--line2);color:var(--ivory);}
@@ -716,13 +711,7 @@ window.addEventListener('load', async () => {
   if (params.get('subscribed') === 'true') {
     show('pg-signin');
     state.didLoad = true;
-    const pendingEmail = localStorage.getItem('lorgner_pending_email');
-    if (pendingEmail) {
-      document.getElementById('si-email').value = pendingEmail;
-      localStorage.removeItem('lorgner_pending_email');
-      localStorage.removeItem('lorgner_pending_name');
-    }
-    const note = document.createElement('p');
+const note = document.createElement('p');
     note.style.cssText = 'text-align:center;color:#c9a96e;margin-bottom:1.5rem;font-size:.95rem;';
     note.textContent = 'Payment received — enter your email to activate your membership.';
     const form = document.querySelector('#pg-signin form') || document.querySelector('#pg-signin');
@@ -887,20 +876,6 @@ async function handlePayment() {
   btn.textContent = 'Begin Your Membership';
 }
 
-async function handlePayPal() {
-  const name  = document.getElementById('f-name').value.trim();
-  const email = document.getElementById('f-email').value.trim();
-  const errEl = document.getElementById('payError');
-  errEl.classList.remove('on');
-  if (!name || !email) {
-    errEl.textContent = 'Please enter your name and email address.';
-    errEl.classList.add('on');
-    return;
-  }
-  localStorage.setItem('lorgner_pending_email', email);
-  localStorage.setItem('lorgner_pending_name', name);
-  window.location.href = 'https://www.paypal.com/ncp/payment/YMMZFMGU7YSBW';
-}
 
 /* ══════════════════════════════════════════════
    SIGN IN FLOW — RETURNING MEMBERS
