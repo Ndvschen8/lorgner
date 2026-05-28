@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caddis Stylist — Style Your Collection</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Outfit:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<!--
+  ══════════════════════════════════════════════
+  CADDIS STYLIST — WHITE-LABEL DEMO
+  Powered by Lorgner (invisible to end user)
+
+  This is what caddislife.com/stylist would look like.
+  Brand: Caddis — bold, warm, witty, age-positive
+  Palette: Warm cream · Deep forest green · Burnt amber
+  Aesthetic: Bold editorial magazine meets outdoor lifestyle
+  Voice: Confident, dry wit, calls it like it sees it
+  ══════════════════════════════════════════════
+-->
+
+<style>
+/* ══════════════════════════════════════════════
+   CADDIS DESIGN SYSTEM
+   Warm, bold, confident — the opposite of Lorgner's
+   dark luxury. This is daylight, outdoor, alive.
+══════════════════════════════════════════════ */
+:root {
+  --cream:     #F5F0E8;
+  --cream2:    #EDE5D5;
+  --cream3:    #DDD3BE;
+  --forest:    #2C4A3E;
+  --forest2:   #1E3530;
+  --forest3:   #3D6358;
+  --amber:     #C4622D;
+  --amber-l:   #D4784A;
+  --amber-d:   #9E4A1E;
+  --amber-bg:  rgba(196,98,45,0.09);
+  --amber-b2:  rgba(196,98,45,0.18);
+  --bark:      #6B4C2A;
+  --bark-l:    #8B6840;
+  --sand:      #B8A080;
+  --sand-l:    #CDB898;
+  --sand-bg:   rgba(184,160,128,0.12);
+  --ink:       #1A1410;
+  --ink2:      #2A2018;
+  --tx:        #1A1410;
+  --tx2:       #5A4A38;
+  --tx3:       #8A7A68;
+  --tx4:       #B8A898;
+  --line:      rgba(107,76,42,0.15);
+  --line2:     rgba(107,76,42,0.28);
+  --white:     #FDFAF6;
+  --green-bg:  rgba(44,74,62,0.08);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--cream);
+  color:var(--tx);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* Subtle paper texture */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  background-size:200px;opacity:.7;
+}
+
+/* Warm gradient */
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 40% at 90% 10%,rgba(196,98,45,0.06) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 50% at 10% 90%,rgba(44,74,62,0.08) 0%,transparent 60%);
+}
+
+/* LAYOUT */
+.shell{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:400px 1fr;
+  grid-template-rows:72px 1fr;
+  height:100vh;
+  overflow:hidden;
+}
+
+/* ── NAV ── */
+nav{
+  grid-column:1/-1;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;
+  background:var(--forest2);
+  position:relative;z-index:10;
+}
+
+.nav-brand{display:flex;align-items:center;gap:13px;text-decoration:none;}
+.nav-logo{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--amber);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:17px;font-weight:900;
+  color:var(--white);letter-spacing:-1px;
+  box-shadow:0 2px 12px rgba(196,98,45,.4);
+}
+.nav-name{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:800;
+  color:var(--white);letter-spacing:-.5px;
+}
+.nav-name span{color:var(--amber-l);}
+
+.nav-center{
+  font-family:'Space Mono',monospace;
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--sand);
+}
+.nav-right{display:flex;align-items:center;gap:14px;}
+.nav-btn{
+  font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;
+  color:var(--sand-l);background:transparent;border:none;cursor:pointer;
+  padding:6px 12px;border-radius:6px;transition:all .18s;text-decoration:none;
+}
+.nav-btn:hover{color:var(--white);background:rgba(255,255,255,.1);}
+.nav-cta{
+  background:var(--amber);color:var(--white);
+  border:none;border-radius:8px;padding:8px 18px;
+  font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;
+  cursor:pointer;transition:all .2s;
+}
+.nav-cta:hover{background:var(--amber-l);transform:translateY(-1px);}
+
+/* ── LEFT PANEL ── */
+.panel-left{
+  border-right:2px solid var(--line);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  background:var(--white);
+}
+.panel-scroll{flex:1;overflow-y:auto;padding:22px;}
+.panel-scroll::-webkit-scrollbar{width:3px;}
+.panel-scroll::-webkit-scrollbar-thumb{background:var(--sand);border-radius:2px;}
+
+/* Section labels */
+.slabel{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:2.5px;text-transform:uppercase;color:var(--tx3);
+  display:flex;align-items:center;gap:10px;margin-bottom:13px;
+}
+.slabel::after{content:'';flex:1;height:1px;background:var(--line);}
+
+/* Collection grid */
+.coll-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+
+.gc{
+  background:var(--cream);border:2px solid var(--line);
+  border-radius:10px;overflow:hidden;cursor:pointer;
+  transition:all .2s;position:relative;
+}
+.gc:hover{border-color:var(--amber);transform:translateY(-2px);box-shadow:0 4px 16px rgba(196,98,45,.15);}
+.gc.sel{border-color:var(--amber);box-shadow:0 0 0 2px var(--amber-b2);}
+
+.gc-img{
+  height:88px;background:var(--cream2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;border-bottom:1px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.gc-photo{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.gc-ring{
+  position:absolute;top:6px;left:6px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--amber);display:none;
+  align-items:center;justify-content:center;
+  font-size:10px;color:var(--white);font-weight:700;
+}
+.gc.sel .gc-ring{display:flex;}
+.gc-del{
+  position:absolute;top:5px;right:5px;
+  width:18px;height:18px;border-radius:50%;
+  background:rgba(196,98,45,.12);border:1px solid rgba(196,98,45,.25);
+  color:var(--amber);font-size:10px;
+  display:none;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .18s;z-index:2;
+}
+.gc:hover .gc-del{display:flex;}
+.gc-body{padding:9px 10px;}
+.gc-name{
+  width:100%;background:transparent;border:none;outline:none;
+  font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;
+  color:var(--tx);cursor:text;
+}
+.gc-name::placeholder{color:var(--tx4);}
+.gc-tag{
+  display:inline-block;margin-top:4px;
+  font-family:'Space Mono',monospace;font-size:8px;
+  padding:2px 6px;border-radius:3px;
+  background:var(--amber-bg);color:var(--amber);letter-spacing:.3px;
+}
+
+/* Add pair */
+.add-gc{
+  border:2px dashed var(--line2);border-radius:10px;
+  background:transparent;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:18px 10px;text-align:center;
+  transition:all .2s;position:relative;min-height:130px;
+}
+.add-gc input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.add-gc:hover{border-color:var(--amber);background:var(--amber-bg);}
+.ag-icon{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--forest);color:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;margin-bottom:7px;
+}
+.ag-lbl{font-size:11px;font-weight:600;color:var(--forest);margin-bottom:2px;}
+.ag-sub{font-size:10px;color:var(--tx3);}
+
+.coll-count{
+  text-align:center;padding:7px;
+  font-family:'Space Mono',monospace;font-size:9px;
+  color:var(--tx3);border-top:1px solid var(--line);margin-top:4px;
+}
+.cnt{color:var(--amber);font-weight:700;}
+
+.pdiv{height:1px;background:var(--line);margin:14px 0;}
+
+/* Occasions */
+.occ-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:13px;}
+.occ{
+  background:var(--cream);border:1.5px solid var(--line);
+  border-radius:8px;padding:9px 10px;text-align:center;
+  cursor:pointer;transition:all .18s;font-size:11px;
+  color:var(--tx2);display:flex;flex-direction:column;gap:3px;
+}
+.occ:hover{border-color:var(--amber);color:var(--tx);}
+.occ.on{border-color:var(--amber);color:var(--amber);background:var(--amber-bg);font-weight:600;}
+.occ-ico{font-size:15px;}
+
+/* Outfit textarea */
+.outfit-ta{
+  width:100%;background:var(--cream);border:1.5px solid var(--line);
+  border-radius:10px;padding:11px 13px;
+  font-family:'Outfit',sans-serif;font-size:12px;color:var(--tx);
+  resize:none;outline:none;transition:border-color .18s;line-height:1.55;
+}
+.outfit-ta::placeholder{color:var(--tx4);}
+.outfit-ta:focus{border-color:var(--amber);}
+
+/* Start button */
+.start-btn{
+  width:100%;margin-top:13px;
+  background:var(--forest);border:none;border-radius:10px;
+  cursor:pointer;padding:15px;
+  font-family:'Playfair Display',serif;font-size:15px;font-weight:700;
+  color:var(--white);transition:all .22s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 4px 14px rgba(44,74,62,.3);
+}
+.start-btn:hover{background:var(--forest3);transform:translateY(-2px);box-shadow:0 6px 20px rgba(44,74,62,.4);}
+.start-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
+
+/* ── RIGHT PANEL ── */
+.panel-right{display:flex;flex-direction:column;background:var(--cream);overflow:hidden;}
+
+/* Chat header */
+.chat-hdr{
+  padding:16px 28px;border-bottom:2px solid var(--line);
+  background:var(--white);flex-shrink:0;
+  display:flex;align-items:center;gap:14px;
+}
+.aria-av{
+  width:44px;height:44px;border-radius:50%;
+  background:var(--forest);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:18px;font-weight:900;
+  color:var(--amber-l);flex-shrink:0;
+  box-shadow:0 2px 10px rgba(44,74,62,.3);
+}
+.aria-name{
+  font-family:'Playfair Display',serif;
+  font-size:17px;font-weight:700;color:var(--forest2);margin-bottom:2px;
+}
+.aria-status{
+  font-family:'Space Mono',monospace;font-size:9px;
+  color:var(--forest3);letter-spacing:1.5px;text-transform:uppercase;
+  display:flex;align-items:center;gap:6px;
+}
+.aria-status::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:#4CAF50;box-shadow:0 0 5px #4CAF50;
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.hdr-r{margin-left:auto;text-align:right;}
+.hdr-meta{
+  font-family:'Space Mono',monospace;font-size:9px;
+  color:var(--tx4);letter-spacing:.8px;
+}
+
+/* Caddis brand banner */
+.brand-banner{
+  background:var(--forest);padding:10px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.bb-text{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--sand);
+}
+.bb-tagline{
+  font-family:'Playfair Display',serif;font-size:12px;
+  font-style:italic;color:var(--sand-l);
+}
+
+/* Messages */
+.messages{
+  flex:1;overflow-y:auto;padding:24px 28px;
+  display:flex;flex-direction:column;gap:16px;
+}
+.messages::-webkit-scrollbar{width:3px;}
+.messages::-webkit-scrollbar-thumb{background:var(--sand);border-radius:2px;}
+
+/* Message bubbles */
+.msg{display:flex;gap:11px;max-width:88%;animation:fin .35s ease both;}
+@keyframes fin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.msg.ai{align-self:flex-start;}
+.msg.user{align-self:flex-end;flex-direction:row-reverse;}
+
+.mav{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:13px;font-weight:700;
+  margin-top:2px;
+}
+.msg.ai  .mav{background:var(--forest);color:var(--amber-l);}
+.msg.user .mav{background:var(--cream2);border:2px solid var(--line2);color:var(--bark);}
+
+.mbbl{
+  padding:13px 16px;border-radius:16px;
+  font-size:13px;line-height:1.7;
+}
+.msg.ai .mbbl{
+  background:var(--white);border:1.5px solid var(--line);
+  color:var(--tx);border-radius:4px 16px 16px 16px;
+  font-family:'Outfit',sans-serif;font-size:14px;
+}
+.msg.ai .mbbl em{font-style:italic;color:var(--amber);}
+.msg.ai .mbbl strong{color:var(--forest);font-weight:600;}
+.msg.user .mbbl{
+  background:var(--forest);color:var(--white);
+  border-radius:16px 4px 16px 16px;font-weight:500;
+}
+
+/* Rec card */
+.rec-card{
+  background:var(--cream2);border:1.5px solid var(--amber-b2);
+  border-radius:12px;padding:13px 14px;margin-top:10px;
+  display:flex;gap:12px;align-items:center;
+  transition:all .18s;cursor:pointer;
+}
+.rec-card:hover{border-color:var(--amber);transform:translateX(3px);}
+.rec-thumb{
+  width:52px;height:44px;border-radius:8px;
+  background:var(--amber-bg);display:flex;align-items:center;
+  justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden;
+}
+.rec-thumb img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+.rec-info{flex:1;}
+.rec-pname{font-weight:700;font-size:13px;color:var(--forest2);margin-bottom:3px;}
+.rec-why{font-size:11px;color:var(--tx2);line-height:1.5;}
+.rec-score{
+  font-family:'Space Mono',monospace;font-size:10px;
+  color:var(--white);background:var(--forest);
+  padding:3px 8px;border-radius:4px;flex-shrink:0;align-self:flex-start;
+}
+
+/* Gap card */
+.gap-card{
+  background:rgba(196,98,45,.07);border:1.5px solid rgba(196,98,45,.2);
+  border-radius:10px;padding:12px 14px;margin-top:10px;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.gap-ico{font-size:16px;flex-shrink:0;margin-top:1px;}
+.gap-tx{font-size:12px;color:var(--tx2);line-height:1.6;}
+.gap-tx strong{color:var(--amber);font-weight:600;}
+
+/* Typing */
+.typing{display:flex;gap:11px;align-items:flex-end;animation:fin .35s ease both;}
+.typing-bbl{
+  background:var(--white);border:1.5px solid var(--line);
+  border-radius:4px 16px 16px 16px;padding:13px 16px;
+  display:flex;gap:5px;align-items:center;
+}
+.td{width:6px;height:6px;border-radius:50%;background:var(--forest3);animation:tb 1.2s ease infinite;}
+.td:nth-child(2){animation-delay:.22s}.td:nth-child(3){animation-delay:.44s}
+@keyframes tb{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-5px);opacity:1}}
+
+/* Input area */
+.input-area{
+  padding:16px 28px;border-top:2px solid var(--line);
+  background:var(--white);flex-shrink:0;
+}
+.sel-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px;}
+.sel-pill{
+  display:flex;align-items:center;gap:5px;
+  background:var(--amber-bg);border:1.5px solid var(--amber-b2);
+  border-radius:6px;padding:3px 9px;
+  font-family:'Space Mono',monospace;font-size:9px;color:var(--amber);
+}
+.spt{width:16px;height:16px;border-radius:3px;object-fit:cover;}
+.input-row{display:flex;gap:10px;align-items:flex-end;}
+.chat-in{
+  flex:1;background:var(--cream);border:1.5px solid var(--line);
+  border-radius:12px;padding:12px 15px;
+  font-family:'Outfit',sans-serif;font-size:13px;color:var(--tx);
+  outline:none;resize:none;max-height:110px;
+  transition:border-color .2s;line-height:1.55;
+}
+.chat-in::placeholder{color:var(--tx4);}
+.chat-in:focus{border-color:var(--amber);}
+.send{
+  width:46px;height:46px;background:var(--amber);
+  border:none;border-radius:12px;cursor:pointer;
+  font-size:16px;color:var(--white);flex-shrink:0;
+  transition:all .2s;box-shadow:0 2px 8px rgba(196,98,45,.3);
+}
+.send:hover{background:var(--amber-l);transform:scale(1.05);}
+.send:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.hint{
+  text-align:center;margin-top:8px;
+  font-family:'Space Mono',monospace;font-size:8px;
+  letter-spacing:1.5px;color:var(--tx4);text-transform:uppercase;
+}
+
+/* WELCOME */
+.welcome{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:40px 32px;text-align:center;
+}
+.w-mark{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--forest);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:28px;font-weight:900;
+  color:var(--amber-l);margin-bottom:22px;
+  animation:wglow 3s ease-in-out infinite;
+  box-shadow:0 4px 20px rgba(44,74,62,.35);
+}
+@keyframes wglow{0%,100%{box-shadow:0 4px 20px rgba(44,74,62,.35)}50%{box-shadow:0 4px 32px rgba(44,74,62,.55)}}
+.welcome h2{
+  font-family:'Playfair Display',serif;
+  font-size:30px;font-weight:800;color:var(--forest2);
+  line-height:1.2;margin-bottom:12px;
+}
+.welcome h2 em{font-style:italic;color:var(--amber);}
+.welcome p{
+  font-size:14px;color:var(--tx2);max-width:360px;
+  line-height:1.7;margin-bottom:30px;font-weight:400;
+}
+.w-steps{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;}
+.ws{display:flex;flex-direction:column;align-items:center;gap:7px;max-width:110px;}
+.wsn{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--forest);color:var(--amber-l);
+  font-family:'Space Mono',monospace;font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.wsl{font-size:10px;color:var(--tx3);line-height:1.4;text-align:center;}
+
+/* DEMO BADGE */
+.demo-badge{
+  position:fixed;bottom:20px;right:20px;z-index:100;
+  background:var(--forest2);color:var(--sand);
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:8px 14px;border-radius:20px;
+  border:1px solid rgba(184,160,128,.25);
+  box-shadow:0 4px 16px rgba(44,74,62,.4);
+  pointer-events:none;
+}
+
+/* Chat view toggle */
+.chat-view{display:none;flex-direction:column;height:calc(100vh - 72px);}
+.chat-view.on{display:flex;}
+
+/* Pairs header in chat */
+.chat-top{padding:14px 28px;border-bottom:1.5px solid var(--line);background:var(--cream2);flex-shrink:0;}
+.ct-eye{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--tx3);margin-bottom:5px;}
+.ct-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--forest2);margin-bottom:9px;}
+.ct-title em{font-style:italic;color:var(--amber);}
+.ct-pairs{display:flex;gap:6px;flex-wrap:wrap;}
+.ct-pair{
+  background:var(--white);border:1.5px solid var(--line);
+  border-radius:6px;padding:3px 9px;
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:.8px;color:var(--tx2);cursor:pointer;transition:all .18s;
+}
+.ct-pair.sel{border-color:var(--amber);color:var(--amber);background:var(--amber-bg);}
+
+/* View */
+.view{display:none;padding:28px;}
+.view.on{display:block;}
+
+/* Redirect bubble */
+.redirect-bbl{
+  background:rgba(196,98,45,.08);border:1.5px solid rgba(196,98,45,.2);
+  border-radius:10px;padding:12px 16px;
+  font-size:13px;color:var(--tx2);font-style:italic;line-height:1.6;
+}
+
+@media(max-width:840px){
+  .shell{grid-template-columns:1fr;grid-template-rows:72px auto 1fr;height:auto;min-height:100vh;}
+  .panel-left{max-height:420px;border-right:none;border-bottom:2px solid var(--line);}
+  .panel-right{height:580px;}
+  .messages{padding:18px 18px;}
+  .input-area{padding:13px 18px;}
+  .chat-top{padding:13px 18px;}
+  .chat-hdr{padding:13px 18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-logo">C</div>
+    <span class="nav-name">CADDIS <span>Stylist</span></span>
+  </a>
+  <div class="nav-center">Style Your Collection</div>
+  <div class="nav-right">
+    <a class="nav-btn" href="https://caddislife.com" target="_blank">Shop Caddis</a>
+    <button class="nav-cta">My Account</button>
+  </div>
+</nav>
+
+<!-- LEFT PANEL -->
+<aside class="panel-left">
+<div class="panel-scroll">
+
+  <div class="slabel">Your Caddis collection</div>
+  <div class="coll-grid" id="collGrid">
+    <div class="add-gc" id="addBtn">
+      <input type="file" id="glassesInput" accept="image/*" multiple onchange="handleUpload(event)">
+      <div class="ag-icon">+</div>
+      <div class="ag-lbl">Add a pair</div>
+      <div class="ag-sub">Photo of your frames</div>
+    </div>
+  </div>
+  <div class="coll-count"><span class="cnt" id="pairCount">0</span> pairs in your collection</div>
+
+  <div class="pdiv"></div>
+
+  <div class="slabel">What's the occasion?</div>
+  <div class="occ-grid">
+    <div class="occ" onclick="pickOcc(this,'Work / Office')"><span class="occ-ico">💼</span>Work</div>
+    <div class="occ" onclick="pickOcc(this,'Date Night')"><span class="occ-ico">🌙</span>Date Night</div>
+    <div class="occ" onclick="pickOcc(this,'Formal Event')"><span class="occ-ico">✨</span>Formal</div>
+    <div class="occ" onclick="pickOcc(this,'Everyday Casual')"><span class="occ-ico">☀️</span>Casual</div>
+    <div class="occ" onclick="pickOcc(this,'Video Calls')"><span class="occ-ico">💻</span>Video Call</div>
+    <div class="occ" onclick="pickOcc(this,'Weekend')"><span class="occ-ico">🌲</span>Weekend</div>
+    <div class="occ" onclick="pickOcc(this,'Travel')"><span class="occ-ico">✈️</span>Travel</div>
+    <div class="occ" onclick="pickOcc(this,'Book Club')"><span class="occ-ico">📚</span>Book Club</div>
+  </div>
+
+  <div class="pdiv"></div>
+
+  <div class="slabel">Describe your outfit (optional)</div>
+  <textarea class="outfit-ta" id="outfitDesc" rows="3"
+    placeholder="e.g. Dark jeans, white linen shirt, blazer — smart casual but relaxed…"></textarea>
+
+  <button class="start-btn" id="startBtn" onclick="startSession()" disabled>
+    Style My Collection →
+  </button>
+
+</div>
+</aside>
+
+<!-- RIGHT PANEL -->
+<main class="panel-right">
+
+  <div class="chat-hdr">
+    <div class="aria-av">C</div>
+    <div>
+      <div class="aria-name">Caddis Stylist</div>
+      <div class="aria-status">Ready · Your personal frame advisor</div>
+    </div>
+    <div class="hdr-r">
+      <div class="hdr-meta" id="sid">SESSION #—</div>
+      <div class="hdr-meta" style="margin-top:2px;opacity:.6;" id="stime">—</div>
+    </div>
+  </div>
+
+  <div class="brand-banner">
+    <span class="bb-text">Caddis Eyewear · Wears Well</span>
+    <span class="bb-tagline">"Life doesn't stop when reading glasses start."</span>
+  </div>
+
+  <!-- Default dashboard view -->
+  <div class="view on" id="v-default">
+    <div class="welcome" id="welcome">
+      <div class="w-mark">C</div>
+      <h2>Your collection,<br><em>styled properly.</em></h2>
+      <p>Upload your Caddis pairs — or any glasses you own. Tell us the occasion. We'll tell you exactly which pair to reach for and why.</p>
+      <div class="w-steps">
+        <div class="ws"><div class="wsn">1</div><div class="wsl">Add your glasses pairs</div></div>
+        <div class="ws"><div class="wsn">2</div><div class="wsl">Pick the occasion</div></div>
+        <div class="ws"><div class="wsn">3</div><div class="wsl">Get your recommendation</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat view -->
+  <div class="chat-view" id="v-chat">
+    <div class="chat-top">
+      <div class="ct-eye">Active Session</div>
+      <div class="ct-title">Styling your <em>collection</em></div>
+      <div class="ct-pairs" id="chatPairs"></div>
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="input-area">
+      <div class="sel-pills" id="selPills"></div>
+      <div class="input-row">
+        <textarea class="chat-in" id="chatIn"
+          placeholder="Ask about your collection…"
+          rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <button class="send" id="sendBtn" onclick="sendMsg()">→</button>
+      </div>
+      <div class="hint">Enter to send · Shift+Enter for new line · Your photos stay private</div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<!-- Demo watermark -->
+<div class="demo-badge">✦ Powered by Lorgner · Demo</div>
+
+<script>
+'use strict';
+
+/* ══════════════════════════════════════════════
+   CADDIS STYLIST CONFIGURATION
+   This is what changes per white-label client.
+   Everything below this block is shared
+   infrastructure identical to lorgner.co
+══════════════════════════════════════════════ */
+const BRAND = {
+  name:       'Caddis Stylist',
+  voice:      'Caddis',
+  accentWord: 'C',
+  proxyUrl:   'https://lorgner-production.up.railway.app/chat',
+
+  // Caddis-specific system prompt addition
+  // This is loaded on top of the base Lorgner prompt
+  systemAddition: `You are the Caddis Stylist — the personal frame advisor for Caddis Eyewear customers.
+
+YOUR VOICE: Warm, direct, witty, and completely unafraid to say what works. You speak the language of people who have lived a full life and own beautiful things. No hedging. No "it depends." You give a real answer with confidence and a dry sense of humor.
+
+You know the Caddis frame catalog well. Key frames include:
+- Miklos: Classic rectangular acetate. Clean and confident. Great for work and formal occasions.
+- Durante: Rounded square acetate. A bit more personality. Works from weekend to evening.
+- Bixby: Slim metal rectangle. The minimalist option. For when you want the glasses to stay out of the way.
+- Wiley: Bold oversized rectangle. A statement. For people who are not trying to hide.
+- Arlo: Round acetate. Creative, warm, works for the artsy occasions.
+- D28 Progressive: Multi-focal. Daily workhorse. No occasion is wrong for these.
+- Caddis Loosies: Accessories — cases, chains, retainers. Mention when relevant.
+
+WHEN IDENTIFYING GAPS: Always describe what type of Caddis frame would fill the gap specifically. Never recommend competing brands.
+
+CADDIS PHILOSOPHY: The brand believes that needing reading glasses is not a problem to solve — it's a style opportunity to embrace. Your recommendations should reinforce that confidence, not apologize for it.
+
+FORMAT: Use [REC: PairName | Why it works | Score%] for recommendations.
+Use [GAP: Occasion | What Caddis frame would fill this] for gaps.`
+};
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+const SID   = 'C-' + Math.random().toString(36).substr(2,7).toUpperCase();
+const T0    = Date.now();
+let glasses  = [];
+let history  = [];
+let selPairs = [];
+let selOcc   = null;
+let busy     = false;
+let firstSent = false;
+let sessionLive = false;
+
+document.getElementById('sid').textContent   = 'SESSION #' + SID;
+document.getElementById('stime').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+
+/* ── GLASSES UPLOAD ── */
+function handleUpload(e){
+  Array.from(e.target.files).forEach(addPair);
+  e.target.value='';
+}
+
+function addPair(file){
+  if(glasses.length>=8) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const url=ev.target.result;
+    const id='g'+Date.now()+Math.random().toString(36).substr(2,4);
+    const name=prompt('Name this pair:','Pair '+(glasses.length+1))||'Pair '+(glasses.length+1);
+    glasses.push({id,name,base64:url.split(',')[1],mime:file.type,dataUrl:url});
+    renderGrid();
+    updateCounts();
+    updateChatPairs();
+    checkStart();
+  };
+  r.readAsDataURL(file);
+}
+
+function renderGrid(){
+  const grid=document.getElementById('collGrid');
+  const addBtn=document.getElementById('addBtn');
+  grid.innerHTML='';
+  glasses.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='gc'+(selPairs.includes(p.id)?' sel':'');
+    card.id='gc-'+p.id;
+    card.innerHTML=`
+      <div class="gc-img">
+        <img class="gc-photo" src="${p.dataUrl}" alt="${p.name}">
+        <div class="gc-ring">✓</div>
+        <div class="gc-del" onclick="delPair('${p.id}',event)">✕</div>
+      </div>
+      <div class="gc-body">
+        <input class="gc-name" value="${p.name}"
+          onchange="renamePair('${p.id}',this.value)"
+          onclick="event.stopPropagation()"
+          placeholder="Name this pair">
+        <div id="tags-${p.id}"></div>
+      </div>`;
+    card.addEventListener('click',()=>toggleSel(p.id));
+    grid.appendChild(card);
+  });
+  if(glasses.length<8) grid.appendChild(addBtn);
+}
+
+function delPair(id,e){
+  e.stopPropagation();
+  glasses=glasses.filter(g=>g.id!==id);
+  selPairs=selPairs.filter(i=>i!==id);
+  renderGrid(); updateCounts(); updateChatPairs(); checkStart();
+}
+
+function renamePair(id,name){const p=glasses.find(g=>g.id===id);if(p)p.name=name;}
+
+function toggleSel(id){
+  if(!sessionLive) return;
+  const idx=selPairs.indexOf(id);
+  if(idx>-1){selPairs.splice(idx,1);document.getElementById('gc-'+id)?.classList.remove('sel');}
+  else{selPairs.push(id);document.getElementById('gc-'+id)?.classList.add('sel');}
+  renderSelPills();
+}
+
+function renderSelPills(){
+  const c=document.getElementById('selPills');
+  c.innerHTML='';
+  selPairs.forEach(id=>{
+    const p=glasses.find(g=>g.id===id);if(!p)return;
+    const pill=document.createElement('div');
+    pill.className='sel-pill';
+    pill.innerHTML=`<img class="spt" src="${p.dataUrl}" alt=""><span>${p.name}</span>`;
+    c.appendChild(pill);
+  });
+}
+
+function updateCounts(){
+  document.getElementById('pairCount').textContent=glasses.length;
+}
+
+function updateChatPairs(){
+  const c=document.getElementById('chatPairs');
+  if(!glasses.length){
+    c.innerHTML=`<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--tx4);letter-spacing:1px;">Add pairs to begin</div>`;
+    return;
+  }
+  c.innerHTML=glasses.map(p=>`<div class="ct-pair sel" data-id="${p.id}">${p.name}</div>`).join('');
+}
+
+function pickOcc(el,val){
+  document.querySelectorAll('.occ').forEach(o=>o.classList.remove('on'));
+  el.classList.add('on'); selOcc=val; checkStart();
+}
+
+function checkStart(){
+  document.getElementById('startBtn').disabled=glasses.length===0;
+}
+
+/* ── START SESSION ── */
+function startSession(){
+  if(!glasses.length) return;
+  sessionLive=true;
+  document.getElementById('v-default').style.display='none';
+  document.getElementById('v-chat').classList.add('on');
+
+  const outfit=document.getElementById('outfitDesc').value.trim();
+  const names=glasses.map((g,i)=>g.name||`Pair ${i+1}`).join(', ');
+  const occ=selOcc||'general styling';
+  const msg=`Hi! I have ${glasses.length} pair${glasses.length>1?'s':''} of glasses: ${names}. ${selOcc?`I need to figure out which to wear for: ${occ}.`:'Can you help me style them?'} ${outfit?`My outfit: ${outfit}.`:''}`;
+
+  callStyler(msg);
+}
+
+/* ── SEND MESSAGE ── */
+function sendMsg(){
+  const el=document.getElementById('chatIn');
+  const text=el.value.trim();
+  if(!text||busy) return;
+  if(!sessionLive){sessionLive=true;document.getElementById('v-default').style.display='none';document.getElementById('v-chat').classList.add('on');}
+  addUserBubble(text);
+  el.value=''; el.style.height='auto';
+  callStyler(text);
+}
+
+/* ── CALL API ── */
+async function callStyler(text){
+  busy=true;
+  document.getElementById('sendBtn').disabled=true;
+  const uMsg={role:'user',content:[]};
+
+  if(!firstSent&&glasses.length>0){
+    glasses.forEach(p=>{uMsg.content.push({type:'image',source:{type:'base64',media_type:p.mime,data:p.base64}});});
+    firstSent=true;
+  }
+  if(history.length>0&&selPairs.length>0){
+    selPairs.forEach(id=>{const p=glasses.find(g=>g.id===id);if(p)uMsg.content.push({type:'image',source:{type:'base64',media_type:p.mime,data:p.base64}});});
+  }
+  uMsg.content.push({type:'text',text});
+  history.push(uMsg);
+  showTyping();
+
+  try{
+    const res=await fetch(BRAND.proxyUrl,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({system:buildPrompt(),messages:history,max_tokens:800})
+    });
+    const data=await res.json();
+    hideTyping();
+    if(data.error){addRedirect(data.message||'Just ask me about your frames!');return;}
+    const reply=data.content?.[0]?.text;
+    if(reply){history.push({role:'assistant',content:reply});renderAI(reply);}
+  }catch(err){
+    hideTyping();
+    addAiBubble("Something went sideways — try again.");
+    console.error(err);
+  }
+  busy=false;
+  document.getElementById('sendBtn').disabled=false;
+}
+
+/* ── SYSTEM PROMPT ── */
+function buildPrompt(){
+  const names=glasses.length>0
+    ?glasses.map((p,i)=>`Pair ${i+1}: "${p.name}"`).join(', ')
+    :'No pairs yet';
+  const occ=selOcc||'general styling';
+  const outfit=document.getElementById('outfitDesc').value.trim();
+
+  return `You are a styling advisor for Caddis Eyewear customers. Your ONLY topic is eyewear and personal style as it relates to glasses. Never discuss anything outside this scope — if asked, redirect warmly to the glasses conversation.
+
+${BRAND.systemAddition}
+
+MEMBER COLLECTION: ${names}
+OCCASION: ${occ}
+${outfit?`OUTFIT: ${outfit}`:''}
+
+${glasses.length>0?'Images of their collection have been provided. Reference specific pairs by name.':'Ask them to add their collection.'}
+
+Be decisive. Be specific about what you see. Be Caddis — confident, warm, and real. Maximum 2 recommendations per response.`;
+}
+
+/* ── RENDER AI MESSAGE ── */
+function renderAI(text){
+  const msgs=document.getElementById('messages');
+  const recRx=/\[REC:\s*([^|]+)\|([^|]+)\|([^\]]+)\]/g;
+  const gapRx=/\[GAP:\s*([^|]+)\|([^\]]+)\]/g;
+  const recs=[],gaps=[];
+  let m;
+  while((m=recRx.exec(text))!==null) recs.push({name:m[1].trim(),why:m[2].trim(),score:m[3].trim()});
+  while((m=gapRx.exec(text))!==null) gaps.push({occ:m[1].trim(),sug:m[2].trim()});
+
+  // Tag cards
+  recs.forEach(rec=>{
+    const p=glasses.find(g=>g.name===rec.name||g.name.toLowerCase().includes(rec.name.toLowerCase().split(' ')[0]));
+    if(p){const td=document.getElementById('tags-'+p.id);if(td&&!td.querySelector('.gc-tag'))td.innerHTML=`<span class="gc-tag">✓ Pick</span>`;}
+  });
+
+  let clean=text.replace(recRx,'').replace(gapRx,'')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>').trim();
+
+  const msg=document.createElement('div');
+  msg.className='msg ai';
+  const av=document.createElement('div');
+  av.className='mav';av.textContent=BRAND.accentWord;
+  av.style.cssText='background:var(--forest);color:var(--amber-l);';
+  const bbl=document.createElement('div');
+  bbl.className='mbbl';
+  if(clean) bbl.innerHTML=clean;
+
+  recs.forEach(rec=>{
+    const p=glasses.find(g=>g.name===rec.name||g.name.toLowerCase().includes(rec.name.toLowerCase().split(' ')[0]));
+    bbl.innerHTML+=`
+      <div class="rec-card">
+        <div class="rec-thumb">${p?`<img src="${p.dataUrl}" alt="${rec.name}">`:'👓'}</div>
+        <div class="rec-info">
+          <div class="rec-pname">${rec.name}</div>
+          <div class="rec-why">${rec.why}</div>
+        </div>
+        <div class="rec-score">${rec.score}</div>
+      </div>`;
+  });
+
+  gaps.forEach(gap=>{
+    bbl.innerHTML+=`
+      <div class="gap-card">
+        <div class="gap-ico">💡</div>
+        <div class="gap-tx"><strong>Gap: ${gap.occ}</strong><br>${gap.sug}</div>
+      </div>`;
+  });
+
+  msg.appendChild(av);msg.appendChild(bbl);
+  msgs.appendChild(msg);scrollBot();
+}
+
+function addUserBubble(text){
+  const msgs=document.getElementById('messages');
+  const msg=document.createElement('div');
+  msg.className='msg user';
+  msg.innerHTML=`<div class="mav" style="background:var(--cream2);border:2px solid var(--line2);color:var(--bark);">👤</div><div class="mbbl">${text.replace(/\n/g,'<br>')}</div>`;
+  msgs.appendChild(msg);scrollBot();
+}
+
+function addAiBubble(text){
+  const msgs=document.getElementById('messages');
+  const msg=document.createElement('div');
+  msg.className='msg ai';
+  msg.innerHTML=`<div class="mav" style="background:var(--forest);color:var(--amber-l);">${BRAND.accentWord}</div><div class="mbbl">${text}</div>`;
+  msgs.appendChild(msg);scrollBot();
+}
+
+function addRedirect(text){
+  const msgs=document.getElementById('messages');
+  const msg=document.createElement('div');
+  msg.className='msg ai';
+  msg.innerHTML=`<div class="mav" style="background:var(--forest);color:var(--amber-l);">${BRAND.accentWord}</div><div class="redirect-bbl">${text}</div>`;
+  msgs.appendChild(msg);scrollBot();
+}
+
+let typEl=null;
+function showTyping(){
+  const msgs=document.getElementById('messages');
+  typEl=document.createElement('div');
+  typEl.className='typing';
+  typEl.innerHTML=`<div class="mav" style="background:var(--forest);color:var(--amber-l);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:13px;font-weight:700;">${BRAND.accentWord}</div><div class="typing-bbl"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  msgs.appendChild(typEl);scrollBot();
+}
+function hideTyping(){if(typEl){typEl.remove();typEl=null;}}
+function scrollBot(){const m=document.getElementById('messages');setTimeout(()=>m.scrollTop=m.scrollHeight,50);}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px';}
+</script>
+</body>
+</html>
