@@ -28,6 +28,10 @@
       "dest": "/public/partners.html"
     },
     {
+      "src": "/enterprise",
+      "dest": "/public/enterprise.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/index.html"
     }
