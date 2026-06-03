@@ -1,5 +1,12 @@
 {
   "version": 2,
+  "redirects": [
+    {
+      "source": "/join",
+      "destination": "https://buy.stripe.com/aFa6oI7BU2yVeQW4qzcZa00",
+      "permanent": false
+    }
+  ],
   "builds": [
     {
       "src": "public/*.html",
