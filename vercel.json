@@ -1,12 +1,5 @@
 {
   "version": 2,
-  "redirects": [
-    {
-      "source": "/join",
-      "destination": "https://buy.stripe.com/aFa6oI7BU2yVeQW4qzcZa00",
-      "permanent": false
-    }
-  ],
   "builds": [
     {
       "src": "public/*.html",
@@ -14,6 +7,11 @@
     }
   ],
   "routes": [
+    {
+      "src": "/join",
+      "status": 302,
+      "headers": { "Location": "https://buy.stripe.com/aFa6oI7BU2yVeQW4qzcZa00" }
+    },
     {
       "src": "/journal",
       "dest": "/public/journal.html"
