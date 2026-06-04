@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lorgner — A Private Intelligence Service for Your Glasses Collection</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X3VM9B57WC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-X3VM9B57WC');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!--
+  ══════════════════════════════════════════════
+  LORGNER FRONTEND — COMPLETE THREE-PAGE EXPERIENCE
+
+  SECURITY NOTE:
+  ─────────────────────────────────────────────
+  NO API KEYS EXIST IN THIS FILE.
+
+  The Claude API key lives exclusively in the
+  Railway backend proxy (server.js) as an
+  environment variable. It never touches the
+  browser under any circumstances.
+
+  The only credentials here are PUBLIC Supabase
+  keys — these are intentionally public and are
+  safe in browser code. Supabase's row-level
+  security (RLS) enforces data boundaries on the
+  database side, not the client side. Even with
+  a public key someone can only see data their
+  JWT allows — which is only their own rows.
+
+  Keys to set before deploying:
+    SUPABASE_URL  → your Supabase project URL
+    SUPABASE_ANON_KEY → your Supabase anon key
+    PROXY_URL     → your Railway backend URL
+  ──────────────────────────────────────────────
+-->
+
+<style>
+/* ══════════════════════════════════════════════
+   LORGNER · COMPLETE EXPERIENCE
+   Payment → Sign In → Welcome → Dashboard
+   Aesthetic: Private banking meets fashion house
+   Palette: Deep void · Warm ivory · Oxidised gold
+   Type: Cormorant Garamond + Jost + DM Mono
+══════════════════════════════════════════════ */
+:root {
+  --void:    #060608;
+  --deep:    #0b0b0f;
+  --surface: #131318;
+  --lift:    #1a1a22;
+  --raise:   #22222c;
+  --line:    rgba(212,192,152,0.11);
+  --line2:   rgba(212,192,152,0.22);
+  --line3:   rgba(212,192,152,0.40);
+  --gold:    #C9A96E;
+  --gold-l:  #DFC090;
+  --gold-d:  #9A7A48;
+  --gold-bg: rgba(201,169,110,0.07);
+  --gold-b2: rgba(201,169,110,0.14);
+  --ivory:   #EEE9DF;
+  --ivory2:  #D5CEBC;
+  --ivory3:  #8A8272;
+  --ivory4:  #4A4438;
+  --green:   #6B9B7A;
+  --red:     #B85A4A;
+  --red-bg:  rgba(184,90,74,0.08);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--void);color:var(--ivory);min-height:100vh;overflow-x:hidden;}
+
+/* Grain overlay */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.07'/%3E%3C/svg%3E");background-size:256px;opacity:.5;}
+
+/* Atmospheric glow */
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 70% 55% at 18% 5%,rgba(201,169,110,0.04) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 82% 95%,rgba(201,169,110,0.03) 0%,transparent 60%);}
+
+/* SCREENS */
+.screen{display:none;min-height:100vh;position:relative;z-index:1;}
+.screen.on{display:flex;flex-direction:column;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.75)}}
+
+/* ══════════════════════════════
+   SHARED COMPONENTS
+══════════════════════════════ */
+.wordmark{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:13px;letter-spacing:9px;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:56px;animation:fadeUp .8s ease .1s both;}
+
+.form-field{margin-bottom:13px;}
+.field-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory3);display:block;margin-bottom:7px;}
+.field-input{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:14px 15px;font-family:'Jost',sans-serif;font-size:14px;font-weight:300;color:var(--ivory);outline:none;transition:border-color .25s;letter-spacing:.4px;}
+.field-input::placeholder{color:var(--ivory4);}
+.field-input:focus{border-color:var(--line2);}
+.field-split{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+
+.primary-btn{width:100%;background:var(--gold);border:none;border-radius:2px;padding:18px;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--void);cursor:pointer;transition:all .3s;margin-top:6px;}
+.primary-btn:hover{background:var(--gold-l);transform:translateY(-1px);}
+.primary-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+
+.ghost-btn{width:100%;background:transparent;border:1px solid var(--line);border-radius:2px;padding:14px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ivory3);cursor:pointer;transition:all .25s;margin-top:8px;}
+.ghost-btn:hover{border-color:var(--line2);color:var(--ivory);}
+
+.notice{text-align:center;margin-top:13px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ivory4);}
+
+.auth-error{background:var(--red-bg);border:1px solid rgba(184,90,74,.25);border-radius:2px;padding:11px 14px;font-size:12px;font-weight:300;color:var(--red);margin-bottom:13px;display:none;line-height:1.5;}
+.auth-error.on{display:block;}
+
+.auth-success{background:rgba(107,155,122,.08);border:1px solid rgba(107,155,122,.25);border-radius:2px;padding:11px 14px;font-size:12px;font-weight:300;color:var(--green);margin-bottom:13px;display:none;line-height:1.5;}
+.auth-success.on{display:block;}
+
+/* ══════════════════════════════
+   PAGE 1A — PAYMENT (NEW MEMBER)
+══════════════════════════════ */
+#pg-pay{align-items:center;justify-content:flex-start;padding:60px 24px 80px;}
+
+.pay-wrap{width:100%;max-width:460px;margin:0 auto;animation:fadeUp .8s ease .3s both;}
+
+.founding-strip{display:flex;align-items:center;gap:12px;margin-bottom:40px;}
+.fs-line{flex:1;height:1px;background:var(--line);}
+.fs-text{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);white-space:nowrap;}
+
+.price-block{text-align:center;margin-bottom:40px;}
+.price-big{font-family:'Cormorant Garamond',serif;font-size:88px;font-weight:300;line-height:1;color:var(--ivory);letter-spacing:-3px;margin-bottom:6px;}
+.price-big sup{font-size:30px;vertical-align:super;color:var(--gold);letter-spacing:0;}
+.price-cadence{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--ivory3);text-transform:uppercase;}
+.price-footnote{margin-top:10px;font-size:12px;font-weight:300;color:var(--ivory3);}
+.price-footnote em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);font-size:14px;}
+
+.includes-block{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:26px;margin-bottom:28px;}
+.ib-title{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ivory3);margin-bottom:18px;}
+.inc-row{display:flex;align-items:flex-start;gap:13px;margin-bottom:14px;}
+.inc-row:last-child{margin-bottom:0;}
+.inc-num{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);flex-shrink:0;line-height:1.4;width:14px;}
+.inc-title-t{font-size:13px;font-weight:400;color:var(--ivory);margin-bottom:2px;}
+.inc-desc{font-size:11px;font-weight:300;color:var(--ivory3);line-height:1.55;}
+
+.spots-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:18px;}
+.spot-pulse{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s ease-in-out infinite;}
+.spots-text{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+
+.auth-toggle{text-align:center;margin-top:20px;font-size:12px;font-weight:300;color:var(--ivory3);}
+.auth-toggle a{color:var(--gold);cursor:pointer;text-decoration:none;border-bottom:1px solid var(--gold-d);}
+.auth-toggle a:hover{color:var(--gold-l);}
+
+/* ══════════════════════════════
+   PAGE 1B — SIGN IN (RETURNING)
+══════════════════════════════ */
+#pg-signin{align-items:center;justify-content:center;padding:60px 24px;}
+
+.signin-wrap{width:100%;max-width:400px;text-align:center;animation:fadeUp .8s ease .2s both;}
+.signin-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--ivory);margin-bottom:8px;}
+.signin-title em{font-style:italic;color:var(--gold-l);}
+.signin-sub{font-size:13px;font-weight:300;color:var(--ivory3);margin-bottom:36px;line-height:1.65;}
+
+.magic-sent{background:rgba(107,155,122,.08);border:1px solid rgba(107,155,122,.2);border-radius:2px;padding:20px 22px;text-align:left;display:none;}
+.magic-sent.on{display:block;}
+.ms-icon{font-size:24px;margin-bottom:10px;}
+.ms-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--ivory);margin-bottom:6px;}
+.ms-body{font-size:12px;font-weight:300;color:var(--ivory3);line-height:1.65;}
+
+/* ══════════════════════════════
+   PAGE 2 — WELCOME
+══════════════════════════════ */
+#pg-welcome{align-items:center;justify-content:center;text-align:center;}
+.welcome-wrap{max-width:520px;padding:40px 24px;margin:auto;}
+.w-glyph{font-family:'Cormorant Garamond',serif;font-size:80px;line-height:1;color:var(--gold);margin-bottom:36px;animation:fadeIn 1.4s ease .2s both;}
+.w-title{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;line-height:1.2;color:var(--ivory);margin-bottom:18px;animation:fadeUp 1s ease .7s both;}
+.w-title em{font-style:italic;color:var(--gold-l);}
+.w-body{font-size:14px;font-weight:300;color:var(--ivory3);line-height:1.85;margin-bottom:48px;animation:fadeUp 1s ease 1s both;}
+.w-enter{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold-d);padding-bottom:4px;cursor:pointer;transition:all .25s;animation:fadeUp 1s ease 1.3s both;}
+.w-enter:hover{color:var(--gold-l);border-color:var(--gold);letter-spacing:4.5px;}
+
+/* ══════════════════════════════
+   PAGE 3 — DASHBOARD
+══════════════════════════════ */
+#pg-dash{min-height:100vh;}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 36px;height:62px;border-bottom:1px solid var(--line);background:rgba(6,6,8,.94);backdrop-filter:blur(20px);position:sticky;top:0;z-index:50;flex-shrink:0;}
+.tb-brand{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:18px;letter-spacing:7px;text-transform:uppercase;color:var(--gold);}
+.tb-sep{width:1px;height:18px;background:var(--line);}
+.tb-tier{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory4);}
+.tb-left{display:flex;align-items:center;gap:20px;}
+.tb-right{display:flex;align-items:center;gap:18px;}
+.tb-btn{font-size:12px;font-weight:300;color:var(--ivory3);background:none;border:none;cursor:pointer;letter-spacing:.4px;transition:color .2s;padding:0;}
+.tb-btn:hover{color:var(--gold-l);}
+.tb-av{width:28px;height:28px;border-radius:50%;border:1px solid var(--line2);background:var(--surface);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:12px;color:var(--gold);cursor:pointer;}
+
+.dash-grid{display:grid;grid-template-columns:260px 1fr;height:calc(100vh - 62px);overflow:hidden;}
+
+/* Left nav */
+.dash-left{border-right:1px solid var(--line);overflow-y:auto;padding:28px 0;background:var(--deep);}
+.dash-left::-webkit-scrollbar{width:3px;}
+.dash-left::-webkit-scrollbar-thumb{background:var(--line);}
+
+.member-tile{margin:0 18px 28px;background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:16px;}
+.mt-badge{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:9px;display:flex;align-items:center;gap:6px;}
+.mt-badge::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--gold);}
+.mt-name{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:var(--ivory);margin-bottom:3px;}
+.mt-since{font-size:11px;font-weight:300;color:var(--ivory3);}
+.mt-sync{font-family:'DM Mono',monospace;font-size:8px;color:var(--ivory4);margin-top:6px;letter-spacing:.5px;}
+.mt-sync.synced{color:var(--green);}
+
+.nav-sec{padding:0 22px;margin-bottom:28px;}
+.nav-sec-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ivory4);margin-bottom:11px;}
+.nav-item{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:2px;cursor:pointer;transition:all .18s;margin-bottom:2px;font-size:13px;font-weight:300;color:var(--ivory3);letter-spacing:.3px;border-left:2px solid transparent;}
+.nav-item:hover{background:var(--gold-bg);color:var(--ivory);}
+.nav-item.on{background:var(--gold-b2);color:var(--ivory);border-left-color:var(--gold);}
+.nav-legal{padding:0 24px;margin-top:auto;padding-top:24px;display:flex;gap:8px;align-items:center;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;}
+.nav-legal a{color:var(--ivory4);text-decoration:none;transition:color .15s;}.nav-legal a:hover{color:var(--gold);}
+.nav-legal span{color:var(--line2);}
+.nav-ico{font-size:13px;width:16px;text-align:center;flex-shrink:0;}
+.nav-pill{margin-left:auto;font-family:'DM Mono',monospace;font-size:8px;background:var(--gold-bg);border:1px solid var(--line2);color:var(--gold);padding:1px 6px;border-radius:20px;letter-spacing:.8px;}
+
+/* Right content area */
+.dash-right{overflow-y:auto;background:var(--void);}
+.dash-right::-webkit-scrollbar{width:4px;}
+.dash-right::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px;}
+
+.view{display:none;padding:40px 44px;}
+.view.on{display:block;}
+
+.sec-hdr{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--ivory);}
+.sec-title em{font-style:italic;color:var(--gold-l);}
+.sec-rule{flex:1;height:1px;background:var(--line);}
+.sec-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory4);}
+
+/* Consult banner */
+.consult-banner{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:32px 36px;display:flex;align-items:center;gap:32px;margin-bottom:48px;cursor:pointer;transition:border-color .25s;}
+.consult-banner:hover{border-color:var(--line2);}
+.cb-glyph{font-family:'Cormorant Garamond',serif;font-size:54px;line-height:1;color:var(--gold);flex-shrink:0;}
+.cb-body{flex:1;}
+.cb-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--ivory);margin-bottom:7px;}
+.cb-title em{font-style:italic;color:var(--gold-l);}
+.cb-desc{font-size:13px;font-weight:300;color:var(--ivory3);line-height:1.7;max-width:400px;}
+.cb-cta{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold-d);padding-bottom:3px;transition:all .2s;white-space:nowrap;flex-shrink:0;}
+.consult-banner:hover .cb-cta{color:var(--gold-l);border-color:var(--gold);}
+
+/* Collection */
+.coll-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:13px;margin-bottom:48px;}
+.coll-card{background:var(--surface);border:1px solid var(--line);border-radius:2px;overflow:hidden;cursor:pointer;transition:all .25s;position:relative;}
+.coll-card:hover{border-color:var(--line2);transform:translateY(-3px);}
+.cc-photo{height:116px;background:var(--lift);display:flex;align-items:center;justify-content:center;font-size:32px;border-bottom:1px solid var(--line);position:relative;overflow:hidden;}
+.cc-photo img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.cc-body{padding:12px 13px;}
+.cc-brand{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory3);margin-bottom:4px;}
+.cc-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;color:var(--ivory);margin-bottom:7px;}
+.cc-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.cc-tag{font-size:9px;padding:2px 6px;border-radius:1px;font-family:'DM Mono',monospace;letter-spacing:.3px;}
+.ct-occ{background:var(--gold-bg);color:var(--gold);}
+.ct-style{background:rgba(212,192,152,.05);color:var(--ivory3);border:1px solid var(--line);}
+.cc-saving{position:absolute;top:8px;right:8px;font-family:'DM Mono',monospace;font-size:8px;color:var(--gold);background:var(--gold-bg);border:1px solid var(--line);padding:2px 6px;border-radius:2px;letter-spacing:.5px;}
+
+.add-pair{background:transparent;border:1px dashed var(--line2);border-radius:2px;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:all .25s;position:relative;}
+.add-pair input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.add-pair:hover{border-color:var(--line3);background:var(--gold-bg);}
+.ap-plus{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold);line-height:1;}
+.ap-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory3);}
+
+/* Monthly letter */
+.letter{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:34px 38px;margin-bottom:48px;}
+.letter-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;}
+.lh-issue{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory3);margin-bottom:7px;}
+.lh-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--ivory);line-height:1.2;}
+.lh-title em{font-style:italic;color:var(--gold-l);}
+.lh-date{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--ivory4);}
+.letter-body{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:var(--ivory2);line-height:1.9;max-width:580px;}
+.letter-body p{margin-bottom:15px;}
+.letter-body p:last-child{margin-bottom:0;}
+.letter-body em{font-style:italic;color:var(--gold-l);}
+.letter-sig{margin-top:26px;font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--ivory3);}
+
+/* Sessions */
+.sessions{display:flex;flex-direction:column;gap:9px;margin-bottom:48px;}
+.session-row{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:15px 18px;display:flex;align-items:center;gap:18px;cursor:pointer;transition:border-color .2s;}
+.session-row:hover{border-color:var(--line2);}
+.sr-date{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--ivory4);width:72px;flex-shrink:0;}
+.sr-body{flex:1;}
+.sr-occ{font-size:13px;font-weight:400;color:var(--ivory);margin-bottom:2px;}
+.sr-rec{font-size:11px;font-weight:300;color:var(--ivory3);}
+.sr-rec em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);font-size:13px;}
+.sr-arr{color:var(--ivory4);font-size:13px;transition:color .2s;}
+.session-row:hover .sr-arr{color:var(--gold);}
+
+/* CHAT VIEW */
+.chat-view{display:none;flex-direction:column;height:calc(100vh - 62px);}
+.chat-view.on{display:flex;}
+
+.chat-top{padding:22px 36px;border-bottom:1px solid var(--line);background:var(--deep);flex-shrink:0;}
+.ct-eye{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--ivory4);margin-bottom:5px;}
+.ct-title{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:var(--ivory);margin-bottom:10px;}
+.ct-title em{font-style:italic;color:var(--gold-l);}
+.ct-pairs{display:flex;gap:7px;flex-wrap:wrap;}
+.ct-pair{background:var(--surface);border:1px solid var(--line);border-radius:1px;padding:3px 9px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--ivory3);cursor:pointer;transition:all .18s;}
+.ct-pair.sel{border-color:var(--line2);color:var(--gold);background:var(--gold-bg);}
+
+.chat-msgs{flex:1;overflow-y:auto;padding:32px 36px;display:flex;flex-direction:column;gap:22px;}
+.chat-msgs::-webkit-scrollbar{width:3px;}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--line);}
+
+.cmsg{display:flex;gap:14px;max-width:78%;animation:msgIn .35s ease both;}
+.cmsg.ai{align-self:flex-start;}
+.cmsg.user{align-self:flex-end;flex-direction:row-reverse;}
+.cm-av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:12px;margin-top:2px;}
+.cmsg.ai .cm-av{background:var(--gold);color:var(--void);font-style:italic;}
+.cmsg.user .cm-av{background:var(--surface);border:1px solid var(--line);color:var(--gold);}
+.cm-bbl{padding:14px 17px;border-radius:2px;font-size:13px;font-weight:300;line-height:1.75;}
+.cmsg.ai .cm-bbl{background:var(--surface);border:1px solid var(--line);color:var(--ivory);font-family:'Cormorant Garamond',serif;font-size:16px;border-radius:1px 14px 14px 14px;}
+.cmsg.ai .cm-bbl em{font-style:italic;color:var(--gold-l);}
+.cmsg.ai .cm-bbl strong{color:var(--gold-l);font-weight:500;}
+.cmsg.user .cm-bbl{background:var(--lift);border:1px solid var(--line2);color:var(--ivory2);border-radius:14px 1px 14px 14px;}
+.redirect-bbl{background:var(--red-bg);border:1px solid rgba(184,90,74,.22);border-radius:2px;padding:12px 16px;font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--ivory2);font-style:italic;line-height:1.6;}
+
+.typing-wrap{display:flex;gap:14px;align-items:flex-end;animation:msgIn .35s ease both;}
+.typing-bbl{background:var(--surface);border:1px solid var(--line);border-radius:1px 14px 14px 14px;padding:14px 17px;display:flex;gap:5px;align-items:center;}
+.td{width:5px;height:5px;border-radius:50%;background:var(--gold-d);animation:tdot 1.2s ease infinite;}
+.td:nth-child(2){animation-delay:.22s}.td:nth-child(3){animation-delay:.44s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-5px);opacity:1}}
+
+.chat-bottom{padding:16px 36px;border-top:1px solid var(--line);background:var(--deep);flex-shrink:0;}
+.chat-row{display:flex;gap:10px;align-items:flex-end;}
+.chat-in{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:13px 15px;font-family:'Jost',sans-serif;font-size:13px;font-weight:300;color:var(--ivory);outline:none;resize:none;max-height:110px;transition:border-color .2s;line-height:1.55;}
+.chat-in::placeholder{color:var(--ivory4);}
+.chat-in:focus{border-color:var(--line2);}
+.chat-send{width:44px;height:44px;background:var(--gold);border:none;border-radius:2px;cursor:pointer;font-size:15px;color:var(--void);flex-shrink:0;transition:all .2s;}
+.chat-send:hover{background:var(--gold-l);transform:scale(1.04);}
+.chat-send:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.chat-hint{text-align:center;margin-top:8px;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--ivory4);text-transform:uppercase;}
+
+/* Loading overlay */
+.loading-overlay{position:fixed;inset:0;z-index:100;background:var(--void);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+.loading-overlay.on{display:flex;}
+.lo-glyph{font-family:'Cormorant Garamond',serif;font-size:48px;color:var(--gold);animation:pulse 1.5s ease-in-out infinite;}
+.lo-text{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--ivory3);text-transform:uppercase;}
+
+/* Mobile bottom nav */
+.mob-nav{display:none;}
+@media(max-width:768px){
+  .dash-grid{grid-template-columns:1fr;height:calc(100vh - 62px - 56px);overflow-y:auto;}
+  .dash-left{display:none;}
+  .view{padding:20px 16px;}
+  .chat-msgs{padding:16px;}
+  .chat-bottom{padding:10px 16px;}
+  .chat-top{padding:14px 16px;}
+  .topbar{padding:0 16px;}
+  .tb-right .tb-btn,.tb-sep,.tb-tier{display:none;}
+  .consult-banner{flex-direction:column;gap:14px;}
+  .coll-grid{grid-template-columns:repeat(2,1fr);}
+  .mob-nav{display:flex;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--deep);border-top:1px solid var(--line);z-index:100;align-items:stretch;}
+  .mob-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;color:var(--ivory4);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;cursor:pointer;transition:color .2s;padding:0;}
+  .mob-nav-btn.on{color:var(--gold);}
+  .mob-nav-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;}
+}
+</style>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="lo-glyph">✦</div>
+  <div class="lo-text">A moment…</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 1A — PAYMENT (NEW MEMBER)
+══════════════════════════════════════════════ -->
+<div class="screen on" id="pg-pay">
+  <div class="wordmark">L O R G N E R</div>
+  <div class="pay-wrap">
+
+    <div class="founding-strip">
+      <div class="fs-line"></div>
+      <span class="fs-text">Founding Member · 73 of 100 remaining</span>
+      <div class="fs-line"></div>
+    </div>
+
+    <div class="price-block">
+      <div class="price-big"><sup>$</sup>29</div>
+      <div class="price-cadence">Per Month · Billed Monthly</div>
+      <div class="price-footnote">Founding rate — <em>locked for life.</em><br>Standard membership opens at $49/month.</div>
+    </div>
+
+    <div class="includes-block">
+      <div class="ib-title">What membership includes</div>
+      <div class="inc-row"><span class="inc-num">I</span><div><div class="inc-title-t">Unlimited consultations with Lorgner</div><div class="inc-desc">Your private intelligence service for collection styling. Available whenever you need a considered second opinion.</div></div></div>
+      <div class="inc-row"><span class="inc-num">II</span><div><div class="inc-title-t">Permanent collection archive</div><div class="inc-desc">Your glasses collection catalogued and remembered. Every pair, every occasion it suits, everything Lorgner has observed about it.</div></div></div>
+      <div class="inc-row"><span class="inc-num">III</span><div><div class="inc-title-t">The Eyewear Style Guide</div><div class="inc-desc">A standing reference on how to choose, wear, and think about eyewear. Updated as the canon of good taste requires.</div></div></div>
+    </div>
+
+    <div id="payError" class="auth-error"></div>
+
+    <div class="form-field">
+      <label class="field-label">Full Name</label>
+      <input type="text" class="field-input" id="f-name" placeholder="As it appears on your card">
+    </div>
+    <div class="form-field">
+      <label class="field-label">Email Address</label>
+      <input type="email" class="field-input" id="f-email" placeholder="Your membership confirmation goes here">
+    </div>
+    <button class="primary-btn" id="payBtn" onclick="handlePayment()">Begin Your Membership</button>
+    <div class="notice">Secured by Stripe · Cancel at any time · No hidden fees</div>
+    <div class="auth-toggle">Already a member? <a onclick="showSignIn()">Sign in here</a></div>
+
+    <div class="spots-row">
+      <div class="spot-pulse"></div>
+      <span class="spots-text">73 founding spots remain at this rate</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 1B — SIGN IN (RETURNING MEMBER)
+══════════════════════════════════════════════ -->
+<div class="screen" id="pg-signin">
+  <div class="signin-wrap">
+    <div class="wordmark">L O R G N E R</div>
+    <div class="signin-title">Welcome <em>back.</em></div>
+    <div class="signin-sub">Enter your email. We'll send you a private link to access your collection — no password required.</div>
+
+    <div id="signinError" class="auth-error"></div>
+
+    <div id="magicSent" class="magic-sent">
+      <div class="ms-icon">✦</div>
+      <div class="ms-title">Your link is on its way.</div>
+      <div class="ms-body">Check your inbox and click the link to enter Lorgner. It expires in 24 hours. If you don't see it, check your spam folder.</div>
+    </div>
+
+    <div id="signinForm">
+      <div class="form-field">
+        <label class="field-label">Email Address</label>
+        <input type="email" class="field-input" id="si-email" placeholder="The address on your membership">
+      </div>
+      <button class="primary-btn" id="signinBtn" onclick="handleSignIn()">Send My Access Link</button>
+    </div>
+
+    <div class="auth-toggle" style="margin-top:20px;">New to Lorgner? <a onclick="showPayment()">Become a founding member</a></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 2 — WELCOME
+══════════════════════════════════════════════ -->
+<div class="screen" id="pg-welcome">
+  <div class="welcome-wrap">
+    <div class="w-glyph">✦</div>
+    <div class="w-title">Welcome to<br><em>Lorgner.</em></div>
+    <div class="w-body">Your collection is waiting to be known properly.<br>Lorgner will remember every pair, every occasion,<br>every considered choice you make from here forward.</div>
+    <div class="w-enter" onclick="enterDash()">Enter &nbsp;→</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 3 — DASHBOARD
+══════════════════════════════════════════════ -->
+<div class="screen" id="pg-dash">
+
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-brand">Lorgner</div>
+      <div class="tb-sep"></div>
+      <div class="tb-tier" id="tbTier">Founding Member</div>
+    </div>
+    <div class="tb-right">
+      <button class="tb-btn" onclick="switchView('overview')">Overview</button>
+      <button class="tb-btn" onclick="switchView('chat')">Consult Lorgner</button>
+      <button class="tb-btn" onclick="switchView('collection')">Collection</button>
+      <button class="tb-btn" onclick="handleSignOut()" style="color:var(--ivory4);">Sign Out</button>
+      <div class="tb-av" id="tbAv">L</div>
+    </div>
+  </div>
+
+  <div class="dash-grid">
+
+    <nav class="dash-left">
+      <div class="member-tile">
+        <div class="mt-badge">Founding Member</div>
+        <div class="mt-name" id="memberName">—</div>
+        <div class="mt-since" id="memberSince">—</div>
+        <div class="mt-sync" id="syncStatus">● Synced</div>
+      </div>
+      <div class="nav-sec">
+        <div class="nav-sec-label">Your Lorgner</div>
+        <div class="nav-item on" id="ni-overview" onclick="switchView('overview')"><span class="nav-ico">◈</span>Overview</div>
+        <div class="nav-item" id="ni-chat" onclick="switchView('chat')"><span class="nav-ico">✦</span>Consult Lorgner<span class="nav-pill">Ready</span></div>
+        <div class="nav-item" id="ni-collection" onclick="switchView('collection')"><span class="nav-ico">◻</span>My Collection<span class="nav-pill" id="pairPill">0</span></div>
+        <div class="nav-item"><span class="nav-ico">◎</span>Session History</div>
+      </div>
+      <div class="nav-sec">
+        <div class="nav-sec-label">Editorial</div>
+        <div class="nav-item" onclick="switchView('letter')"><span class="nav-ico">◑</span>Style Guide</div>
+      </div>
+      <div class="nav-sec">
+        <div class="nav-sec-label">Account</div>
+        <div class="nav-item" onclick="openBillingPortal()"><span class="nav-ico">○</span>Manage Subscription</div>
+        <div class="nav-item" onclick="handleSignOut()"><span class="nav-ico">◌</span>Sign Out</div>
+      </div>
+      <div class="nav-legal">
+        <a href="/privacy" target="_blank">Privacy Policy</a>
+        <span>·</span>
+        <a href="/terms" target="_blank">Terms of Service</a>
+      </div>
+      <div style="padding:0 24px 24px;font-size:10px;color:var(--ivory4);letter-spacing:0.05em;line-height:1.6;">
+        © 2026 Lorgner<br>Digital Junction LLC
+      </div>
+    </nav>
+
+    <div id="dashRight" class="dash-right">
+
+      <!-- OVERVIEW VIEW -->
+      <div class="view on" id="v-overview">
+        <div class="consult-banner" onclick="switchView('chat')">
+          <div class="cb-glyph">✦</div>
+          <div class="cb-body">
+            <div class="cb-title">Consult <em>Lorgner</em></div>
+            <div class="cb-desc">Tell Lorgner the occasion. Receive a considered recommendation for which pair to wear — and learn what your collection might be missing.</div>
+          </div>
+          <div class="cb-cta">Begin →</div>
+        </div>
+        <div class="sec-hdr"><div class="sec-title">Your <em>Collection</em></div><div class="sec-rule"></div><div class="sec-sub" id="collCountOv">0 pairs</div></div>
+        <div class="coll-grid" id="ovGrid"></div>
+        <div class="sec-hdr"><div class="sec-title">Recent <em>Consultations</em></div><div class="sec-rule"></div></div>
+        <div id="sessionList" style="margin-bottom:32px;"></div>
+        <div class="sec-hdr"><div class="sec-title">The <em>Style Guide</em></div><div class="sec-rule"></div><div class="sec-sub">A Standing Reference</div></div>
+        <div class="letter" style="cursor:pointer;" onclick="switchView('letter')">
+          <div class="letter-hdr"><div><div class="lh-issue">I · On Fit</div><div class="lh-title">The frame should not be noticed — it should simply <em>belong</em></div></div></div>
+          <div class="letter-body"><p>The single most important criterion in selecting frames is fit. Not colour, not brand, not shape — fit. A frame that sits too wide on the face creates the impression of weight where none exists. One that sits too narrow suggests effort. The correct frame disappears into the face and makes the face more coherent.</p></div>
+          <div class="letter-sig" style="font-size:11px;color:var(--ivory4);">Continue reading in Style Guide →</div>
+        </div>
+      </div>
+
+      <!-- COLLECTION VIEW -->
+      <div class="view" id="v-collection">
+        <div class="sec-hdr"><div class="sec-title">My <em>Collection</em></div><div class="sec-rule"></div><div class="sec-sub" id="collCountColl">0 pairs</div></div>
+        <div class="coll-grid" id="collGrid"></div>
+      </div>
+
+      <!-- LETTER VIEW -->
+      <div class="view" id="v-letter">
+        <div class="sec-hdr"><div class="sec-title">The <em>Style Guide</em></div><div class="sec-rule"></div><div class="sec-sub">Eyewear · A Standing Reference</div></div>
+
+        <div class="letter">
+          <div class="letter-hdr"><div><div class="lh-issue">I · On Fit</div><div class="lh-title">The frame should not be noticed — it should simply <em>belong</em></div></div></div>
+          <div class="letter-body">
+            <p>The single most important criterion in selecting frames is fit. Not colour, not brand, not shape — fit. A frame that sits too wide on the face creates the impression of weight where none exists. One that sits too narrow suggests effort. The correct frame disappears into the face and makes the face more coherent.</p>
+            <p>The temple arms should rest without pressure along the side of the head. The nose pads or bridge should distribute weight evenly. The lower rim of the lens should not intersect the cheek when smiling. None of this is vanity. It is simply the precondition for everything else.</p>
+          </div>
+        </div>
+
+        <div class="letter">
+          <div class="letter-hdr"><div><div class="lh-issue">II · On Face Shape</div><div class="lh-title">Rules exist to be <em>understood,</em> not followed</div></div></div>
+          <div class="letter-body">
+            <p>The received wisdom — round faces take angular frames, square faces take rounded ones — is approximately correct and almost entirely useless. It describes a kind of compensatory logic that results in frames chosen against the face rather than with it.</p>
+            <p>A more useful principle: identify the feature of your face you find most interesting, and find frames that allow it to remain interesting. Strong brows warrant frames that sit at or just below the brow line. A distinctive jawline is best left uncontested. The face is not a problem to be solved.</p>
+          </div>
+        </div>
+
+        <div class="letter">
+          <div class="letter-hdr"><div><div class="lh-issue">III · On Colour</div><div class="lh-title">The colours that endure are rarely the ones that <em>announce themselves</em></div></div></div>
+          <div class="letter-body">
+            <p>Tortoiseshell, black, warm brown, and translucent grey are not conservative choices — they are considered ones. They persist because they do not compete with skin tone, clothing, or setting. They function across contexts. This is not timidity. It is intelligence.</p>
+            <p>Colour frames work when the colour is specific rather than general. A particular olive, a very precise burgundy, a blue so dark it reads as charcoal in certain light — these are worth pursuing. Bright red, bright blue, and novelty colourways rarely survive the first season of wear.</p>
+            <p>As a rule: if the colour is the most memorable thing about the frame, reconsider.</p>
+          </div>
+        </div>
+
+        <div class="letter">
+          <div class="letter-hdr"><div><div class="lh-issue">IV · On Materials</div><div class="lh-title">Acetate ages. Titanium <em>endures.</em> Both are correct.</div></div></div>
+          <div class="letter-body">
+            <p>Acetate develops character over time. The colour deepens slightly at the edges. The surface acquires a patina. A well-chosen acetate frame worn for a decade is more interesting than the same frame new. This is a feature, not a defect.</p>
+            <p>Titanium and beta-titanium offer something different: structural integrity at minimal weight. Frames in these materials are often the correct choice for daily wear, particularly for those who find acetate heavy or warm. They require less adjustment and maintain their geometry over years of use.</p>
+            <p>Avoid frames where the material is primarily decorative — where the hinge is a separate piece glued on for effect, or where the bridge is plated rather than solid. These fail in proportion to how often they are worn.</p>
+          </div>
+        </div>
+
+        <div class="letter">
+          <div class="letter-hdr"><div><div class="lh-issue">V · On Building a Collection</div><div class="lh-title">The second pair is more revealing than the <em>first</em></div></div></div>
+          <div class="letter-body">
+            <p>The first pair of glasses a person selects carefully tells you what they aspire to. The second tells you who they actually are. The second pair must do something different — different light, different context, different register — or it is simply a backup, which is a waste of a frame.</p>
+            <p>A considered collection of three pairs covers most occasions: one frame that works everywhere and asks nothing of anyone; one that is appropriate for formal or professional contexts; one that is personal, perhaps slightly unexpected, worn when the occasion permits a considered choice. Beyond three, each addition should earn its place by doing something the others cannot.</p>
+            <p>Lorgner exists to help you think through exactly this.</p>
+          </div>
+          <div class="letter-sig">— Lorgner</div>
+        </div>
+      </div>
+
+      <!-- CHAT VIEW -->
+      <div class="chat-view" id="v-chat">
+        <div class="chat-top">
+          <div class="ct-eye">Active Consultation</div>
+          <div class="ct-title">Consulting <em>Lorgner</em></div>
+          <div class="ct-pairs" id="chatPairs"></div>
+        </div>
+        <div class="chat-msgs" id="chatMsgs"></div>
+        <div class="chat-bottom">
+          <div class="chat-row">
+            <textarea class="chat-in" id="chatIn" placeholder="Tell Lorgner the occasion…" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+            <button class="chat-send" id="chatSend" onclick="sendMsg()">→</button>
+          </div>
+          <div class="chat-hint">Enter to send · Shift+Enter for new line · Lorgner is here for your collection</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mobile bottom nav (hidden on desktop via CSS) -->
+  <nav class="mob-nav" id="mobNav">
+    <button class="mob-nav-btn on" id="mn-overview" onclick="switchView('overview')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Overview
+    </button>
+    <button class="mob-nav-btn" id="mn-chat" onclick="switchView('chat')">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Consult
+    </button>
+    <button class="mob-nav-btn" id="mn-collection" onclick="switchView('collection')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/></svg>
+      Collection
+    </button>
+    <button class="mob-nav-btn" onclick="handleSignOut()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Sign Out
+    </button>
+  </nav>
+
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SUPABASE JS CLIENT (PUBLIC CDN)
+     Safe to include — only public anon key used
+     Row-level security enforces all data access
+══════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+'use strict';
+
+/* ══════════════════════════════════════════════
+   CONFIGURATION
+   ─────────────────────────────────────────────
+   SUPABASE_URL and SUPABASE_ANON_KEY are PUBLIC.
+   They are safe in browser code by design.
+   Supabase's row-level security (RLS) ensures
+   users can only access their own data.
+
+   PROXY_URL is your Railway backend URL.
+   The Claude API key lives there as an env var.
+   It never appears in this file.
+   ─────────────────────────────────────────────
+   Replace these three values before deploying.
+══════════════════════════════════════════════ */
+const CONFIG = {
+  SUPABASE_URL:      'https://vsafajgzeqbxhimhvsxz.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzYWZhamd6ZXFieGhpbWh2c3h6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyMDY2NDMsImV4cCI6MjA5Mzc4MjY0M30.O2GsXswMvequtiTgF4LB0xSqCadrlLRelGKM64W16jw',
+  PROXY_URL:         'https://lorgner-production.up.railway.app/chat',
+  MAX_PAIRS:         8,
+};
+
+/* ══════════════════════════════════════════════
+   SUPABASE CLIENT INITIALISATION
+   Uses only the public anon key.
+   All sensitive operations go through RLS.
+══════════════════════════════════════════════ */
+const supabaseReady = !CONFIG.SUPABASE_URL.includes('your-project') && !CONFIG.SUPABASE_ANON_KEY.includes('your-supabase');
+const sb = supabaseReady
+  ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, {
+      auth: { detectSessionInUrl: false }
+    })
+  : null;
+
+/* ══════════════════════════════════════════════
+   APPLICATION STATE
+   All runtime state lives here.
+   JWT managed by Supabase client automatically.
+══════════════════════════════════════════════ */
+let state = {
+  user:        null,   // Supabase user object — contains id, email, metadata
+  session:     null,   // Supabase session — contains JWT, refresh token
+  glasses:     [],     // [{id, name, brand, photo_url, dataUrl, occasions, tags}]
+  sessions:    [],     // recent consultations from Supabase
+  history:     [],     // Claude conversation history for current session
+  firstSent:   false,  // Whether images have been sent in current chat
+  busy:        false,  // Whether waiting for Claude response
+  isNewMember: false,  // Whether this is a brand new sign up
+};
+
+/* ══════════════════════════════════════════════
+   INITIALISATION
+   Runs on page load. Checks for existing session.
+   If valid JWT in storage → go to dashboard.
+   If no session → show payment / sign in.
+══════════════════════════════════════════════ */
+window.addEventListener('load', async () => {
+  const params = new URLSearchParams(window.location.search);
+
+  // Stripe success redirect — show sign-in before any Supabase calls
+  if (params.get('subscribed') === 'true') {
+    show('pg-signin');
+    state.didLoad = true;
+const note = document.createElement('p');
+    note.style.cssText = 'text-align:center;color:#c9a96e;margin-bottom:1.5rem;font-size:.95rem;';
+    note.textContent = 'Payment received — enter your email to activate your membership.';
+    const form = document.querySelector('#pg-signin form') || document.querySelector('#pg-signin');
+    form && form.insertBefore(note, form.firstChild);
+    return;
+  }
+
+  // If Supabase isn't configured yet, go straight to payment page
+  if (CONFIG.SUPABASE_URL.includes('your-project') || CONFIG.SUPABASE_ANON_KEY.includes('your-supabase')) {
+    show('pg-pay');
+    return;
+  }
+
+  // Handle magic link callback — parse hash tokens directly and call setSession
+  // so we don't depend on the timing of onAuthStateChange.
+  const hash = window.location.hash;
+  if (hash.includes('access_token')) {
+    showLoader();
+    try {
+      const p            = new URLSearchParams(hash.slice(1));
+      const accessToken  = p.get('access_token');
+      const refreshToken = p.get('refresh_token');
+      if (accessToken && refreshToken) {
+        const { data, error } = await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+        if (data?.session) {
+          state.session = data.session;
+          state.user    = data.session.user;
+          history.replaceState(null, '', '/');
+          await loadDashboard(false);
+          return;
+        }
+        if (error) console.error('setSession error:', error.message);
+      }
+    } catch (e) {
+      console.error('Magic link error:', e);
+    }
+    hideLoader();
+    history.replaceState(null, '', '/');
+    show('pg-signin');
+    const linkErr = document.getElementById('signinError');
+    if (linkErr) {
+      linkErr.textContent = 'Your access link has expired or was already used. Enter your email to receive a new one.';
+      linkErr.classList.add('on');
+    }
+    return;
+  }
+
+  // Check for existing valid session in localStorage
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      state.session = session;
+      state.user    = session.user;
+      await loadDashboard(false);
+      return;
+    }
+  } catch (e) {
+    show('pg-pay');
+    return;
+  }
+
+  // No session — decide which page to show
+  if (params.get('signin') === '1') {
+    show('pg-signin');
+  } else {
+    show('pg-pay');
+  }
+  state.didLoad = true;
+});
+
+/* ══════════════════════════════════════════════
+   AUTH — LISTEN FOR SESSION CHANGES
+   Supabase fires this when a user signs in,
+   signs out, or the token refreshes automatically.
+══════════════════════════════════════════════ */
+sb?.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'SIGNED_IN' && session) {
+    state.session = session;
+    state.user    = session.user;
+    const onStripeReturn = new URLSearchParams(location.search).get('subscribed') === 'true';
+    if (!onStripeReturn && !document.getElementById('pg-dash').classList.contains('on')) {
+      await loadDashboard(false);
+    }
+  }
+  if (event === 'SIGNED_OUT') {
+    const wasSignedIn = !!state.user;
+    const onStripeReturn = new URLSearchParams(location.search).get('subscribed') === 'true';
+    state.session = null;
+    state.user    = null;
+    state.glasses = [];
+    if (wasSignedIn && !onStripeReturn) show('pg-pay');
+  }
+  if (event === 'TOKEN_REFRESHED' && session) {
+    state.session = session;
+    // JWT refreshed silently — no action needed
+  }
+});
+
+/* ══════════════════════════════════════════════
+   PAGE TRANSITIONS
+══════════════════════════════════════════════ */
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0, 0);
+}
+
+function showLoader() { document.getElementById('loadingOverlay').classList.add('on'); }
+function hideLoader() { document.getElementById('loadingOverlay').classList.remove('on'); }
+
+function showSignIn() { show('pg-signin'); }
+function showPayment() { show('pg-pay'); }
+
+/* ══════════════════════════════════════════════
+   PAYMENT FLOW
+   In production: Stripe Checkout handles payment.
+   On success Stripe calls your Railway webhook.
+   Railway webhook creates Supabase account.
+   Member receives magic link via email.
+   
+   For prototype: simulates the flow so you can
+   see the full experience without Stripe wired.
+══════════════════════════════════════════════ */
+async function handlePayment() {
+  const name  = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const errEl = document.getElementById('payError');
+
+  errEl.classList.remove('on');
+
+  if (!name || !email) {
+    errEl.textContent = 'Please enter your name and email address.';
+    errEl.classList.add('on');
+    return;
+  }
+
+  const btn = document.getElementById('payBtn');
+  btn.disabled    = true;
+  btn.textContent = 'A moment…';
+
+  try {
+    const res  = await fetch(CONFIG.PROXY_URL.replace('/chat', '/create-checkout-session'), {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ email, name }),
+    });
+    const data = await res.json();
+
+    if (data.checkoutUrl) {
+      window.location.href = data.checkoutUrl;
+      return;
+    }
+
+    errEl.textContent = data.message || 'Checkout unavailable. Please try again.';
+    errEl.classList.add('on');
+  } catch (err) {
+    errEl.textContent = 'Could not reach checkout. Please try again.';
+    errEl.classList.add('on');
+  }
+
+  btn.disabled    = false;
+  btn.textContent = 'Begin Your Membership';
+}
+
+
+/* ══════════════════════════════════════════════
+   SIGN IN FLOW — RETURNING MEMBERS
+   Magic link authentication.
+   No password. Member clicks link in email.
+   Supabase verifies and issues JWT.
+══════════════════════════════════════════════ */
+async function handleSignIn() {
+  const email  = document.getElementById('si-email').value.trim();
+  const errEl  = document.getElementById('signinError');
+  const btn    = document.getElementById('signinBtn');
+
+  errEl.classList.remove('on');
+
+  if (!email) {
+    errEl.textContent = 'Please enter your email address.';
+    errEl.classList.add('on');
+    return;
+  }
+
+  btn.disabled    = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    const backendUrl = new URL(CONFIG.PROXY_URL).origin;
+    const r = await fetch(`${backendUrl}/send-magic-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await r.json();
+    if (!r.ok || data.error) throw new Error(data.message || 'Could not send link.');
+  } catch (err) {
+    errEl.textContent = err.message || 'Something went wrong. Please try again.';
+    errEl.classList.add('on');
+    btn.disabled    = false;
+    btn.textContent = 'Send My Access Link';
+    return;
+  }
+
+  // Show confirmation — email sent
+  document.getElementById('signinForm').style.display   = 'none';
+  document.getElementById('magicSent').classList.add('on');
+}
+
+/* ══════════════════════════════════════════════
+   BILLING PORTAL
+══════════════════════════════════════════════ */
+async function openBillingPortal() {
+  showLoader();
+  try {
+    const token = state.session?.access_token;
+    const res = await fetch(CONFIG.PROXY_URL.replace('/chat', '/create-portal-session'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    });
+    const { portalUrl, message } = await res.json();
+    if (portalUrl) {
+      window.location.href = portalUrl;
+    } else {
+      hideLoader();
+      alert(message || 'Could not open billing portal. Please try again.');
+    }
+  } catch {
+    hideLoader();
+    alert('Could not reach billing portal. Please try again.');
+  }
+}
+
+/* ══════════════════════════════════════════════
+   SIGN OUT
+══════════════════════════════════════════════ */
+async function handleSignOut() {
+  showLoader();
+  await sb.auth.signOut();
+  // onAuthStateChange fires SIGNED_OUT → resets state and shows payment page
+  hideLoader();
+}
+
+/* ══════════════════════════════════════════════
+   LOAD DASHBOARD
+   Fetches member's collection from Supabase.
+   Supabase RLS ensures only their own rows return.
+   JWT in request header is verified server-side.
+══════════════════════════════════════════════ */
+let _dashboardLoading = false;
+async function loadDashboard(isNew) {
+  if (_dashboardLoading) return;
+  _dashboardLoading = true;
+  showLoader();
+  try {
+    await _loadDashboard(isNew);
+  } catch (e) {
+    console.error('Dashboard load error:', e);
+    hideLoader();
+    show('pg-signin');
+  } finally {
+    _dashboardLoading = false;
+  }
+}
+
+async function _loadDashboard(isNew) {
+  // Populate member info from JWT — no network call needed
+  const meta = state.user?.user_metadata || {};
+  const name = meta.full_name || state.user?.email?.split('@')[0] || 'Member';
+  const initial = name[0].toUpperCase();
+  const shortName = name.split(' ')[0] + ' ' + (name.split(' ')[1]?.[0] || '') + '.';
+
+  document.getElementById('memberName').textContent  = shortName;
+  document.getElementById('tbAv').textContent        = initial;
+  document.getElementById('memberSince').textContent =
+    'Member since ' + new Date(meta.member_since || state.user?.created_at).toLocaleDateString('en-US', {month:'long', year:'numeric'});
+
+  // Show dashboard immediately — don't block on DB wake-up
+  hideLoader();
+  updateSyncStatus(false);
+  if (isNew || state.isNewMember) {
+    show('pg-welcome');
+  } else {
+    show('pg-dash');
+    try { renderAll(); } catch(e) { console.error('renderAll error:', e); }
+    initChat();
+  }
+
+  // Load collection + sessions in background (DB may be waking from sleep)
+  _refreshCollection();
+}
+
+async function _refreshCollection() {
+  try {
+    const { data: glasses } = await sb
+      .from('glasses')
+      .select('*')
+      .eq('user_id', state.user.id)
+      .order('created_at', { ascending: true });
+
+    if (glasses) {
+      for (const pair of glasses) {
+        if (pair.photo_path) {
+          const { data: urlData } = await sb
+            .storage
+            .from('glasses-photos')
+            .createSignedUrl(pair.photo_path, 3600);
+          const existing = state.glasses.find(g => g.id === pair.id);
+          pair.dataUrl = urlData?.signedUrl || existing?.dataUrl || null;
+          if (existing?.base64) { pair.base64 = existing.base64; pair.mime = existing.mime; }
+        }
+      }
+      state.glasses = glasses;
+      try { renderAll(); } catch(e) { console.error('renderAll error:', e); }
+    }
+  } catch (e) {
+    console.error('Collection load error:', e);
+  }
+
+  try {
+    const { data: sessions } = await sb
+      .from('sessions')
+      .select('occasion, ai_reply, created_at')
+      .eq('user_id', state.user.id)
+      .order('created_at', { ascending: false })
+      .limit(5);
+    state.sessions = sessions || [];
+  } catch (e) {
+    state.sessions = [];
+  }
+
+  updateSyncStatus(true);
+}
+
+function enterDash() {
+  show('pg-dash');
+  renderAll();
+  initChat();
+}
+
+/* ══════════════════════════════════════════════
+   VIEW SWITCHING
+══════════════════════════════════════════════ */
+function switchView(v) {
+  document.querySelectorAll('.view, .chat-view').forEach(el => el.classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('on'));
+  document.querySelectorAll('.mob-nav-btn').forEach(n => n.classList.remove('on'));
+  if (v === 'chat') {
+    document.getElementById('v-chat').classList.add('on');
+    document.getElementById('ni-chat')?.classList.add('on');
+    document.getElementById('mn-chat')?.classList.add('on');
+    scrollMsgs();
+  } else {
+    document.getElementById('v-' + v)?.classList.add('on');
+    document.getElementById('ni-' + v)?.classList.add('on');
+    document.getElementById('mn-' + v)?.classList.add('on');
+  }
+}
+
+/* ══════════════════════════════════════════════
+   COLLECTION — UPLOAD
+   Photos upload to Supabase Storage.
+   A row is inserted into the glasses table.
+   Claude receives the actual image bytes.
+   Photos never go to any other server.
+══════════════════════════════════════════════ */
+async function handlePhotoUpload(e) {
+  const files = Array.from(e.target.files);
+  for (const file of files) {
+    if (state.glasses.length >= CONFIG.MAX_PAIRS) break;
+    await uploadGlassesPair(file);
+  }
+  e.target.value = '';
+}
+
+async function uploadGlassesPair(file) {
+  const name = prompt('What would you like to call this pair?', 'New Pair') || 'Unnamed Pair';
+
+  updateSyncStatus(false);
+
+  // 1. Read file locally for immediate preview
+  const dataUrl = await readFile(file);
+  const base64  = dataUrl.split(',')[1];
+
+  // 2. Validate image contains eyewear via Claude before uploading
+  try {
+    const checkRes = await fetch(CONFIG.PROXY_URL.replace('/chat', '/moderate-image'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.session.access_token}`,
+      },
+      body: JSON.stringify({ base64, mime: file.type }),
+    });
+    const checkData = await checkRes.json();
+    if (!checkData.ok) {
+      alert(checkData.reason || 'Please upload a photo of eyewear — glasses, sunglasses, or frames only.');
+      updateSyncStatus(true);
+      return;
+    }
+  } catch (e) {
+    // Fail open — if validation call fails, allow upload to proceed
+  }
+
+  // 3. Upload photo to Supabase Storage
+  // Path: user-id/timestamp.jpg — unique per user per upload
+  const ext      = file.type.split('/')[1] || 'jpg';
+  const filePath = `${state.user.id}/${Date.now()}.${ext}`;
+
+  const { error: storageError } = await sb
+    .storage
+    .from('glasses-photos')
+    .upload(filePath, file, { contentType: file.type, upsert: false });
+
+  if (storageError) {
+    console.error('Storage upload failed:', storageError.message);
+    alert('Photo upload failed. Please try again.');
+    updateSyncStatus(true);
+    return;
+  }
+
+  // 3. Get signed URL for display (1-hour expiry)
+  const { data: urlData } = await sb
+    .storage
+    .from('glasses-photos')
+    .createSignedUrl(filePath, 3600);
+
+  // 4. Insert row into glasses table
+  // RLS: row is tagged with auth.uid() automatically
+  const { data: row, error: dbError } = await sb
+    .from('glasses')
+    .insert({
+      user_id:    state.user.id,
+      name,
+      brand:      '',
+      photo_path: filePath,
+      occasions:  [],
+      tags:       [],
+    })
+    .select()
+    .single();
+
+  if (dbError) {
+    console.error('DB insert failed:', dbError.message);
+    alert('Could not save this pair. Please try again. (' + dbError.message + ')');
+    updateSyncStatus(true);
+    return;
+  }
+
+  // 5. Add to local state with photo data
+  state.glasses.push({
+    ...row,
+    dataUrl: urlData?.signedUrl || dataUrl,
+    base64,
+    mime: file.type,
+  });
+
+  renderAll();
+  updateChatPairs();
+  updateSyncStatus(true);
+}
+
+function readFile(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload  = e => resolve(e.target.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   RENDER COLLECTION
+══════════════════════════════════════════════ */
+function renderAll() {
+  renderOverview();
+  renderCollectionGrid();
+  updateChatPairs();
+  updatePairCounts();
+}
+
+function renderOverview() {
+  const grid = document.getElementById('ovGrid');
+  const preview = state.glasses.slice(0, 3).map(card).join('');
+  const addBtn = `<div class="add-pair" onclick="switchView('collection')"><div class="ap-plus">${state.glasses.length > 3 ? '+' + (state.glasses.length - 3) : '+'}</div><div class="ap-label">${state.glasses.length === 0 ? 'Begin your collection' : state.glasses.length > 3 ? 'more pairs' : 'Add a pair'}</div></div>`;
+  grid.innerHTML = preview + addBtn;
+
+  const list = document.getElementById('sessionList');
+  if (!state.sessions?.length) {
+    list.innerHTML = `<div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--ivory3);font-style:italic;padding:8px 0;">Your first consultation awaits.</div>`;
+    return;
+  }
+  list.innerHTML = state.sessions.map(s => {
+    const date = new Date(s.created_at);
+    const label = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return `<div class="session-row">
+      <div class="sr-date">${label}</div>
+      <div class="sr-body">
+        <div class="sr-occ">${(s.occasion||'').slice(0,60)}${(s.occasion||'').length>60?'…':''}</div>
+        <div class="sr-rec">Lorgner: <em>${(s.ai_reply||'').slice(0,80)}${(s.ai_reply||'').length>80?'…':''}</em></div>
+      </div>
+      <div class="sr-arr">→</div>
+    </div>`;
+  }).join('');
+}
+
+function renderCollectionGrid() {
+  const grid = document.getElementById('collGrid');
+  const cards = state.glasses.map(card).join('');
+  const addBtn = state.glasses.length < CONFIG.MAX_PAIRS
+    ? `<div class="add-pair"><input type="file" accept="image/*" multiple onchange="handlePhotoUpload(event)"><div class="ap-plus">+</div><div class="ap-label">Add a pair</div></div>`
+    : '';
+  grid.innerHTML = cards + addBtn;
+}
+
+function card(p) {
+  const img = p.dataUrl
+    ? `<img src="${p.dataUrl}" alt="${p.name}">`
+    : `<span style="font-size:32px;">👓</span>`;
+  return `
+    <div class="coll-card">
+      <div class="cc-photo" style="position:relative;">${img}
+        <button onclick="deletePair('${p.id}')" title="Remove" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);border:none;color:#fff;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:14px;line-height:26px;padding:0;">✕</button>
+      </div>
+      <div class="cc-body">
+        <div class="cc-brand">${p.brand || 'Your collection'}</div>
+        <div class="cc-name">${p.name}</div>
+        <div class="cc-tags">
+          ${(p.occasions||[]).map(o=>`<span class="cc-tag ct-occ">${o}</span>`).join('')}
+          ${(p.tags||[]).map(t=>`<span class="cc-tag ct-style">${t}</span>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+async function deletePair(id) {
+  if (!confirm('Remove this pair from your collection?')) return;
+  const pair = state.glasses.find(g => g.id === id);
+  if (pair?.photo_path) {
+    await sb.storage.from('glasses-photos').remove([pair.photo_path]);
+  }
+  await sb.from('glasses').delete().eq('id', id);
+  state.glasses = state.glasses.filter(g => g.id !== id);
+  renderAll();
+}
+
+function updatePairCounts() {
+  const c     = state.glasses.length;
+  const label = c === 1 ? '1 pair' : `${c} pairs`;
+  document.getElementById('collCountOv').textContent   = label;
+  document.getElementById('collCountColl').textContent = label;
+  document.getElementById('pairPill').textContent      = c;
+}
+
+function updateChatPairs() {
+  const container = document.getElementById('chatPairs');
+  if (state.glasses.length === 0) {
+    container.innerHTML = `<div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--ivory4);letter-spacing:1px;">Add pairs to your collection to begin</div>`;
+    return;
+  }
+  container.innerHTML = state.glasses.map(p =>
+    `<div class="ct-pair sel" data-id="${p.id}">${p.name}</div>`
+  ).join('');
+}
+
+function updateSyncStatus(synced) {
+  const el = document.getElementById('syncStatus');
+  if (synced) {
+    el.textContent = '● Synced';
+    el.classList.add('synced');
+  } else {
+    el.textContent = '○ Saving…';
+    el.classList.remove('synced');
+  }
+}
+
+/* ══════════════════════════════════════════════
+   CHAT — INITIALISATION
+══════════════════════════════════════════════ */
+function initChat() {
+  document.getElementById('chatMsgs').innerHTML = '';
+  state.history  = [];
+  state.firstSent = false;
+  updateChatPairs();
+}
+
+/* ══════════════════════════════════════════════
+   CHAT — SEND MESSAGE
+   ─────────────────────────────────────────────
+   THE CLAUDE API KEY IS NEVER HERE.
+
+   The request goes to CONFIG.PROXY_URL (Railway).
+   The proxy adds the API key from env vars.
+   The proxy verifies the JWT before calling Claude.
+   The browser never sees the API key.
+   ─────────────────────────────────────────────
+   JWT is sent in Authorization header.
+   Railway proxy verifies it with Supabase.
+   If invalid → 401, request stops.
+   If valid → proxy calls Claude with API key.
+══════════════════════════════════════════════ */
+async function sendMsg() {
+  const input = document.getElementById('chatIn');
+  const text  = input.value.trim();
+  if (!text || state.busy) return;
+
+  addUserBubble(text);
+  input.value = '';
+  input.style.height = 'auto';
+  showTyping();
+
+  // Build user message
+  const userMsg = { role: 'user', content: [] };
+
+  // Attach all images on first message of session
+  if (!state.firstSent && state.glasses.length > 0) {
+    for (const p of state.glasses) {
+      // If we have a dataUrl, extract base64 from it
+      // If we have a Supabase signed URL, fetch it and convert
+      let b64 = p.base64;
+      let mime = p.mime;
+
+      if (!b64 && p.dataUrl) {
+        try {
+          const resp = await fetch(p.dataUrl);
+          const blob = await resp.blob();
+          b64  = await blobToBase64(blob);
+          mime = blob.type;
+        } catch (err) {
+          continue; // Skip this image if fetch fails
+        }
+      }
+
+      if (b64 && mime) {
+        userMsg.content.push({
+          type: 'image',
+          source: { type: 'base64', media_type: mime, data: b64 }
+        });
+      }
+    }
+    state.firstSent = true;
+  }
+
+  userMsg.content.push({ type: 'text', text });
+  state.history.push(userMsg);
+
+  try {
+    // Get current JWT from Supabase session
+    // This is sent to the proxy so it can verify identity
+    const jwt = state.session?.access_token || '';
+
+    const res = await fetch(CONFIG.PROXY_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': `Bearer ${jwt}`,  // JWT for identity verification
+      },
+      body: JSON.stringify({
+        system:     buildSystemPrompt(),
+        messages:   state.history,
+        max_tokens: 800,
+      })
+    });
+
+    const data = await res.json();
+    hideTyping();
+
+    // Handle proxy-level rejections (blocked content, rate limit, auth fail)
+    if (res.status === 401) {
+      addRedirectBubble('Your session has expired. Please sign in again.');
+      setTimeout(() => handleSignOut(), 2000);
+      return;
+    }
+
+    if (data.error) {
+      addRedirectBubble(data.message || 'Lorgner is here for your collection. What are we styling today?');
+      return;
+    }
+
+    const reply = data.content?.[0]?.text;
+    if (reply) {
+      state.history.push({ role: 'assistant', content: reply });
+      addAiBubble(reply);
+      logSession(text, reply);
+    }
+
+  } catch (err) {
+    hideTyping();
+    addAiBubble('A moment — please try again.');
+    console.error('Chat error:', err);
+  }
+}
+
+function buildSystemPrompt() {
+  const pairs = state.glasses.length > 0
+    ? state.glasses.map((p, i) => `Pair ${i+1}: "${p.name}"${p.brand ? ' by ' + p.brand : ''}`).join(', ')
+    : 'No pairs in collection yet';
+
+  return `You are Lorgner — a private intelligence service for eyewear and personal style. You exist solely to help members understand and style their glasses collection.
+
+STRICT SCOPE: Your conversation covers ONLY eyewear, glasses collections, frame styling, and how eyewear relates to clothing and occasion dressing. Nothing else.
+
+If asked anything outside this scope respond only with: "Lorgner is here for your collection. What are we styling today?"
+
+VOICE: Warm, authoritative, dry wit when appropriate. Cormorant Garamond italic sensibility — considered, unhurried. Short paragraphs. Never sycophantic. Never bullet points.
+
+MEMBER'S COLLECTION: ${pairs}
+${state.glasses.length > 0 ? 'Images have been provided. Reference specific pairs by name.' : ''}
+
+When recommending: be decisive, reference what you actually see, identify collection gaps. Never recommend specific products to purchase.`;
+}
+
+/* ══════════════════════════════════════════════
+   BUBBLE RENDERERS
+══════════════════════════════════════════════ */
+function addUserBubble(text) {
+  const msgs = document.getElementById('chatMsgs');
+  const el   = document.createElement('div');
+  el.className = 'cmsg user';
+  const initial = (state.user?.user_metadata?.full_name || state.user?.email || 'M')[0].toUpperCase();
+  el.innerHTML = `<div class="cm-av">${initial}</div><div class="cm-bbl">${text.replace(/\n/g,'<br>')}</div>`;
+  msgs.appendChild(el);
+  scrollMsgs();
+}
+
+function addAiBubble(text) {
+  const msgs = document.getElementById('chatMsgs');
+  const el   = document.createElement('div');
+  el.className = 'cmsg ai';
+  const fmt  = text
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n/g,'<br>');
+  el.innerHTML = `<div class="cm-av">L</div><div class="cm-bbl">${fmt}</div>`;
+  msgs.appendChild(el);
+  scrollMsgs();
+}
+
+function addRedirectBubble(text) {
+  const msgs = document.getElementById('chatMsgs');
+  const el   = document.createElement('div');
+  el.className = 'cmsg ai';
+  el.innerHTML = `<div class="cm-av">L</div><div class="redirect-bbl">${text}</div>`;
+  msgs.appendChild(el);
+  scrollMsgs();
+}
+
+let typingEl = null;
+function showTyping() {
+  state.busy = true;
+  document.getElementById('chatSend').disabled = true;
+  const msgs = document.getElementById('chatMsgs');
+  typingEl = document.createElement('div');
+  typingEl.className = 'typing-wrap';
+  typingEl.innerHTML = `<div class="cm-av" style="background:var(--gold);color:var(--void);font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;">L</div><div class="typing-bbl"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  msgs.appendChild(typingEl);
+  scrollMsgs();
+}
+function hideTyping() {
+  state.busy = false;
+  document.getElementById('chatSend').disabled = false;
+  if (typingEl) { typingEl.remove(); typingEl = null; }
+}
+
+function scrollMsgs() {
+  const msgs = document.getElementById('chatMsgs');
+  setTimeout(() => msgs.scrollTop = msgs.scrollHeight, 50);
+}
+
+/* ══════════════════════════════════════════════
+   SESSION LOGGING
+   Writes to Supabase sessions table.
+   Tagged with verified user_id from JWT.
+══════════════════════════════════════════════ */
+function logSession(userMsg, aiReply) {
+  // Update session list UI
+  const list = document.getElementById('sessionList');
+  if (list.querySelector('div[style]')) list.innerHTML = '';
+  const row = document.createElement('div');
+  row.className = 'session-row';
+  row.innerHTML = `
+    <div class="sr-date">Today</div>
+    <div class="sr-body">
+      <div class="sr-occ">${userMsg.slice(0,60)}${userMsg.length>60?'…':''}</div>
+      <div class="sr-rec">Lorgner: <em>${aiReply.slice(0,80)}${aiReply.length>80?'…':''}</em></div>
+    </div>
+    <div class="sr-arr">→</div>`;
+  list.insertBefore(row, list.firstChild);
+
+  // Write to Supabase sessions table
+  // RLS: INSERT WHERE user_id = auth.uid()
+  if (state.user?.id) {
+    sb.from('sessions').insert({
+      user_id:   state.user.id,
+      occasion:  userMsg.slice(0, 200),
+      ai_reply:  aiReply.slice(0, 500),
+      pair_count: state.glasses.length,
+      pair_names: state.glasses.map(g => g.name),
+      created_at: new Date().toISOString(),
+    }).then(({ error }) => {
+      if (error) console.error('Session log error:', error.message);
+    });
+  }
+}
+
+/* ══════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════ */
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+}
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 110) + 'px';
+}
+function fmtCard(el) {
+  el.value = el.value.replace(/\D/g,'').replace(/(\d{4})/g,'$1 ').trim().slice(0,19);
+}
+function fmtExp(el) {
+  el.value = el.value.replace(/\D/g,'').replace(/(\d{2})(\d)/,'$1 / $2').slice(0,7);
+}
+function generateTempPassword() {
+  // Used only for initial Supabase signUp — member authenticates via magic link
+  return 'Lorgner-' + Math.random().toString(36).substr(2,12) + Date.now();
+}
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload  = e => resolve(e.target.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+</script>
+</body>
+</html>

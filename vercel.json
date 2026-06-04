@@ -8,9 +8,17 @@
   ],
   "routes": [
     {
+      "src": "/",
+      "dest": "/public/index.html"
+    },
+    {
       "src": "/join",
       "status": 302,
       "headers": { "Location": "https://buy.stripe.com/aFa6oI7BU2yVeQW4qzcZa00" }
+    },
+    {
+      "src": "/app",
+      "dest": "/public/app.html"
     },
     {
       "src": "/journal",
@@ -38,7 +46,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/public/index.html"
+      "dest": "/public/app.html"
     }
   ]
 }
