@@ -31,10 +31,11 @@
 
 'use strict';
 
-const express   = require('express');
-const cors      = require('cors');
-const rateLimit = require('express-rate-limit');
-const helmet    = require('helmet');
+const express        = require('express');
+const cors           = require('cors');
+const rateLimit      = require('express-rate-limit');
+const helmet         = require('helmet');
+const { randomUUID } = require('crypto');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -50,8 +51,10 @@ const CONFIG = {
   ALLOWED_ORIGINS:      (process.env.ALLOWED_ORIGIN || 'https://lorgner.vercel.app')
                           .split(',').map(o => o.trim()),
   FRONTEND_URL:         process.env.FRONTEND_URL || 'https://lorgner.vercel.app',
-  RESEND_KEY:           process.env.RESEND_API_KEY,
-  RATE_LIMIT_MAX:       parseInt(process.env.RATE_LIMIT_MAX || '20'),
+  RESEND_KEY:              process.env.RESEND_API_KEY,
+  RATE_LIMIT_MAX:          parseInt(process.env.RATE_LIMIT_MAX || '20'),
+  STRIPE_WEDDING_PRICE_ID: process.env.STRIPE_WEDDING_PRICE_ID || 'price_1ToWD9JdJONprYpJMK3bC51L',
+  CRON_SECRET:             process.env.CRON_SECRET,
   MODEL:                'claude-sonnet-4-6',
   MAX_TOKENS:           800,
   MAX_IMG_SIZE_MB:      5,
@@ -790,9 +793,18 @@ app.post('/stripe-webhook', async (req, res) => {
 
   console.log(`[LORGNER] Stripe event received: ${event.type}`);
 
-  // ── PAYMENT SUCCEEDED — CREATE ACCOUNT ──
+  // ── PAYMENT SUCCEEDED — ROUTE BY TYPE ──
   if (event.type === 'checkout.session.completed') {
-    const session       = event.data.object;
+    const session = event.data.object;
+
+    if (session.metadata?.type === 'wedding_bundle') {
+      // Wedding party bundle — generate redemption links
+      try { await handleWeddingCheckout(session); }
+      catch (err) { console.error('[LORGNER] Wedding checkout handler failed:', err.message); }
+      return res.status(200).json({ received: true });
+    }
+
+    // ── INDIVIDUAL SUBSCRIPTION — CREATE ACCOUNT ──
     const email         = session.customer_details?.email || session.customer_email;
     const name          = session.customer_details?.name || '';
     const customerId    = session.customer;
@@ -923,6 +935,402 @@ app.post('/stripe-webhook', async (req, res) => {
 
   // Always return 200 to Stripe — otherwise it retries
   res.status(200).json({ received: true });
+});
+
+/* ══════════════════════════════════════════════
+   WEDDING BUNDLE — HELPER
+   Called by the Stripe webhook when a wedding
+   bundle checkout completes. Generates one UUID
+   redemption token per guest, stores them in
+   Supabase, and emails all links to the buyer.
+══════════════════════════════════════════════ */
+async function handleWeddingCheckout(session) {
+  const buyerEmail = session.customer_details?.email || session.customer_email;
+  const buyerName  = session.customer_details?.name  || session.metadata?.buyer_name || '';
+  const partySize  = parseInt(session.metadata?.party_size || '1', 10);
+  const sessionId  = session.id;
+
+  if (!buyerEmail) { console.error('[LORGNER] Wedding checkout: no buyer email'); return; }
+
+  // Generate unique tokens and insert them into Supabase
+  const tokens = Array.from({ length: partySize }, () => randomUUID());
+  for (const token of tokens) {
+    await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions`, {
+      method:  'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
+        'Prefer':        'return=minimal',
+      },
+      body: JSON.stringify({
+        token,
+        stripe_session_id: sessionId,
+        buyer_email:  buyerEmail,
+        buyer_name:   buyerName,
+        party_size:   partySize,
+      }),
+    });
+  }
+
+  // Build the links list for the email
+  const linkRows = tokens.map((tok, i) => `
+    <tr>
+      <td style="padding:8px 0;font-size:13px;color:#8A8272;width:64px;vertical-align:top;">Link ${i + 1}</td>
+      <td style="padding:8px 0;font-size:13px;">
+        <a href="${CONFIG.FRONTEND_URL}/redeem?token=${tok}"
+           style="color:#C9A96E;text-decoration:none;word-break:break-all;">
+          lorgner.co/redeem?token=${tok}
+        </a>
+      </td>
+    </tr>`).join('');
+
+  const { Resend } = require('resend');
+  const resend = new Resend(CONFIG.RESEND_KEY);
+
+  await resend.emails.send({
+    from:    'Lorgner <hello@lorgner.co>',
+    to:      buyerEmail,
+    subject: `Your Lorgner Wedding Party Gift — ${partySize} Redemption Link${partySize > 1 ? 's' : ''} Inside`,
+    html: `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#FAF6EE;font-family:Georgia,serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#FAF6EE;padding:60px 20px;">
+    <tr><td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+        <tr><td align="center" style="padding-bottom:40px;">
+          <span style="font-family:Georgia,serif;font-size:13px;letter-spacing:8px;color:#C9A96E;text-transform:uppercase;">L O R G N E R</span>
+        </td></tr>
+        <tr><td style="background:#FFFCF5;border:1px solid rgba(30,26,20,0.10);padding:48px 44px;">
+          <p style="margin:0 0 8px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#9A7A48;">Your Wedding Party Gift</p>
+          <p style="margin:0 0 24px;font-family:Georgia,serif;font-size:28px;font-weight:normal;color:#1E1A14;line-height:1.2;">
+            ${partySize} membership${partySize > 1 ? 's' : ''} ready to activate.
+          </p>
+          <p style="margin:0 0 28px;font-size:14px;line-height:1.8;color:#5A5244;">
+            ${buyerName ? `Dear ${buyerName},` : 'Hello,'}<br><br>
+            Your Lorgner wedding party gift is confirmed. Below are ${partySize} private redemption link${partySize > 1 ? 's' : ''} — one per person. Forward each link individually; each one can only be used once.
+          </p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid rgba(30,26,20,0.08);margin-bottom:32px;">
+            ${linkRows}
+          </table>
+          <p style="margin:0 0 28px;font-size:13px;line-height:1.8;color:#9A8E7E;">
+            Each person's six-month membership begins the day they activate their link — nobody loses time waiting on someone else. After six months, they'll have the option to continue at the standard $49/month rate.
+          </p>
+          <p style="margin:0;font-size:12px;color:#9A8E7E;line-height:1.6;">Questions? Reply to this email or write to <a href="mailto:hello@lorgner.co" style="color:#C9A96E;">hello@lorgner.co</a></p>
+        </td></tr>
+        <tr><td align="center" style="padding-top:28px;">
+          <p style="margin:0;font-size:11px;color:#9A8E7E;letter-spacing:1px;">LORGNER &middot; A PRIVATE STYLING MEMBERSHIP</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
+  });
+
+  console.log(`[LORGNER] Wedding bundle confirmed: ${partySize} links sent to ${buyerEmail}`);
+}
+
+/* ══════════════════════════════════════════════
+   WEDDING CHECKOUT ENDPOINT
+   POST /create-wedding-checkout
+   Creates a Stripe one-time Checkout session for
+   N × $129 (or volume-discounted price). Frontend
+   redirects the buyer to the returned URL.
+══════════════════════════════════════════════ */
+app.post('/create-wedding-checkout', async (req, res) => {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return res.status(500).json({ error: true, message: 'Stripe not configured.' });
+  }
+
+  const { name, email, partySize } = req.body;
+  const size = parseInt(partySize, 10);
+
+  if (!email || !name || !size || size < 2 || size > 20) {
+    return res.status(400).json({ error: true, message: 'Invalid request.' });
+  }
+
+  try {
+    const stripe  = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    const session = await stripe.checkout.sessions.create({
+      mode:                 'payment',
+      payment_method_types: ['card'],
+      customer_email:       email,
+      line_items: [{
+        price:    CONFIG.STRIPE_WEDDING_PRICE_ID,
+        quantity: size,
+      }],
+      success_url: `${CONFIG.FRONTEND_URL}/wedding?purchased=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url:  `${CONFIG.FRONTEND_URL}/wedding`,
+      metadata: {
+        type:        'wedding_bundle',
+        buyer_name:  name,
+        party_size:  String(size),
+      },
+    });
+
+    console.log(`[LORGNER] Wedding checkout created: ${size} guests for ${email}`);
+    res.json({ checkoutUrl: session.url });
+
+  } catch (err) {
+    console.error('[LORGNER] Wedding checkout error:', err.message);
+    res.status(500).json({ error: true, message: err.message || 'Checkout unavailable.' });
+  }
+});
+
+/* ══════════════════════════════════════════════
+   VALIDATE WEDDING TOKEN
+   POST /validate-wedding-token
+   Called by redeem.html on load to check if a
+   token is valid before showing the form.
+══════════════════════════════════════════════ */
+app.post('/validate-wedding-token', async (req, res) => {
+  const { token } = req.body;
+  if (!token) return res.status(400).json({ valid: false });
+
+  try {
+    const r    = await fetch(
+      `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?token=eq.${token}&select=buyer_name,redeemed_at`,
+      { headers: { apikey: CONFIG.SUPABASE_SERVICE_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}` } }
+    );
+    const rows = await r.json();
+    const row  = rows?.[0];
+
+    if (!row)           return res.json({ valid: false });
+    if (row.redeemed_at) return res.json({ valid: true, alreadyRedeemed: true });
+    res.json({ valid: true, alreadyRedeemed: false, buyerName: row.buyer_name || '' });
+  } catch (err) {
+    console.error('[LORGNER] validate-wedding-token error:', err.message);
+    res.status(500).json({ valid: false });
+  }
+});
+
+/* ══════════════════════════════════════════════
+   REDEEM WEDDING GIFT
+   POST /redeem-wedding-gift
+   Called when a groomsman submits their name +
+   email on redeem.html. Validates the token,
+   creates their Supabase account, marks the token
+   redeemed, and sends them a magic link.
+══════════════════════════════════════════════ */
+app.post('/redeem-wedding-gift', async (req, res) => {
+  const { token, name, email } = req.body;
+
+  if (!token || !name || !email) {
+    return res.status(400).json({ error: true, message: 'Missing required fields.' });
+  }
+
+  try {
+    // Fetch the token record
+    const r    = await fetch(
+      `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?token=eq.${token}&select=*`,
+      { headers: { apikey: CONFIG.SUPABASE_SERVICE_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}` } }
+    );
+    const rows = await r.json();
+    const row  = rows?.[0];
+
+    if (!row) {
+      return res.status(404).json({ error: true, message: 'This invitation link is not valid.' });
+    }
+    if (row.redeemed_at) {
+      return res.status(409).json({ error: true, code: 'ALREADY_REDEEMED', message: 'This invitation has already been used.' });
+    }
+
+    // Create Supabase Auth account
+    const membershipEndsAt = new Date(Date.now() + 6 * 30 * 24 * 60 * 60 * 1000).toISOString();
+
+    const signUpRes  = await fetch(`${CONFIG.SUPABASE_URL}/auth/v1/admin/users`, {
+      method:  'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
+      },
+      body: JSON.stringify({
+        email,
+        email_confirm: true,
+        user_metadata: {
+          full_name:           name,
+          member_tier:         'wedding_gift',
+          member_since:        new Date().toISOString(),
+          membership_ends_at:  membershipEndsAt,
+          gifted_by:           row.buyer_name || row.buyer_email,
+        },
+      }),
+    });
+    let authUser = await signUpRes.json();
+
+    // If user already exists, look them up
+    if (!authUser?.id) {
+      const listRes  = await fetch(
+        `${CONFIG.SUPABASE_URL}/auth/v1/admin/users?email=${encodeURIComponent(email)}`,
+        { headers: { apikey: CONFIG.SUPABASE_SERVICE_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}` } }
+      );
+      const listData = await listRes.json();
+      authUser       = listData?.users?.[0] || listData?.[0] || authUser;
+    }
+
+    const userId = authUser?.id;
+
+    // Insert into members table
+    if (userId) {
+      await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/members`, {
+        method:  'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
+          'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
+          'Prefer':        'return=minimal,resolution=ignore-duplicates',
+        },
+        body: JSON.stringify({
+          id:                userId,
+          email,
+          full_name:         name,
+          member_tier:       'wedding_gift',
+          member_since:      new Date().toISOString(),
+          membership_ends_at: membershipEndsAt,
+        }),
+      });
+    }
+
+    // Mark the token as redeemed
+    await fetch(
+      `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?token=eq.${token}`,
+      {
+        method:  'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
+          'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
+        },
+        body: JSON.stringify({
+          redeemed_at:        new Date().toISOString(),
+          redeemed_by_email:  email,
+          redeemed_by_name:   name,
+          membership_ends_at: membershipEndsAt,
+        }),
+      }
+    );
+
+    // Send magic link so they can access the app immediately
+    await sendMagicLinkEmail(email, name);
+
+    console.log(`[LORGNER] Wedding gift redeemed: ${email} (gifted by ${row.buyer_email})`);
+    res.json({ ok: true });
+
+  } catch (err) {
+    console.error('[LORGNER] redeem-wedding-gift error:', err.message);
+    res.status(500).json({ error: true, message: 'Activation failed. Please try again.' });
+  }
+});
+
+/* ══════════════════════════════════════════════
+   WEDDING RENEWAL CHECK — CRON ENDPOINT
+   POST /wedding-renewal-check
+   Called daily by a cron service (e.g. cron-job.org).
+   Finds wedding memberships expiring in ~30 days
+   that haven't had a renewal email sent yet and
+   emails each member their conversion offer.
+
+   SETUP: Point a daily cron job at:
+     POST https://your-proxy.railway.app/wedding-renewal-check
+     Header: x-cron-secret: <your CRON_SECRET env var>
+══════════════════════════════════════════════ */
+app.post('/wedding-renewal-check', async (req, res) => {
+  if (req.headers['x-cron-secret'] !== CONFIG.CRON_SECRET) {
+    return res.status(401).json({ error: 'Unauthorized.' });
+  }
+
+  try {
+    const now           = new Date();
+    const in20Days      = new Date(now.getTime() + 20 * 24 * 60 * 60 * 1000).toISOString();
+    const in35Days      = new Date(now.getTime() + 35 * 24 * 60 * 60 * 1000).toISOString();
+
+    // Find redeemed tokens expiring between 20 and 35 days from now, no renewal email sent yet
+    const r    = await fetch(
+      `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions` +
+      `?redeemed_at=not.is.null` +
+      `&renewal_email_sent=eq.false` +
+      `&membership_ends_at=gt.${in20Days}` +
+      `&membership_ends_at=lt.${in35Days}` +
+      `&select=redeemed_by_email,redeemed_by_name,membership_ends_at,token`,
+      { headers: { apikey: CONFIG.SUPABASE_SERVICE_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}` } }
+    );
+    const expiring = await r.json();
+
+    if (!expiring?.length) {
+      console.log('[LORGNER] Wedding renewal check: no memberships expiring soon.');
+      return res.json({ ok: true, sent: 0 });
+    }
+
+    const { Resend } = require('resend');
+    const resend = new Resend(CONFIG.RESEND_KEY);
+    let sent = 0;
+
+    for (const member of expiring) {
+      const endsDate = new Date(member.membership_ends_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+      await resend.emails.send({
+        from:    'Lorgner <hello@lorgner.co>',
+        to:      member.redeemed_by_email,
+        subject: 'Your Lorgner membership is ending soon',
+        html: `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#FAF6EE;font-family:Georgia,serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#FAF6EE;padding:60px 20px;">
+    <tr><td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+        <tr><td align="center" style="padding-bottom:40px;">
+          <span style="font-family:Georgia,serif;font-size:13px;letter-spacing:8px;color:#C9A96E;text-transform:uppercase;">L O R G N E R</span>
+        </td></tr>
+        <tr><td style="background:#FFFCF5;border:1px solid rgba(30,26,20,0.10);padding:48px 44px;">
+          <p style="margin:0 0 24px;font-family:Georgia,serif;font-size:26px;font-weight:normal;color:#1E1A14;line-height:1.2;">
+            ${member.redeemed_by_name ? `${member.redeemed_by_name},` : 'Hello,'}<br>your membership ends ${endsDate}.
+          </p>
+          <p style="margin:0 0 24px;font-size:14px;line-height:1.8;color:#5A5244;">
+            Your six-month wedding party membership is coming to a close. If Lorgner has been useful — for the engagement photos, the trip, the rehearsal dinner — you can keep it going at the standard rate.
+          </p>
+          <p style="margin:0 0 32px;font-family:Georgia,serif;font-size:22px;color:#1E1A14;">$49 / month</p>
+          <table cellpadding="0" cellspacing="0" style="margin:0 0 32px;">
+            <tr><td style="background:#C9A96E;padding:14px 36px;">
+              <a href="${CONFIG.FRONTEND_URL}/app" style="color:#1E1A14;text-decoration:none;font-family:Georgia,serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;">Continue with Lorgner</a>
+            </td></tr>
+          </table>
+          <p style="margin:0;font-size:12px;color:#9A8E7E;line-height:1.6;">No obligation. If you decide not to continue, your membership simply ends on ${endsDate} and no charge is made.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
+      });
+
+      // Mark renewal email as sent
+      await fetch(
+        `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?token=eq.${member.token}`,
+        {
+          method:  'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
+            'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
+          },
+          body: JSON.stringify({ renewal_email_sent: true }),
+        }
+      );
+
+      console.log(`[LORGNER] Renewal email sent to ${member.redeemed_by_email} (ends ${endsDate})`);
+      sent++;
+    }
+
+    res.json({ ok: true, sent });
+
+  } catch (err) {
+    console.error('[LORGNER] wedding-renewal-check error:', err.message);
+    res.status(500).json({ error: true, message: err.message });
+  }
 });
 
 /* ══════════════════════════════════════════════

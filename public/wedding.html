@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lorgner — A Gift for the Wedding Party</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --warm:       #FAF6EE;
+  --paper:      #FFFCF5;
+  --ink:        #1E1A14;
+  --ink-soft:   #5A5244;
+  --ink-muted:  #9A8E7E;
+  --gold:       #C9A96E;
+  --gold-deep:  #9A7A48;
+  --gold-light: #DFC090;
+  --gold-bg:    rgba(201,169,110,0.09);
+  --gold-line:  rgba(201,169,110,0.30);
+  --line:       rgba(30,26,20,0.10);
+  --line-soft:  rgba(30,26,20,0.06);
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--warm);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* LAYOUT */
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+@media(max-width:640px) { .wrap { padding: 0 20px; } }
+
+/* TOPBAR */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 28px 0; border-bottom: 1px solid var(--line);
+}
+.wordmark {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: 14px; letter-spacing: 8px;
+  text-transform: uppercase; color: var(--gold);
+}
+.topbar nav { display: flex; gap: 32px; }
+.topbar nav a {
+  font-size: 12px; font-weight: 300; letter-spacing: 0.5px;
+  color: var(--ink-soft); transition: color 0.2s;
+}
+.topbar nav a:hover { color: var(--gold); }
+@media(max-width:640px) { .topbar nav { display: none; } }
+
+/* HERO */
+.hero-photo {
+  width: 100%; height: 70vh; max-height: 620px; min-height: 400px;
+  overflow: hidden; position: relative;
+}
+.hero-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 18%;
+}
+.hero-photo::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(250,246,238,0) 50%, rgba(250,246,238,0.55) 100%);
+}
+
+.hero-text {
+  padding: 64px 0 72px;
+  border-bottom: 1px solid var(--line);
+}
+.hero-eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-size: 11px; font-weight: 400; letter-spacing: 3.5px;
+  text-transform: uppercase; color: var(--gold-deep);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 14px;
+}
+.hero-eyebrow::before {
+  content: ''; width: 32px; height: 1px; background: var(--gold-line);
+}
+.hero-h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(38px, 5.5vw, 66px);
+  font-weight: 300; line-height: 1.08; color: var(--ink);
+  max-width: 760px; margin-bottom: 24px;
+}
+.hero-h1 em { font-style: italic; color: var(--gold-deep); }
+.hero-lede {
+  font-size: 17px; font-weight: 300; color: var(--ink-soft);
+  max-width: 540px; line-height: 1.75; margin-bottom: 40px;
+}
+.hero-cta { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-block;
+  background: var(--ink); color: var(--paper);
+  padding: 16px 32px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px; font-weight: 400; letter-spacing: 2px;
+  text-transform: uppercase; border: none; cursor: pointer;
+  transition: background 0.25s;
+}
+.btn-primary:hover { background: var(--gold-deep); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.link-quiet {
+  font-size: 14px; font-weight: 300; color: var(--ink-soft);
+  border-bottom: 1px solid var(--gold-line); padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s; cursor: pointer;
+}
+.link-quiet:hover { color: var(--ink); border-color: var(--gold); }
+
+/* SECTION SHELL */
+section { padding: 80px 0; border-bottom: 1px solid var(--line); }
+.sec-eyebrow {
+  font-size: 10px; font-weight: 400; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--gold-deep); margin-bottom: 14px;
+}
+.sec-h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 3.5vw, 40px);
+  font-weight: 300; line-height: 1.2; color: var(--ink);
+  max-width: 620px; margin-bottom: 52px;
+}
+.sec-h2 em { font-style: italic; color: var(--gold-deep); }
+
+/* TIMELINE */
+.timeline-scroll { overflow-x: auto; padding-bottom: 8px; }
+.timeline {
+  display: flex; align-items: flex-start;
+  min-width: 640px; padding-top: 12px; position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute; top: 30px; left: 4px; right: 0; height: 1px;
+  background: var(--gold-line);
+}
+.t-node { flex: 1; position: relative; padding-right: 16px; }
+.t-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); margin-bottom: 18px;
+  position: relative; z-index: 1;
+  box-shadow: 0 0 0 3px rgba(201,169,110,0.18);
+}
+.t-node.ghost .t-dot { background: transparent; border: 1px solid var(--gold-line); box-shadow: none; }
+.t-label { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 400; margin-bottom: 4px; }
+.t-sub { font-size: 12px; font-weight: 300; color: var(--ink-muted); letter-spacing: 0.3px; }
+.t-node.ghost .t-label { color: var(--ink-muted); font-style: italic; font-weight: 300; }
+
+.timeline-caption {
+  margin-top: 44px; font-size: 15px; font-weight: 300; color: var(--ink-soft);
+  max-width: 580px; line-height: 1.8; font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+}
+.timeline-caption em { font-style: italic; color: var(--gold-deep); }
+
+/* WHO IT'S FOR */
+.for-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--line); border: 1px solid var(--line);
+}
+@media(max-width:680px) { .for-grid { grid-template-columns: 1fr; } }
+.for-card {
+  background: var(--paper); padding: 48px 44px;
+}
+.for-card .role {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 26px; font-weight: 300;
+  color: var(--ink); margin-bottom: 14px;
+}
+.for-card .role span { color: var(--gold-deep); }
+.for-card p { font-size: 15px; font-weight: 300; color: var(--ink-soft); line-height: 1.8; margin: 0; }
+
+/* PARTY BUILDER */
+.party-panel {
+  background: var(--paper); border: 1px solid var(--line);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+}
+@media(max-width:780px) { .party-panel { grid-template-columns: 1fr; } }
+
+.party-left { padding: 52px 48px; border-right: 1px solid var(--line); }
+@media(max-width:780px) { .party-left { padding: 36px 28px; border-right: none; border-bottom: 1px solid var(--line); } }
+
+.stepper-label {
+  font-size: 10px; font-weight: 400; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--ink-soft); margin-bottom: 18px;
+}
+.stepper { display: flex; align-items: center; gap: 20px; margin-bottom: 12px; }
+.step-btn {
+  width: 44px; height: 44px; border: 1px solid var(--ink);
+  background: transparent; font-size: 20px; cursor: pointer;
+  color: var(--ink); transition: all 0.2s; font-family: inherit;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-btn:hover { background: var(--ink); color: var(--paper); }
+.step-count {
+  font-family: 'Cormorant Garamond', serif; font-size: 48px;
+  font-weight: 300; min-width: 60px; text-align: center; color: var(--ink);
+}
+.step-note { font-size: 13px; font-weight: 300; color: var(--ink-muted); line-height: 1.65; }
+
+.tier-table { margin-top: 36px; }
+.tier-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 11px 0; border-bottom: 1px solid var(--line-soft);
+  font-size: 13px; color: var(--ink-muted); transition: color 0.2s;
+}
+.tier-row:last-child { border-bottom: none; }
+.tier-row.active { color: var(--ink); }
+.tier-row.active .tier-price { color: var(--gold-deep); font-weight: 500; }
+.tier-name { font-weight: 300; }
+
+.party-right { padding: 52px 48px; }
+@media(max-width:780px) { .party-right { padding: 36px 28px; } }
+
+.total-eyebrow {
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--ink-muted); margin-bottom: 8px;
+}
+.total-amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 60px; font-weight: 300; color: var(--ink);
+  line-height: 1; margin-bottom: 4px;
+}
+.total-sub {
+  font-size: 13px; font-weight: 300; color: var(--ink-muted); margin-bottom: 36px;
+}
+
+.form-row { margin-bottom: 14px; }
+.form-label {
+  display: block; font-size: 10px; font-weight: 400; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--ink-muted); margin-bottom: 7px;
+}
+.form-input {
+  width: 100%; background: var(--warm); border: 1px solid var(--line);
+  padding: 14px 16px; font-family: 'Jost', sans-serif;
+  font-size: 15px; font-weight: 300; color: var(--ink); outline: none;
+  transition: border-color 0.2s; border-radius: 0;
+}
+.form-input::placeholder { color: var(--ink-muted); }
+.form-input:focus { border-color: var(--gold-line); }
+.form-input.error { border-color: rgba(180,60,60,0.5); }
+
+.checkout-btn {
+  width: 100%; margin-top: 6px;
+  background: var(--gold); color: var(--ink);
+  border: none; padding: 18px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; font-weight: 400; letter-spacing: 2.5px;
+  text-transform: uppercase; cursor: pointer; transition: background 0.25s;
+}
+.checkout-btn:hover { background: var(--gold-light); }
+.checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.checkout-secure {
+  text-align: center; margin-top: 12px;
+  font-size: 11px; font-weight: 300; color: var(--ink-muted); letter-spacing: 0.5px;
+}
+.party-error {
+  background: rgba(180,60,60,0.06); border: 1px solid rgba(180,60,60,0.2);
+  padding: 11px 14px; font-size: 13px; color: #B43C3C;
+  margin-bottom: 14px; display: none; line-height: 1.5;
+}
+.party-error.on { display: block; }
+
+/* HOW IT WORKS */
+.steps-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 48px;
+}
+@media(max-width:720px) { .steps-grid { grid-template-columns: 1fr; gap: 36px; } }
+.step-card { border-top: 2px solid var(--gold-line); padding-top: 28px; }
+.step-num {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 15px; color: var(--gold-deep); margin-bottom: 12px;
+  display: block;
+}
+.step-card h3 {
+  font-family: 'Cormorant Garamond', serif; font-size: 22px;
+  font-weight: 400; margin-bottom: 10px; color: var(--ink);
+}
+.step-card p { font-size: 14px; font-weight: 300; color: var(--ink-soft); line-height: 1.75; margin: 0; }
+
+.steps-note {
+  margin-top: 48px; padding: 24px 28px;
+  background: var(--paper); border: 1px solid var(--line);
+  max-width: 600px;
+}
+.steps-note p { font-size: 14px; font-weight: 300; color: var(--ink-soft); line-height: 1.8; margin: 0; }
+.steps-note p em { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-deep); font-size: 16px; }
+
+/* CLOSING */
+.closing { text-align: center; padding: 96px 0 110px; border-bottom: none; }
+.closing h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(30px, 4.5vw, 48px);
+  font-weight: 300; color: var(--ink); line-height: 1.15;
+  max-width: 640px; margin: 0 auto 36px;
+}
+.closing h2 em { font-style: italic; color: var(--gold-deep); }
+.closing .fine {
+  margin-top: 22px; font-size: 13px; font-weight: 300;
+  color: var(--ink-muted); letter-spacing: 0.3px;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--line); padding: 36px 0 48px;
+  background: var(--paper);
+}
+.footer-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0; }
+
+/* SUCCESS STATE (post-purchase) */
+.purchase-success {
+  display: none; background: rgba(107,155,122,0.06);
+  border: 1px solid rgba(107,155,122,0.25);
+  padding: 20px 24px; margin-bottom: 20px;
+  font-size: 14px; color: #3A6B4A; line-height: 1.65;
+}
+.purchase-success.on { display: block; }
+
+@media(max-width:640px) {
+  section { padding: 60px 0; }
+  .hero-text { padding: 48px 0 56px; }
+  .for-card { padding: 36px 24px; }
+  .steps-grid { gap: 28px; }
+  .closing { padding: 72px 0 80px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="wordmark">L O R G N E R</div>
+    <nav>
+      <a href="#occasion">The Occasion</a>
+      <a href="#party">Build Your Party</a>
+      <a href="#how">How It Works</a>
+    </nav>
+  </div>
+</div>
+
+<!-- Hero photo -->
+<div class="hero-photo">
+  <img src="/weddingparty.jpg" alt="Wedding party celebration" loading="eager">
+</div>
+
+<!-- Hero text -->
+<div class="wrap">
+  <div class="hero-text">
+    <p class="hero-eyebrow">A Gift for the Wedding Party</p>
+    <h1 class="hero-h1">Give them something they'll actually <em>wear again.</em></h1>
+    <p class="hero-lede">Six months of private eyewear styling for your groomsmen or bridesmaids — which pair, for which occasion, decided before they have to think about it. From the engagement photos to the wedding day.</p>
+    <div class="hero-cta">
+      <a href="#party" class="btn-primary">Build Your Wedding Party Gift</a>
+      <a href="#how" class="link-quiet">See how it works</a>
+    </div>
+  </div>
+</div>
+
+<!-- The occasion / timeline -->
+<section id="occasion">
+  <div class="wrap">
+    <p class="sec-eyebrow">Timed to the Season</p>
+    <h2 class="sec-h2">The six months that actually matter.</h2>
+    <div class="timeline-scroll">
+      <div class="timeline">
+        <div class="t-node">
+          <div class="t-dot"></div>
+          <div class="t-label">Engagement Photos</div>
+          <div class="t-sub">Month 1</div>
+        </div>
+        <div class="t-node">
+          <div class="t-dot"></div>
+          <div class="t-label">Bachelor / Bachelorette</div>
+          <div class="t-sub">Month 3</div>
+        </div>
+        <div class="t-node">
+          <div class="t-dot"></div>
+          <div class="t-label">Rehearsal Dinner</div>
+          <div class="t-sub">Month 5</div>
+        </div>
+        <div class="t-node">
+          <div class="t-dot"></div>
+          <div class="t-label">Wedding Day</div>
+          <div class="t-sub">Month 6</div>
+        </div>
+        <div class="t-node ghost">
+          <div class="t-dot"></div>
+          <div class="t-label">Continues, if they choose</div>
+          <div class="t-sub">No obligation</div>
+        </div>
+      </div>
+    </div>
+    <p class="timeline-caption">Most gifts are given once and forgotten by the reception. This one is built around the actual stretch of time your wedding party is getting dressed for something — <em>useful exactly when it matters.</em></p>
+  </div>
+</section>
+
+<!-- Who it's for -->
+<section>
+  <div class="wrap">
+    <p class="sec-eyebrow">Who It's For</p>
+    <h2 class="sec-h2">The same question, asked by everyone who stands up there with you.</h2>
+    <div class="for-grid">
+      <div class="for-card">
+        <div class="role">For the <span>groomsmen</span></div>
+        <p>Which pair for the rehearsal dinner, which for the golf outing, which for the reception photos — sorted before he has to think about it. Lorgner knows his collection and gives a considered answer.</p>
+      </div>
+      <div class="for-card">
+        <div class="role">For the <span>bridesmaids</span></div>
+        <p>Sunglasses for the bachelorette trip, the right frames for the engagement shoot, glasses that work with the dress — decided in advance. A private second opinion that actually knows fashion.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Party builder -->
+<section id="party">
+  <div class="wrap">
+    <p class="sec-eyebrow">Build Your Party</p>
+    <h2 class="sec-h2">Priced by how many stand up there with you.</h2>
+
+    <div id="purchaseSuccess" class="purchase-success">
+      Your wedding party gift has been confirmed — check your inbox for the redemption links to forward to each person.
+    </div>
+
+    <div class="party-panel">
+      <!-- Left: stepper + tiers -->
+      <div class="party-left">
+        <div class="stepper-label">How many people are in your wedding party?</div>
+        <div class="stepper">
+          <button class="step-btn" id="minusBtn" aria-label="Decrease">−</button>
+          <div class="step-count" id="countDisplay">4</div>
+          <button class="step-btn" id="plusBtn" aria-label="Increase">+</button>
+        </div>
+        <p class="step-note">Each person gets their own private redemption link — nothing shared, no codes to split, no coordination needed.</p>
+
+        <div class="tier-table">
+          <div class="tier-row" data-tier="1-5">
+            <span class="tier-name">1–5 people</span>
+            <span class="tier-price">$129 / person</span>
+          </div>
+          <div class="tier-row" data-tier="6-7">
+            <span class="tier-name">6–7 people</span>
+            <span class="tier-price">$119 / person</span>
+          </div>
+          <div class="tier-row" data-tier="8+">
+            <span class="tier-name">8+ people</span>
+            <span class="tier-price">$109 / person</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: total + form -->
+      <div class="party-right">
+        <div class="total-eyebrow">Your wedding party gift</div>
+        <div class="total-amount" id="totalDisplay">$516</div>
+        <div class="total-sub" id="totalSubDisplay">$129 per person · 6 months each</div>
+
+        <div id="partyError" class="party-error"></div>
+
+        <div class="form-row">
+          <label class="form-label" for="buyerName">Your name</label>
+          <input type="text" class="form-input" id="buyerName" placeholder="The bride or groom">
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="buyerEmail">Your email</label>
+          <input type="email" class="form-input" id="buyerEmail" placeholder="Where we'll send the redemption links">
+        </div>
+
+        <button class="checkout-btn" id="checkoutBtn" onclick="handleCheckout()">
+          Continue to Checkout
+        </button>
+        <p class="checkout-secure">Secured by Stripe · Each person gets 6 months · Cancel anytime after</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section id="how">
+  <div class="wrap">
+    <p class="sec-eyebrow">How It Works</p>
+    <h2 class="sec-h2">One purchase. Everyone redeems on their own.</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <span class="step-num">First</span>
+        <h3>Buy the bundle</h3>
+        <p>Choose your party size, enter your email, and pay once through Stripe. You'll get a receipt immediately.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">Second</span>
+        <h3>Forward the links</h3>
+        <p>You'll receive individual private links — one per person — to forward however you like. Text, group chat, email, it's up to you.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">Third</span>
+        <h3>They activate themselves</h3>
+        <p>Each person's six months begins the day they click their link and set up their collection — nobody loses time waiting on someone else.</p>
+      </div>
+    </div>
+    <div class="steps-note">
+      <p>After six months, anyone who wants to keep going simply continues at the standard <em>$49/month</em> membership rate. No pressure, no auto-charge surprise — just an option to keep something that turned out to be useful.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Closing CTA -->
+<section class="closing">
+  <div class="wrap">
+    <h2>Give something that <em>outlasts the toast.</em></h2>
+    <a href="#party" class="btn-primary">Build Your Wedding Party Gift</a>
+    <p class="fine">No ads. No spam. Just quietly useful, for as long as they want it.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="wordmark">L O R G N E R</div>
+    <p>&copy; <span id="copyrightYear"></span> Lorgner. A private styling membership.</p>
+  </div>
+</footer>
+
+<script>
+const BACKEND = 'https://lorgner-production.up.railway.app';
+
+// Party size state
+let count = 4;
+const MIN = 2, MAX = 20;
+
+function priceFor(n) {
+  if (n >= 8) return 109;
+  if (n >= 6) return 119;
+  return 129;
+}
+function tierKeyFor(n) {
+  if (n >= 8) return '8+';
+  if (n >= 6) return '6-7';
+  return '1-5';
+}
+
+function renderParty() {
+  const price = priceFor(count);
+  const total = price * count;
+  document.getElementById('countDisplay').textContent = count;
+  document.getElementById('totalDisplay').textContent = '$' + total.toLocaleString('en-US');
+  document.getElementById('totalSubDisplay').textContent = '$' + price + ' per person · 6 months each';
+  const activeKey = tierKeyFor(count);
+  document.querySelectorAll('.tier-row').forEach(row => {
+    row.classList.toggle('active', row.dataset.tier === activeKey);
+  });
+  document.getElementById('minusBtn').disabled = count <= MIN;
+  document.getElementById('plusBtn').disabled  = count >= MAX;
+}
+
+document.getElementById('minusBtn').addEventListener('click', () => { if (count > MIN) { count--; renderParty(); } });
+document.getElementById('plusBtn').addEventListener('click',  () => { if (count < MAX) { count++; renderParty(); } });
+
+async function handleCheckout() {
+  const name  = document.getElementById('buyerName').value.trim();
+  const email = document.getElementById('buyerEmail').value.trim();
+  const errEl = document.getElementById('partyError');
+  const btn   = document.getElementById('checkoutBtn');
+
+  errEl.classList.remove('on');
+  document.getElementById('buyerName').classList.remove('error');
+  document.getElementById('buyerEmail').classList.remove('error');
+
+  if (!name) {
+    document.getElementById('buyerName').classList.add('error');
+    errEl.textContent = 'Please enter your name.';
+    errEl.classList.add('on');
+    return;
+  }
+  if (!email || !email.includes('@')) {
+    document.getElementById('buyerEmail').classList.add('error');
+    errEl.textContent = 'Please enter a valid email address.';
+    errEl.classList.add('on');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Preparing checkout…';
+
+  try {
+    const res  = await fetch(BACKEND + '/create-wedding-checkout', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ name, email, partySize: count }),
+    });
+    const data = await res.json();
+
+    if (data.checkoutUrl) {
+      window.location.href = data.checkoutUrl;
+    } else {
+      throw new Error(data.message || 'Checkout unavailable.');
+    }
+  } catch (err) {
+    errEl.textContent = err.message || 'Something went wrong. Please try again.';
+    errEl.classList.add('on');
+    btn.disabled     = false;
+    btn.textContent  = 'Continue to Checkout';
+  }
+}
+
+// Show success state if redirected back after purchase
+if (new URLSearchParams(window.location.search).get('purchased') === 'true') {
+  document.getElementById('purchaseSuccess').classList.add('on');
+  document.getElementById('purchaseSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+renderParty();
+</script>
+</body>
+</html>

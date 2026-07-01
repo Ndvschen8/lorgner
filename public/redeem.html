@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lorgner — Redeem Your Gift</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --warm:       #FAF6EE;
+  --paper:      #FFFCF5;
+  --ink:        #1E1A14;
+  --ink-soft:   #5A5244;
+  --ink-muted:  #9A8E7E;
+  --gold:       #C9A96E;
+  --gold-deep:  #9A7A48;
+  --gold-light: #DFC090;
+  --gold-bg:    rgba(201,169,110,0.09);
+  --gold-line:  rgba(201,169,110,0.28);
+  --line:       rgba(30,26,20,0.10);
+  --green:      #3A6B4A;
+  --green-bg:   rgba(107,155,122,0.07);
+  --green-line: rgba(107,155,122,0.25);
+  --red:        #B43C3C;
+  --red-bg:     rgba(180,60,60,0.06);
+  --red-line:   rgba(180,60,60,0.22);
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--warm);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOPBAR */
+.topbar {
+  display: flex; align-items: center; justify-content: center;
+  padding: 28px 40px; border-bottom: 1px solid var(--line);
+}
+.wordmark {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: 13px; letter-spacing: 8px;
+  text-transform: uppercase; color: var(--gold);
+}
+
+/* MAIN CONTENT */
+.main {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 60px 20px;
+}
+
+.card {
+  width: 100%; max-width: 460px;
+  background: var(--paper); border: 1px solid var(--line);
+  padding: 52px 48px;
+}
+@media(max-width:540px) { .card { padding: 36px 24px; } }
+
+/* STATES */
+.state { display: none; }
+.state.on { display: block; }
+
+/* Loading state */
+.loading-wrap {
+  text-align: center; padding: 20px 0;
+}
+.loading-glyph {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px; color: var(--gold);
+  animation: pulse 1.5s ease-in-out infinite;
+  display: block; margin-bottom: 16px;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.loading-text {
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--ink-muted); font-weight: 300;
+}
+
+/* Gift intro (valid token) */
+.gift-eyebrow {
+  font-size: 10px; font-weight: 400; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--gold-deep); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.gift-eyebrow::before { content:''; width:24px; height:1px; background:var(--gold-line); }
+.gift-h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px; font-weight: 300; line-height: 1.15;
+  color: var(--ink); margin-bottom: 12px;
+}
+.gift-h1 em { font-style: italic; color: var(--gold-deep); }
+.gift-from {
+  font-size: 13px; font-weight: 300; color: var(--ink-soft);
+  margin-bottom: 28px; line-height: 1.6;
+  padding-bottom: 28px; border-bottom: 1px solid var(--line);
+}
+.gift-from strong { color: var(--gold-deep); font-weight: 400; }
+
+.what-you-get { margin-bottom: 32px; }
+.wyg-label {
+  font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--ink-muted); margin-bottom: 14px; font-weight: 400;
+}
+.wyg-row {
+  display: flex; align-items: flex-start; gap: 12px;
+  margin-bottom: 10px; font-size: 14px; font-weight: 300; color: var(--ink-soft);
+}
+.wyg-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0; margin-top: 7px;
+}
+
+/* Form */
+.form-row { margin-bottom: 14px; }
+.form-label {
+  display: block; font-size: 10px; font-weight: 400; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--ink-muted); margin-bottom: 7px;
+}
+.form-input {
+  width: 100%; background: var(--warm); border: 1px solid var(--line);
+  padding: 14px 16px; font-family: 'Jost', sans-serif;
+  font-size: 16px; font-weight: 300; color: var(--ink); outline: none;
+  transition: border-color 0.2s;
+}
+.form-input::placeholder { color: var(--ink-muted); }
+.form-input:focus { border-color: var(--gold-line); }
+.form-input.error-field { border-color: var(--red-line); }
+
+.redeem-btn {
+  width: 100%; margin-top: 6px;
+  background: var(--gold); color: var(--ink); border: none;
+  padding: 18px; font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; font-weight: 400; letter-spacing: 2.5px;
+  text-transform: uppercase; cursor: pointer; transition: background 0.25s;
+}
+.redeem-btn:hover { background: var(--gold-light); }
+.redeem-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.form-error {
+  background: var(--red-bg); border: 1px solid var(--red-line);
+  padding: 11px 14px; font-size: 13px; color: var(--red);
+  margin-bottom: 14px; display: none; line-height: 1.55;
+}
+.form-error.on { display: block; }
+
+/* Success state */
+.success-icon {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px; color: var(--gold); display: block;
+  margin-bottom: 20px;
+}
+.success-h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px; font-weight: 300; color: var(--ink); margin-bottom: 12px;
+}
+.success-body {
+  font-size: 14px; font-weight: 300; color: var(--ink-soft);
+  line-height: 1.8; margin-bottom: 24px;
+}
+.success-note {
+  background: var(--green-bg); border: 1px solid var(--green-line);
+  padding: 14px 18px; font-size: 13px; color: var(--green); line-height: 1.6;
+}
+
+/* Error states */
+.error-icon {
+  font-size: 36px; margin-bottom: 16px; display: block; color: var(--red);
+}
+.error-h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 300; color: var(--ink); margin-bottom: 10px;
+}
+.error-body {
+  font-size: 14px; font-weight: 300; color: var(--ink-soft); line-height: 1.75;
+}
+.error-link {
+  display: inline-block; margin-top: 20px; font-size: 13px;
+  color: var(--gold-deep); border-bottom: 1px solid var(--gold-line);
+  padding-bottom: 2px; text-decoration: none;
+  transition: color 0.2s, border-color 0.2s;
+}
+.error-link:hover { color: var(--gold); border-color: var(--gold); }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--line); padding: 24px 40px;
+  text-align: center; background: var(--paper);
+}
+footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wordmark">L O R G N E R</div>
+</div>
+
+<div class="main">
+  <div class="card">
+
+    <!-- Loading -->
+    <div class="state on" id="stateLoading">
+      <div class="loading-wrap">
+        <span class="loading-glyph">✦</span>
+        <div class="loading-text">Verifying your invitation</div>
+      </div>
+    </div>
+
+    <!-- Gift intro + form -->
+    <div class="state" id="stateForm">
+      <p class="gift-eyebrow">You've been gifted</p>
+      <h1 class="gift-h1">Six months with <em>Lorgner.</em></h1>
+      <p class="gift-from">
+        A private styling membership for your glasses collection, gifted to you by
+        <strong id="buyerNameDisplay">the wedding party</strong>.
+        This is your personal access link — it belongs to you.
+      </p>
+
+      <div class="what-you-get">
+        <div class="wyg-label">What's included</div>
+        <div class="wyg-row"><div class="wyg-dot"></div><span>Unlimited consultations — which pair for which occasion</span></div>
+        <div class="wyg-row"><div class="wyg-dot"></div><span>Your collection archived and remembered</span></div>
+        <div class="wyg-row"><div class="wyg-dot"></div><span>Six full months, starting the day you activate</span></div>
+      </div>
+
+      <div id="formError" class="form-error"></div>
+
+      <div class="form-row">
+        <label class="form-label" for="memberName">Your name</label>
+        <input type="text" class="form-input" id="memberName" placeholder="Your full name">
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="memberEmail">Your email</label>
+        <input type="email" class="form-input" id="memberEmail" placeholder="Where we'll send your access link">
+      </div>
+      <button class="redeem-btn" id="redeemBtn" onclick="handleRedeem()">
+        Activate My Membership
+      </button>
+    </div>
+
+    <!-- Success -->
+    <div class="state" id="stateSuccess">
+      <span class="success-icon">✦</span>
+      <h2 class="success-h2">Your membership is confirmed.</h2>
+      <p class="success-body">Check your inbox for a private access link to enter Lorgner. Your six months begin today.</p>
+      <div class="success-note">
+        If you don't see the email within a few minutes, check your spam folder. The link expires in 24 hours — click it to access your collection.
+      </div>
+    </div>
+
+    <!-- Already redeemed -->
+    <div class="state" id="stateUsed">
+      <span class="error-icon">✦</span>
+      <h2 class="error-h2">This invitation has already been used.</h2>
+      <p class="error-body">Each invitation link can only be redeemed once. If you believe this is an error, contact us at <a href="mailto:hello@lorgner.co" style="color:var(--gold-deep)">hello@lorgner.co</a>.</p>
+    </div>
+
+    <!-- Invalid token -->
+    <div class="state" id="stateInvalid">
+      <span class="error-icon">✦</span>
+      <h2 class="error-h2">This invitation link isn't valid.</h2>
+      <p class="error-body">The link may be incomplete or expired. If you received this from a wedding party, ask them to forward it again directly from the email they received.</p>
+      <a href="/wedding" class="error-link">Learn about Lorgner for wedding parties →</a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>&copy; <span id="copyrightYear"></span> Lorgner. A private styling membership.</p>
+</footer>
+
+<script>
+const BACKEND = 'https://lorgner-production.up.railway.app';
+
+function show(stateId) {
+  document.querySelectorAll('.state').forEach(el => el.classList.remove('on'));
+  document.getElementById(stateId).classList.add('on');
+}
+
+// Read token from URL
+const token = new URLSearchParams(window.location.search).get('token');
+
+async function init() {
+  if (!token) {
+    show('stateInvalid');
+    return;
+  }
+
+  // Validate the token
+  try {
+    const res  = await fetch(BACKEND + '/validate-wedding-token', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ token }),
+    });
+    const data = await res.json();
+
+    if (data.alreadyRedeemed) {
+      show('stateUsed');
+    } else if (data.valid) {
+      if (data.buyerName) {
+        document.getElementById('buyerNameDisplay').textContent = data.buyerName;
+      }
+      show('stateForm');
+    } else {
+      show('stateInvalid');
+    }
+  } catch {
+    show('stateInvalid');
+  }
+}
+
+async function handleRedeem() {
+  const name   = document.getElementById('memberName').value.trim();
+  const email  = document.getElementById('memberEmail').value.trim();
+  const errEl  = document.getElementById('formError');
+  const btn    = document.getElementById('redeemBtn');
+
+  errEl.classList.remove('on');
+  document.getElementById('memberName').classList.remove('error-field');
+  document.getElementById('memberEmail').classList.remove('error-field');
+
+  if (!name) {
+    document.getElementById('memberName').classList.add('error-field');
+    errEl.textContent = 'Please enter your name.';
+    errEl.classList.add('on');
+    return;
+  }
+  if (!email || !email.includes('@')) {
+    document.getElementById('memberEmail').classList.add('error-field');
+    errEl.textContent = 'Please enter a valid email address.';
+    errEl.classList.add('on');
+    return;
+  }
+
+  btn.disabled    = true;
+  btn.textContent = 'Activating…';
+
+  try {
+    const res  = await fetch(BACKEND + '/redeem-wedding-gift', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ token, name, email }),
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      show('stateSuccess');
+    } else if (data.code === 'ALREADY_REDEEMED') {
+      show('stateUsed');
+    } else {
+      throw new Error(data.message || 'Activation failed.');
+    }
+  } catch (err) {
+    errEl.textContent = err.message || 'Something went wrong. Please try again.';
+    errEl.classList.add('on');
+    btn.disabled    = false;
+    btn.textContent = 'Activate My Membership';
+  }
+}
+
+document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+init();
+</script>
+</body>
+</html>
