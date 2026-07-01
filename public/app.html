@@ -349,6 +349,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 /* Mobile bottom nav */
 .mob-nav{display:none;}
 @media(max-width:768px){
+  /* Dashboard layout */
   .dash-grid{grid-template-columns:1fr;height:calc(100vh - 62px - 56px);overflow-y:auto;}
   .dash-left{display:none;}
   .view{padding:20px 16px;}
@@ -357,12 +358,108 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
   .chat-top{padding:14px 16px;}
   .topbar{padding:0 16px;}
   .tb-right .tb-btn,.tb-sep,.tb-tier{display:none;}
-  .consult-banner{flex-direction:column;gap:14px;}
   .coll-grid{grid-template-columns:repeat(2,1fr);}
+
+  /* Mobile nav */
   .mob-nav{display:flex;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--deep);border-top:1px solid var(--line);z-index:100;align-items:stretch;}
-  .mob-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;color:var(--ivory4);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;cursor:pointer;transition:color .2s;padding:0;}
+  .mob-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;color:var(--ivory4);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:color .2s;padding:0;}
   .mob-nav-btn.on{color:var(--gold);}
-  .mob-nav-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;}
+  .mob-nav-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;}
+
+  /* Shared components */
+  .wordmark{font-size:15px;letter-spacing:7px;}
+  .field-label{font-size:12px;}
+  .field-input{font-size:16px;padding:16px 15px;}
+  .primary-btn{font-size:17px;padding:20px;}
+  .ghost-btn{font-size:13px;}
+  .notice{font-size:12px;}
+  .auth-error,.auth-success{font-size:14px;}
+  .auth-toggle{font-size:14px;}
+
+  /* Payment page */
+  #pg-pay{padding:40px 20px 80px;}
+  .price-big{font-size:56px;letter-spacing:-1px;}
+  .price-big sup{font-size:22px;}
+  .price-cadence{font-size:13px;}
+  .price-footnote{font-size:14px;}
+  .price-footnote em{font-size:16px;}
+  .fs-text{font-size:12px;}
+  .ib-title{font-size:12px;}
+  .inc-title-t{font-size:16px;}
+  .inc-desc{font-size:14px;}
+  .spots-text{font-size:12px;}
+  .includes-block{padding:20px 16px;}
+  .field-split{grid-template-columns:1fr;}
+
+  /* Sign-in page */
+  #pg-signin{padding:48px 20px;}
+  .signin-title{font-size:30px;}
+  .signin-sub{font-size:16px;}
+  .ms-title{font-size:20px;}
+  .ms-body{font-size:15px;}
+
+  /* Welcome page */
+  .w-glyph{font-size:52px;margin-bottom:24px;}
+  .w-title{font-size:32px;}
+  .w-body{font-size:16px;}
+  .w-enter{font-size:13px;}
+
+  /* Topbar */
+  .tb-brand{font-size:16px;letter-spacing:5px;}
+
+  /* Dashboard sections */
+  .sec-title{font-size:24px;}
+  .sec-sub{font-size:12px;}
+
+  /* Consult banner */
+  .consult-banner{flex-direction:column;gap:14px;padding:22px 18px;}
+  .cb-glyph{font-size:40px;}
+  .cb-title{font-size:22px;}
+  .cb-desc{font-size:15px;}
+  .cb-cta{font-size:12px;}
+
+  /* Collection cards */
+  .cc-brand{font-size:11px;}
+  .cc-name{font-size:17px;}
+  .cc-tag{font-size:11px;}
+  .cc-saving{font-size:11px;}
+  .ap-label{font-size:12px;}
+
+  /* Letter */
+  .letter{padding:22px 18px;}
+  .lh-issue{font-size:12px;}
+  .lh-title{font-size:22px;}
+  .lh-date{font-size:12px;}
+  .letter-body{font-size:18px;}
+  .letter-sig{font-size:17px;}
+
+  /* Sessions */
+  .sr-date{font-size:12px;}
+  .sr-occ{font-size:15px;}
+  .sr-rec{font-size:13px;}
+  .sr-rec em{font-size:15px;}
+
+  /* Chat */
+  .ct-eye{font-size:12px;}
+  .ct-title{font-size:22px;}
+  .ct-pair{font-size:12px;padding:5px 11px;}
+  .cmsg{max-width:90%;}
+  .cm-bbl{font-size:16px;}
+  .cmsg.ai .cm-bbl{font-size:18px;}
+  .redirect-bbl{font-size:17px;}
+  .chat-in{font-size:16px;}
+  .chat-hint{font-size:11px;}
+
+  /* Loading overlay */
+  .lo-text{font-size:12px;}
+}
+
+@media(max-width:480px){
+  .price-big{font-size:48px;}
+  .wordmark{font-size:13px;letter-spacing:6px;margin-bottom:40px;}
+  .w-glyph{font-size:44px;}
+  .w-title{font-size:28px;}
+  .coll-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
