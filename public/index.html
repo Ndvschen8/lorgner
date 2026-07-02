@@ -416,6 +416,17 @@ nav::after{
   font-size:14px;font-style:italic;
   color:var(--ivory3);margin-top:12px;
 }
+.perks-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  border:1px solid var(--line2);
+  background:var(--gold-bg);
+  padding:5px 12px;
+  font-family:'DM Mono',monospace;
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);
+  margin-top:16px;
+}
+.perks-badge::before{content:'✦';font-size:7px;}
 
 .final-cta{
   position:relative;z-index:1;
@@ -613,6 +624,7 @@ footer{
     <a href="https://www.lorgner.co/join" class="btn-primary" style="display:inline-block;min-width:280px;">Begin Your Membership</a>
     <div class="price-note">Secured payment · Cancel any time · No contracts</div>
     <div class="price-launch">Founding rate of $29/month reserved for our first members. Standard rate is $49/month.</div>
+    <div><span class="perks-badge">Available through Access Perks &amp; Benefits</span></div>
   </div>
 </section>
 
