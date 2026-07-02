@@ -258,10 +258,77 @@
     color: var(--ivory4);
   }
 
+  /* GIFT GUIDE CARDS */
+  .gift-section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 56px 40px;
+    border-bottom: 1px solid var(--line);
+  }
+  .gift-section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .gift-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line2);
+  }
+  .gift-card {
+    background: var(--surface);
+    text-decoration: none;
+    display: block;
+    transition: background .2s;
+  }
+  .gift-card:hover { background: #161616; }
+  .gift-card-img {
+    height: 180px;
+    overflow: hidden;
+    background: var(--line);
+  }
+  .gift-card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    transition: transform .4s ease;
+  }
+  .gift-card:hover .gift-card-img img { transform: scale(1.03); }
+  .gift-card-body { padding: 24px 26px 28px; }
+  .gift-card-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .gift-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--ivory);
+    line-height: 1.35;
+    margin-bottom: 16px;
+  }
+  .gift-card-cta {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ivory4);
+    transition: color .2s;
+  }
+  .gift-card:hover .gift-card-cta { color: var(--gold); }
+
   @media (max-width: 600px) {
     .nav { padding: 16px 20px; }
-    .hero, .index, .article { padding-left: 20px; padding-right: 20px; }
+    .hero, .index, .article, .gift-section { padding-left: 20px; padding-right: 20px; }
     .footer { padding: 40px 20px; flex-direction: column; gap: 12px; text-align: center; }
+    .gift-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -278,9 +345,38 @@
   <p class="hero-sub">Editorial guidance on reading glasses — how to choose them, wear them, and build a collection that actually works for your life. Lorgner helps you style the collection you have already built.</p>
 </div>
 
+<!-- GIFT GUIDES -->
+<div class="gift-section">
+  <div class="gift-section-label">Gift Guides</div>
+  <div class="gift-grid">
+    <a href="/groomsmen-gifts" class="gift-card">
+      <div class="gift-card-img">
+        <img src="/mensglasses.jpg" alt="Groomsmen gift guide">
+      </div>
+      <div class="gift-card-body">
+        <div class="gift-card-tag">For the Groomsmen</div>
+        <h2 class="gift-card-title">The Best Groomsmen Gifts for Guys Who Are Sick of Flasks</h2>
+        <span class="gift-card-cta">Read the guide →</span>
+      </div>
+    </a>
+    <a href="/bridesmaids-gifts" class="gift-card">
+      <div class="gift-card-img">
+        <img src="/womensglasses.jpg" alt="Bridesmaid gift guide">
+      </div>
+      <div class="gift-card-body">
+        <div class="gift-card-tag">For the Bridesmaids</div>
+        <h2 class="gift-card-title">The Best Bridesmaid Gifts for Women Who Are Sick of Robes</h2>
+        <span class="gift-card-cta">Read the guide →</span>
+      </div>
+    </a>
+  </div>
+</div>
+
 <div class="index">
   <div class="index-label">In This Journal</div>
   <ul class="index-list">
+    <li><a href="/groomsmen-gifts">5 groomsmen gifts for guys who are sick of flasks</a></li>
+    <li><a href="/bridesmaids-gifts">5 bridesmaid gifts for women who are sick of robes</a></li>
     <li><a href="#article-1">How to choose reading glasses that actually look good on you</a></li>
     <li><a href="#article-2">Do your reading glasses have to match your regular glasses?</a></li>
     <li><a href="#article-3">The reading glasses you wear to the office versus the ones you wear to dinner</a></li>

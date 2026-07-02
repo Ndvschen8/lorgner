@@ -41,6 +41,14 @@
       "dest": "/public/redeem.html"
     },
     {
+      "src": "/groomsmen-gifts",
+      "dest": "/public/groomsmen-gifts.html"
+    },
+    {
+      "src": "/bridesmaids-gifts",
+      "dest": "/public/bridesmaids-gifts.html"
+    },
+    {
       "src": "/journal",
       "dest": "/public/journal.html"
     },
@@ -63,6 +71,10 @@
     {
       "src": "/enterprise",
       "dest": "/public/enterprise.html"
+    },
+    {
+      "src": "/(.*\\.(?:jpg|jpeg|png|webp|gif|svg|ico))",
+      "dest": "/public/$1"
     },
     {
       "src": "/(.*)",
