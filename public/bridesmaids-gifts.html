@@ -246,8 +246,19 @@ a { color: inherit; }
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
+.perks-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid rgba(201,169,110,.25);
+  background: rgba(201,169,110,.06);
+  padding: 5px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+.perks-badge::before { content: '✦'; font-size: 7px; }
 .lorgner-callout-text {
   font-family: 'Cormorant Garamond', serif;
   font-size: 17px;
@@ -385,6 +396,7 @@ a { color: inherit; }
     <h2 class="section-h2">A styling membership built for the actual wedding season</h2>
     <div class="lorgner-callout">
       <div class="lorgner-callout-label">Lorgner · Wedding Party Gift</div>
+      <span class="perks-badge">Available through Access Perks &amp; Benefits</span>
       <p class="lorgner-callout-text">A six-month styling membership for your bridesmaids' glasses and sunglasses — which pair for the engagement shoot, which for the bachelorette trip, which for the rehearsal dinner, which for the wedding day itself. Buy one bundle sized to your bridal party, and each bridesmaid gets her own private invitation to activate her own six months.</p>
       <a href="/wedding" class="lorgner-callout-link">Give the Lorgner Gift →</a>
     </div>
