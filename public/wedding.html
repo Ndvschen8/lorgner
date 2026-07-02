@@ -4,7 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lorgner — A Gift for the Wedding Party</title>
+<meta name="description" content="Give your wedding party six months of personal styling guidance for their glasses collection. $129 per person. Individual invitation links for groomsmen or bridesmaids.">
+<link rel="canonical" href="https://www.lorgner.co/wedding">
 <link rel="icon" type="image/png" href="/favicon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Lorgner Wedding Party Gift",
+  "description": "A six-month personal styling membership for wedding parties. The bride or groom purchases one bundle and each member of the wedding party receives a private invitation link to activate their own membership.",
+  "provider": {
+    "@type": "Organization",
+    "name": "Lorgner",
+    "url": "https://www.lorgner.co"
+  },
+  "serviceType": "Personal Styling Membership",
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Wedding parties, groomsmen, bridesmaids"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "129",
+    "priceCurrency": "USD",
+    "description": "$129 per person for six months of personal eyewear styling guidance",
+    "eligibleQuantity": {
+      "@type": "QuantitativeValue",
+      "minValue": 2,
+      "maxValue": 20,
+      "unitText": "people"
+    }
+  },
+  "url": "https://www.lorgner.co/wedding"
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -495,6 +528,18 @@ footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0
   </div>
 </section>
 
+<!-- Journal cross-links -->
+<section style="background:var(--warm);border-top:1px solid var(--gold-line);padding:48px 0;">
+  <div class="wrap" style="text-align:center;">
+    <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink-muted);margin-bottom:16px;">From The Frame Journal</p>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--ink);margin-bottom:24px;">Gift guides for the wedding party</h3>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="/groomsmen-gifts" style="font-family:'Jost',sans-serif;font-size:13px;font-weight:400;color:var(--gold-deep);text-decoration:none;border:1px solid var(--gold-line);padding:12px 24px;transition:background .2s;" onmouseover="this.style.background='var(--gold-bg)'" onmouseout="this.style.background='transparent'">The Best Groomsmen Gifts: 5 Outside-the-Box Ideas →</a>
+      <a href="/bridesmaids-gifts" style="font-family:'Jost',sans-serif;font-size:13px;font-weight:400;color:var(--gold-deep);text-decoration:none;border:1px solid var(--gold-line);padding:12px 24px;transition:background .2s;" onmouseover="this.style.background='var(--gold-bg)'" onmouseout="this.style.background='transparent'">The Best Bridesmaid Gifts: 5 Outside-the-Box Ideas →</a>
+    </div>
+  </div>
+</section>
+
 <!-- Closing CTA -->
 <section class="closing">
   <div class="wrap">
@@ -506,7 +551,11 @@ footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0
 
 <footer>
   <div class="wrap footer-row">
-    <div class="wordmark">L O R G N E R</div>
+    <a href="/" style="text-decoration:none;"><div class="wordmark">L O R G N E R</div></a>
+    <div style="display:flex;gap:20px;align-items:center;">
+      <a href="/journal" style="font-family:'Jost',sans-serif;font-size:12px;color:var(--ink-muted);text-decoration:none;">Journal</a>
+      <a href="mailto:hello@lorgner.co" style="font-family:'Jost',sans-serif;font-size:12px;color:var(--ink-muted);text-decoration:none;">Contact</a>
+    </div>
     <p>&copy; <span id="copyrightYear"></span> Lorgner. A private styling membership.</p>
   </div>
 </footer>
