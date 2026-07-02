@@ -205,16 +205,11 @@ section { padding: 80px 0; border-bottom: 1px solid var(--line); }
 }
 .step-note { font-size: 13px; font-weight: 300; color: var(--ink-muted); line-height: 1.65; }
 
-.tier-table { margin-top: 36px; }
-.tier-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 11px 0; border-bottom: 1px solid var(--line-soft);
-  font-size: 13px; color: var(--ink-muted); transition: color 0.2s;
+.flat-price-note {
+  margin-top: 28px; font-size: 13px; font-weight: 300;
+  color: var(--ink-muted); line-height: 1.6;
+  border-top: 1px solid var(--line-soft); padding-top: 20px;
 }
-.tier-row:last-child { border-bottom: none; }
-.tier-row.active { color: var(--ink); }
-.tier-row.active .tier-price { color: var(--gold-deep); font-weight: 500; }
-.tier-name { font-weight: 300; }
 
 .party-right { padding: 52px 48px; }
 @media(max-width:780px) { .party-right { padding: 36px 28px; } }
@@ -424,7 +419,7 @@ footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0
 <section id="party">
   <div class="wrap">
     <p class="sec-eyebrow">Build Your Party</p>
-    <h2 class="sec-h2">Priced by how many stand up there with you.</h2>
+    <h2 class="sec-h2">$129 per person. Six months each.</h2>
 
     <div id="purchaseSuccess" class="purchase-success">
       Your wedding party gift has been confirmed — check your inbox for the redemption links to forward to each person.
@@ -441,19 +436,8 @@ footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0
         </div>
         <p class="step-note">Each person gets their own private redemption link — nothing shared, no codes to split, no coordination needed.</p>
 
-        <div class="tier-table">
-          <div class="tier-row" data-tier="1-5">
-            <span class="tier-name">1–5 people</span>
-            <span class="tier-price">$129 / person</span>
-          </div>
-          <div class="tier-row" data-tier="6-7">
-            <span class="tier-name">6–7 people</span>
-            <span class="tier-price">$119 / person</span>
-          </div>
-          <div class="tier-row" data-tier="8+">
-            <span class="tier-name">8+ people</span>
-            <span class="tier-price">$109 / person</span>
-          </div>
+        <div class="flat-price-note">
+          $129 per person · 6 months each · cancel anytime after
         </div>
       </div>
 
@@ -534,27 +518,12 @@ const BACKEND = 'https://lorgner-production.up.railway.app';
 let count = 4;
 const MIN = 2, MAX = 20;
 
-function priceFor(n) {
-  if (n >= 8) return 109;
-  if (n >= 6) return 119;
-  return 129;
-}
-function tierKeyFor(n) {
-  if (n >= 8) return '8+';
-  if (n >= 6) return '6-7';
-  return '1-5';
-}
+const PRICE = 129;
 
 function renderParty() {
-  const price = priceFor(count);
-  const total = price * count;
-  document.getElementById('countDisplay').textContent = count;
-  document.getElementById('totalDisplay').textContent = '$' + total.toLocaleString('en-US');
-  document.getElementById('totalSubDisplay').textContent = '$' + price + ' per person · 6 months each';
-  const activeKey = tierKeyFor(count);
-  document.querySelectorAll('.tier-row').forEach(row => {
-    row.classList.toggle('active', row.dataset.tier === activeKey);
-  });
+  document.getElementById('countDisplay').textContent  = count;
+  document.getElementById('totalDisplay').textContent  = '$' + (PRICE * count).toLocaleString('en-US');
+  document.getElementById('totalSubDisplay').textContent = '$' + PRICE + ' per person · 6 months each';
   document.getElementById('minusBtn').disabled = count <= MIN;
   document.getElementById('plusBtn').disabled  = count >= MAX;
 }
