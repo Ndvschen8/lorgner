@@ -37,6 +37,14 @@ const rateLimit      = require('express-rate-limit');
 const helmet         = require('helmet');
 const { randomUUID } = require('crypto');
 
+// Short invite code generator — no ambiguous chars (0/O, 1/I)
+const INVITE_CHARSET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function generateInviteCode(len = 6) {
+  let code = '';
+  for (let i = 0; i < len; i++) code += INVITE_CHARSET[Math.floor(Math.random() * INVITE_CHARSET.length)];
+  return code;
+}
+
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
@@ -952,9 +960,13 @@ async function handleWeddingCheckout(session) {
 
   if (!buyerEmail) { console.error('[LORGNER] Wedding checkout: no buyer email'); return; }
 
-  // Generate unique tokens and insert them into Supabase
-  const tokens = Array.from({ length: partySize }, () => randomUUID());
-  for (const token of tokens) {
+  // Generate short invite codes + UUID internal tokens
+  const invitations = Array.from({ length: partySize }, () => ({
+    token:       randomUUID(),
+    invite_code: generateInviteCode(),
+  }));
+
+  for (const inv of invitations) {
     await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions`, {
       method:  'POST',
       headers: {
@@ -964,26 +976,63 @@ async function handleWeddingCheckout(session) {
         'Prefer':        'return=minimal',
       },
       body: JSON.stringify({
-        token,
+        token:             inv.token,
+        invite_code:       inv.invite_code,
         stripe_session_id: sessionId,
-        buyer_email:  buyerEmail,
-        buyer_name:   buyerName,
-        party_size:   partySize,
+        buyer_email:       buyerEmail,
+        buyer_name:        buyerName,
+        party_size:        partySize,
       }),
     });
   }
 
-  // Build the links list for the email
-  const linkRows = tokens.map((tok, i) => `
-    <tr>
-      <td style="padding:8px 0;font-size:13px;color:#8A8272;width:64px;vertical-align:top;">Link ${i + 1}</td>
-      <td style="padding:8px 0;font-size:13px;">
-        <a href="${CONFIG.FRONTEND_URL}/redeem?token=${tok}"
-           style="color:#C9A96E;text-decoration:none;word-break:break-all;">
-          lorgner.co/redeem?token=${tok}
-        </a>
-      </td>
-    </tr>`).join('');
+  // Build invitation cards — one per person, with pre-written forwarding copy
+  const firstName   = buyerName ? buyerName.split(' ')[0] : 'your host';
+  const inviteCards = invitations.map((inv, i) => {
+    const url     = `${CONFIG.FRONTEND_URL}/gift/${inv.invite_code}`;
+    const message = `I've given you six months with Lorgner — a private styling service for your glasses collection, there when you need a considered second opinion. Here's your invitation: ${url}`;
+    return `
+    <table width="100%" cellpadding="0" cellspacing="0"
+           style="margin-bottom:20px;border:1px solid rgba(201,169,110,0.25);background:#FFFCF5;">
+      <tr>
+        <td style="padding:20px 24px 0;">
+          <p style="margin:0;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#9A7A48;">
+            Invitation ${i + 1} of ${partySize}
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 24px 6px;">
+          <p style="margin:0;font-size:11px;color:#9A8E7E;line-height:1.5;">
+            Copy and send this to your next guest:
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:0 24px 20px;">
+          <table width="100%" cellpadding="0" cellspacing="0"
+                 style="background:rgba(201,169,110,0.06);border-left:2px solid #C9A96E;">
+            <tr>
+              <td style="padding:16px 18px;">
+                <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;
+                          color:#1E1A14;line-height:1.8;">
+                  &ldquo;${message}&rdquo;
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:0 24px 16px;">
+          <p style="margin:0;font-size:11px;color:#9A8E7E;">
+            Or share the link directly:
+            <a href="${url}" style="color:#C9A96E;text-decoration:none;">lorgner.co/gift/${inv.invite_code}</a>
+          </p>
+        </td>
+      </tr>
+    </table>`;
+  }).join('');
 
   const { Resend } = require('resend');
   const resend = new Resend(CONFIG.RESEND_KEY);
@@ -991,36 +1040,48 @@ async function handleWeddingCheckout(session) {
   await resend.emails.send({
     from:    'Lorgner <hello@lorgner.co>',
     to:      buyerEmail,
-    subject: `Your Lorgner Wedding Party Gift — ${partySize} Redemption Link${partySize > 1 ? 's' : ''} Inside`,
+    subject: `Your Lorgner invitations are ready — ${partySize} to send`,
     html: `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#FAF6EE;font-family:Georgia,serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#FAF6EE;padding:60px 20px;">
     <tr><td align="center">
-      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+      <table width="580" cellpadding="0" cellspacing="0" style="max-width:580px;width:100%;">
         <tr><td align="center" style="padding-bottom:40px;">
-          <span style="font-family:Georgia,serif;font-size:13px;letter-spacing:8px;color:#C9A96E;text-transform:uppercase;">L O R G N E R</span>
+          <span style="font-family:Georgia,serif;font-size:13px;letter-spacing:8px;
+                       color:#C9A96E;text-transform:uppercase;">L O R G N E R</span>
         </td></tr>
-        <tr><td style="background:#FFFCF5;border:1px solid rgba(30,26,20,0.10);padding:48px 44px;">
-          <p style="margin:0 0 8px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#9A7A48;">Your Wedding Party Gift</p>
-          <p style="margin:0 0 24px;font-family:Georgia,serif;font-size:28px;font-weight:normal;color:#1E1A14;line-height:1.2;">
-            ${partySize} membership${partySize > 1 ? 's' : ''} ready to activate.
+        <tr><td style="background:#FFFCF5;border:1px solid rgba(30,26,20,0.10);padding:44px 44px 32px;">
+          <p style="margin:0 0 6px;font-size:10px;letter-spacing:3px;
+                    text-transform:uppercase;color:#9A7A48;">Your Wedding Party Gift</p>
+          <p style="margin:0 0 20px;font-family:Georgia,serif;font-size:26px;
+                    font-weight:normal;color:#1E1A14;line-height:1.2;">
+            ${partySize} invitation${partySize > 1 ? 's' : ''}, ready to send.
           </p>
-          <p style="margin:0 0 28px;font-size:14px;line-height:1.8;color:#5A5244;">
+          <p style="margin:0 0 32px;font-size:14px;line-height:1.8;color:#5A5244;">
             ${buyerName ? `Dear ${buyerName},` : 'Hello,'}<br><br>
-            Your Lorgner wedding party gift is confirmed. Below are ${partySize} private redemption link${partySize > 1 ? 's' : ''} — one per person. Forward each link individually; each one can only be used once.
+            Your gift is confirmed. Below are ${partySize} private invitation${partySize > 1 ? 's' : ''} —
+            one for each person. Each card has a message ready to copy and forward.
+            Every link is unique and single-use.
           </p>
-          <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid rgba(30,26,20,0.08);margin-bottom:32px;">
-            ${linkRows}
-          </table>
-          <p style="margin:0 0 28px;font-size:13px;line-height:1.8;color:#9A8E7E;">
-            Each person's six-month membership begins the day they activate their link — nobody loses time waiting on someone else. After six months, they'll have the option to continue at the standard $49/month rate.
+
+          ${inviteCards}
+
+          <p style="margin:24px 0 0;font-size:13px;line-height:1.8;color:#9A8E7E;">
+            Each person's six months begins the day they accept their invitation — nobody
+            loses time waiting on someone else. After six months they'll have the option
+            to continue at $49/month.
           </p>
-          <p style="margin:0;font-size:12px;color:#9A8E7E;line-height:1.6;">Questions? Reply to this email or write to <a href="mailto:hello@lorgner.co" style="color:#C9A96E;">hello@lorgner.co</a></p>
         </td></tr>
-        <tr><td align="center" style="padding-top:28px;">
-          <p style="margin:0;font-size:11px;color:#9A8E7E;letter-spacing:1px;">LORGNER &middot; A PRIVATE STYLING MEMBERSHIP</p>
+        <tr><td style="padding:24px 0 0;text-align:center;">
+          <p style="margin:0;font-size:11px;color:#9A8E7E;letter-spacing:1px;">
+            LORGNER &middot; A PRIVATE STYLING MEMBERSHIP
+          </p>
+          <p style="margin:6px 0 0;font-size:11px;color:#9A8E7E;">
+            Questions?
+            <a href="mailto:hello@lorgner.co" style="color:#C9A96E;text-decoration:none;">hello@lorgner.co</a>
+          </p>
         </td></tr>
       </table>
     </td></tr>
@@ -1029,7 +1090,7 @@ async function handleWeddingCheckout(session) {
 </html>`,
   });
 
-  console.log(`[LORGNER] Wedding bundle confirmed: ${partySize} links sent to ${buyerEmail}`);
+  console.log(`[LORGNER] Wedding bundle: ${partySize} invitations sent to ${buyerEmail}`);
 }
 
 /* ══════════════════════════════════════════════
@@ -1086,18 +1147,18 @@ app.post('/create-wedding-checkout', async (req, res) => {
    token is valid before showing the form.
 ══════════════════════════════════════════════ */
 app.post('/validate-wedding-token', async (req, res) => {
-  const { token } = req.body;
-  if (!token) return res.status(400).json({ valid: false });
+  const { code } = req.body;
+  if (!code) return res.status(400).json({ valid: false });
 
   try {
     const r    = await fetch(
-      `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?token=eq.${token}&select=buyer_name,redeemed_at`,
+      `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?invite_code=eq.${encodeURIComponent(code.toUpperCase())}&select=buyer_name,redeemed_at`,
       { headers: { apikey: CONFIG.SUPABASE_SERVICE_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}` } }
     );
     const rows = await r.json();
     const row  = rows?.[0];
 
-    if (!row)           return res.json({ valid: false });
+    if (!row)            return res.json({ valid: false });
     if (row.redeemed_at) return res.json({ valid: true, alreadyRedeemed: true });
     res.json({ valid: true, alreadyRedeemed: false, buyerName: row.buyer_name || '' });
   } catch (err) {
@@ -1115,16 +1176,16 @@ app.post('/validate-wedding-token', async (req, res) => {
    redeemed, and sends them a magic link.
 ══════════════════════════════════════════════ */
 app.post('/redeem-wedding-gift', async (req, res) => {
-  const { token, name, email } = req.body;
+  const { code, name, email } = req.body;
 
-  if (!token || !name || !email) {
+  if (!code || !name || !email) {
     return res.status(400).json({ error: true, message: 'Missing required fields.' });
   }
 
   try {
-    // Fetch the token record
+    // Fetch the record by invite_code
     const r    = await fetch(
-      `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?token=eq.${token}&select=*`,
+      `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?invite_code=eq.${encodeURIComponent(code.toUpperCase())}&select=*`,
       { headers: { apikey: CONFIG.SUPABASE_SERVICE_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}` } }
     );
     const rows = await r.json();
@@ -1194,9 +1255,9 @@ app.post('/redeem-wedding-gift', async (req, res) => {
       });
     }
 
-    // Mark the token as redeemed
+    // Mark the invitation as redeemed
     await fetch(
-      `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?token=eq.${token}`,
+      `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?invite_code=eq.${encodeURIComponent(code.toUpperCase())}`,
       {
         method:  'PATCH',
         headers: {

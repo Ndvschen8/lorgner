@@ -37,6 +37,10 @@
       "dest": "/public/redeem.html"
     },
     {
+      "src": "/gift/(.*)",
+      "dest": "/public/redeem.html"
+    },
+    {
       "src": "/journal",
       "dest": "/public/journal.html"
     },
