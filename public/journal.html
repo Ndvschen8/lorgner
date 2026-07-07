@@ -279,6 +279,9 @@
     gap: 1px;
     background: var(--line2);
   }
+  .gift-grid--three {
+    grid-template-columns: repeat(3, 1fr);
+  }
   .gift-card {
     background: var(--surface);
     text-decoration: none;
@@ -328,7 +331,7 @@
     .nav { padding: 16px 20px; }
     .hero, .index, .article, .gift-section { padding-left: 20px; padding-right: 20px; }
     .footer { padding: 40px 20px; flex-direction: column; gap: 12px; text-align: center; }
-    .gift-grid { grid-template-columns: 1fr; }
+    .gift-grid, .gift-grid--three { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -374,7 +377,7 @@
 
 <div class="gift-section">
   <div class="gift-section-label">Reading Glasses</div>
-  <div class="gift-grid" style="grid-template-columns:repeat(3,1fr);">
+  <div class="gift-grid gift-grid--three">
     <a href="/how-to-choose-reading-glasses" class="gift-card">
       <div class="gift-card-img"><img src="/glasses1.jpg" alt="How to choose reading glasses"></div>
       <div class="gift-card-body">
