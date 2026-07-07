@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curator Partnerships — Lorgner</title>
+<meta name="description" content="Lorgner for Experience Curators and Luxury Curators. An ambient layer for the on-site journey, or a private acquisition that never repeats itself.">
+<link rel="canonical" href="https://www.lorgner.co/curators">
+<link rel="icon" type="image/png" href="/favicon.png">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X3VM9B57WC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X3VM9B57WC');</script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--void:#0a0a0a;--surface:#111111;--surface2:#161616;--line:#1e1e1e;--line2:#2a2a2a;--ivory:#e8e0d0;--ivory2:#cfc8b8;--ivory3:#a09888;--ivory4:#6a6258;--gold:#c9a96e;--gold-d:#8a6e3e;--gold-bg:rgba(201,169,110,.07)}
+html{scroll-behavior:smooth}
+body{background:var(--void);color:var(--ivory2);font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;font-size:15px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+.nav{border-bottom:1px solid var(--line);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(10,10,10,.92);backdrop-filter:blur(20px);z-index:100}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:13px;letter-spacing:9px;text-transform:uppercase;color:var(--gold)}
+.nav-links{display:flex;gap:28px}
+.nav-link{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory3);transition:color .2s}
+.nav-link:hover{color:var(--gold)}
+.nav-cta{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--void);background:var(--gold);padding:8px 18px;transition:opacity .2s}
+.nav-cta:hover{opacity:.85}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;min-height:580px;display:flex;align-items:flex-end}
+.hero-img{position:absolute;inset:0;z-index:0}
+.hero-img img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.92) 0%,rgba(10,10,10,.55) 50%,rgba(10,10,10,.2) 100%)}
+.hero-content{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 48px 80px;width:100%}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,60px);font-weight:300;color:var(--ivory);line-height:1.12;margin-bottom:20px}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--ivory3);line-height:1.8;max-width:540px}
+
+/* ROLE SPLIT */
+.role-split{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line2);border-top:1px solid var(--line2)}
+.role-card{background:var(--surface);padding:44px 40px}
+.role-kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:var(--ivory);margin-bottom:14px}
+.role-body{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:var(--ivory3);line-height:1.8;margin-bottom:20px}
+.role-link{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold-d);padding-bottom:2px;transition:color .2s}
+.role-link:hover{color:var(--ivory)}
+
+/* SECTIONS */
+.section{padding:80px 48px;max-width:760px;margin:0 auto;border-top:1px solid var(--line)}
+.section-eyebrow{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3.5vw,38px);font-weight:300;color:var(--ivory);line-height:1.2;margin-bottom:16px}
+.section-rule{width:32px;height:1px;background:var(--gold);margin-bottom:32px;opacity:.5}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:44px}
+.detail-card-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory4);margin-bottom:12px}
+.detail-card-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--ivory);margin-bottom:10px}
+.detail-card-body{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:var(--ivory3);line-height:1.85}
+
+/* FORM */
+.form-wrap{background:var(--surface);border:1px solid var(--line2);padding:48px}
+.form-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--ivory);margin-bottom:10px}
+.form-sub{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:var(--ivory3);margin-bottom:36px;line-height:1.7}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-full{grid-column:1/-1}
+.field-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory4);display:block;margin-bottom:8px}
+.field-input,.field-select,.field-textarea{width:100%;font-family:'Jost',sans-serif;font-size:14px;font-weight:300;padding:12px 14px;background:var(--void);color:var(--ivory);border:1px solid var(--line2);outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.field-input:focus,.field-select:focus,.field-textarea:focus{border-color:var(--gold)}
+.field-textarea{resize:vertical;min-height:100px}
+.field-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236a6258' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.submit-btn{margin-top:20px;display:inline-block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--void);background:var(--gold);border:none;padding:14px 28px;cursor:pointer;transition:opacity .2s}
+.submit-btn:hover{opacity:.85}
+.form-note{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ivory4);margin-top:14px}
+.form-success{display:none;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);padding:20px 0}
+
+/* CLOSING */
+.closing{text-align:center;padding:80px 48px;border-top:1px solid var(--line)}
+.closing-title{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3.5vw,40px);font-weight:300;color:var(--ivory);line-height:1.2;max-width:560px;margin:0 auto 28px}
+.closing-title em{font-style:italic;color:var(--gold)}
+.closing-link{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--void);background:var(--gold);padding:14px 28px;transition:opacity .2s}
+.closing-link:hover{opacity:.85}
+.closing-note{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ivory4);margin-top:16px}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--line);padding:32px 48px;display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:12px;letter-spacing:7px;text-transform:uppercase;color:var(--ivory4)}
+.footer-note{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ivory4)}
+
+@media(max-width:760px){
+  .nav{padding:16px 20px}.nav-links{display:none}
+  .hero-content{padding:0 20px 60px}
+  .role-split{grid-template-columns:1fr}
+  .role-card{padding:32px 24px}
+  .section{padding:56px 20px}
+  .detail-grid{grid-template-columns:1fr;gap:28px}
+  .form-wrap{padding:32px 20px}
+  .form-grid{grid-template-columns:1fr}
+  .closing{padding:60px 20px}
+  .footer{padding:28px 20px;flex-direction:column;gap:12px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-brand" href="/">Lorgner</a>
+  <div class="nav-links">
+    <a class="nav-link" href="#experience">Experience Curators</a>
+    <a class="nav-link" href="#luxury">Luxury Curators</a>
+    <a class="nav-link" href="#inquire">Get in Touch</a>
+  </div>
+  <a class="nav-cta" href="#inquire">Inquire →</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-img">
+    <img src="/luxury.jpg" alt="Luxury resort pool at golden hour">
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Curator Partnerships</div>
+    <h1 class="hero-title">Two disciplines.<br><em>One quietly useful partner.</em></h1>
+    <p class="hero-sub">Whether you are orchestrating a guest's day or sourcing something for a client's collection, Lorgner fits differently into each — without ever feeling generic.</p>
+  </div>
+</div>
+
+<div class="role-split">
+  <div class="role-card">
+    <div class="role-kicker">Experience Curator</div>
+    <p class="role-body">You design the moment — the on-site journey, the emotional connection to a place. Lorgner works as an ambient layer within it.</p>
+    <a class="role-link" href="#experience">See how it fits →</a>
+  </div>
+  <div class="role-card">
+    <div class="role-kicker">Luxury Curator</div>
+    <p class="role-body">You source the object — rare, bespoke, one client at a time. Lorgner is something you can source once that never repeats itself.</p>
+    <a class="role-link" href="#luxury">See how it fits →</a>
+  </div>
+</div>
+
+<div class="section" id="experience">
+  <div class="section-eyebrow">For Experience Curators</div>
+  <h2 class="section-title">The moment, not the object.</h2>
+  <div class="section-rule"></div>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--ivory3);line-height:1.85;max-width:560px">Your work is anticipating friction before a guest notices it, and building the small day-to-day moments that create a real connection to a place.</p>
+  <div class="detail-grid">
+    <div>
+      <div class="detail-card-label">Where it fits</div>
+      <div class="detail-card-title">The ambient layer</div>
+      <p class="detail-card-body">A guest who owns more than one pair of glasses or sunglasses is quietly guided toward the right pair for the setting — the morning terrace, the evening dinner, the excursion — without a single visible instruction.</p>
+    </div>
+    <div>
+      <div class="detail-card-label">Why it works</div>
+      <div class="detail-card-title">Nothing to hand over</div>
+      <p class="detail-card-body">Nothing to explain, nothing to configure on arrival. The kind of detail nobody consciously notices — which is exactly the register your best work already lives in.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="luxury">
+  <div class="section-eyebrow">For Luxury Curators</div>
+  <h2 class="section-title">The object, sourced for one person.</h2>
+  <div class="section-rule"></div>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--ivory3);line-height:1.85;max-width:560px">Most gifting and acquisition categories eventually repeat themselves. There are only so many rare bottles before a client's collection of "things sourced for me" starts to blur together.</p>
+  <div class="detail-grid">
+    <div>
+      <div class="detail-card-label">Where it fits</div>
+      <div class="detail-card-title">Not an object at all</div>
+      <p class="detail-card-body">Lorgner does not compete with anything already in a client's collection. It is a private, ongoing membership sourced once, on their behalf — and it compounds with use rather than sitting on a shelf.</p>
+    </div>
+    <div>
+      <div class="detail-card-label">Why it works</div>
+      <div class="detail-card-title">Value that persists</div>
+      <p class="detail-card-body">It keeps proving its value long after the acquisition itself is forgotten — the opposite of a gift that gets absorbed into a collection and disappears.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="inquire">
+  <div class="section-eyebrow">Get in Touch</div>
+  <h2 class="section-title">Tell us which world you work in.</h2>
+  <div class="section-rule"></div>
+  <div class="form-wrap">
+    <div class="form-title">Partnership inquiry</div>
+    <p class="form-sub">A few details help us come prepared to a first conversation — no commitment, no forms to fill out just to learn more.</p>
+    <form id="curatorForm">
+      <div class="form-grid">
+        <div>
+          <label class="field-label" for="fname">Name</label>
+          <input class="field-input" id="fname" type="text" required>
+        </div>
+        <div>
+          <label class="field-label" for="frole">I am a…</label>
+          <select class="field-select" id="frole">
+            <option>Experience Curator</option>
+            <option>Luxury Curator</option>
+            <option>Both / Not Sure</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label" for="fcompany">Company / Property</label>
+          <input class="field-input" id="fcompany" type="text" required>
+        </div>
+        <div>
+          <label class="field-label" for="femail">Email</label>
+          <input class="field-input" id="femail" type="email" required>
+        </div>
+        <div class="form-full">
+          <label class="field-label" for="fnotes">Tell us about your clients or guests</label>
+          <textarea class="field-textarea" id="fnotes" placeholder="Who you are curating for, and what moments or acquisitions you are looking to cover…"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn">Send Inquiry</button>
+      <div class="form-note">No spam. A member of our team will respond within 48 hours.</div>
+      <div class="form-success" id="formSuccess">Thank you — we will be in touch shortly.</div>
+    </form>
+  </div>
+</div>
+
+<div class="closing">
+  <h2 class="closing-title">Quietly useful,<br><em>whichever world you curate in.</em></h2>
+  <a class="closing-link" href="#inquire">Start a Conversation →</a>
+  <div class="closing-note">Private · No advertising · No data sold</div>
+</div>
+
+<footer class="footer">
+  <span class="footer-brand">Lorgner</span>
+  <span class="footer-note">© 2026 Lorgner · A private styling membership</span>
+</footer>
+
+<script>
+document.getElementById('curatorForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('.submit-btn');
+  const success = document.getElementById('formSuccess');
+  btn.style.opacity = '.5';
+  btn.disabled = true;
+  setTimeout(function() {
+    success.style.display = 'block';
+    btn.style.display = 'none';
+  }, 600);
+});
+</script>
+</body>
+</html>

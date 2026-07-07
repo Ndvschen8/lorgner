@@ -73,6 +73,14 @@
       "dest": "/public/reading-glasses-collection.html"
     },
     {
+      "src": "/for-those-who-curate",
+      "dest": "/public/for-those-who-curate.html"
+    },
+    {
+      "src": "/curators",
+      "dest": "/public/curators.html"
+    },
+    {
       "src": "/privacy",
       "dest": "/public/privacy.html"
     },

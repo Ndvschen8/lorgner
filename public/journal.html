@@ -332,6 +332,8 @@
     .hero, .index, .article, .gift-section { padding-left: 20px; padding-right: 20px; }
     .footer { padding: 40px 20px; flex-direction: column; gap: 12px; text-align: center; }
     .gift-grid, .gift-grid--three { grid-template-columns: 1fr; }
+    .gift-card[style*="grid-template-columns:320px"] { display: block !important; }
+    .gift-card-img[style*="height:240px"] { height: 200px !important; }
   }
 </style>
 </head>
@@ -346,6 +348,24 @@
   <div class="hero-label">The Frame Journal</div>
   <h1 class="hero-title">You have readers <em>everywhere.</em><br>Lorgner helps you wear the right ones.</h1>
   <p class="hero-sub">Editorial guidance on reading glasses — how to choose them, wear them, and build a collection that actually works for your life. Lorgner helps you style the collection you have already built.</p>
+</div>
+
+<!-- FEATURED -->
+<div class="gift-section">
+  <div class="gift-section-label">Featured</div>
+  <div class="gift-grid" style="grid-template-columns:1fr;">
+    <a href="/for-those-who-curate" class="gift-card" style="display:grid;grid-template-columns:320px 1fr;">
+      <div class="gift-card-img" style="height:240px;">
+        <img src="/luxury.jpg" alt="For Those Who Curate">
+      </div>
+      <div class="gift-card-body" style="padding:32px 36px;display:flex;flex-direction:column;justify-content:center;">
+        <div class="gift-card-tag">Partnerships · Curators</div>
+        <h2 class="gift-card-title" style="font-size:22px;margin-bottom:12px;">For those who curate</h2>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:300;color:var(--ivory3);line-height:1.75;margin-bottom:20px;">Two disciplines. One quietly useful partner. Whether you are orchestrating a guest's day or sourcing for a client's collection.</p>
+        <span class="gift-card-cta">Read the article →</span>
+      </div>
+    </a>
+  </div>
 </div>
 
 <!-- GIFT GUIDES -->
