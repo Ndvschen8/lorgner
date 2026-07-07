@@ -53,6 +53,26 @@
       "dest": "/public/journal.html"
     },
     {
+      "src": "/how-to-choose-reading-glasses",
+      "dest": "/public/how-to-choose-reading-glasses.html"
+    },
+    {
+      "src": "/reading-glasses-match-regular-glasses",
+      "dest": "/public/reading-glasses-match-regular-glasses.html"
+    },
+    {
+      "src": "/reading-glasses-office-vs-dinner",
+      "dest": "/public/reading-glasses-office-vs-dinner.html"
+    },
+    {
+      "src": "/reading-glasses-women-over-50",
+      "dest": "/public/reading-glasses-women-over-50.html"
+    },
+    {
+      "src": "/reading-glasses-collection",
+      "dest": "/public/reading-glasses-collection.html"
+    },
+    {
       "src": "/privacy",
       "dest": "/public/privacy.html"
     },
