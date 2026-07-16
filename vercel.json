@@ -1,112 +1,32 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
-    }
+  "outputDirectory": "public",
+  "rewrites": [
+    { "source": "/app", "destination": "/app.html" },
+    { "source": "/wedding", "destination": "/wedding.html" },
+    { "source": "/redeem", "destination": "/redeem.html" },
+    { "source": "/gift/:path*", "destination": "/redeem.html" },
+    { "source": "/groomsmen-gifts", "destination": "/groomsmen-gifts.html" },
+    { "source": "/bridesmaids-gifts", "destination": "/bridesmaids-gifts.html" },
+    { "source": "/journal", "destination": "/journal.html" },
+    { "source": "/how-to-choose-reading-glasses", "destination": "/how-to-choose-reading-glasses.html" },
+    { "source": "/reading-glasses-match-regular-glasses", "destination": "/reading-glasses-match-regular-glasses.html" },
+    { "source": "/reading-glasses-office-vs-dinner", "destination": "/reading-glasses-office-vs-dinner.html" },
+    { "source": "/reading-glasses-women-over-50", "destination": "/reading-glasses-women-over-50.html" },
+    { "source": "/reading-glasses-collection", "destination": "/reading-glasses-collection.html" },
+    { "source": "/for-those-who-curate", "destination": "/for-those-who-curate.html" },
+    { "source": "/curators", "destination": "/curators.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/caddis-stylist-demo", "destination": "/caddis-stylist-demo.html" },
+    { "source": "/partners", "destination": "/partners.html" },
+    { "source": "/enterprise", "destination": "/enterprise.html" },
+    { "source": "/(.*)", "destination": "/app.html" }
   ],
-  "routes": [
+  "redirects": [
     {
-      "src": "/",
-      "dest": "/public/index.html"
-    },
-    {
-      "src": "/favicon.png",
-      "dest": "/public/favicon.png"
-    },
-    {
-      "src": "/weddingparty.jpg",
-      "dest": "/public/weddingparty.jpg"
-    },
-    {
-      "src": "/join",
-      "status": 302,
-      "headers": { "Location": "https://buy.stripe.com/aFa6oI7BU2yVeQW4qzcZa00" }
-    },
-    {
-      "src": "/app",
-      "dest": "/public/app.html"
-    },
-    {
-      "src": "/wedding",
-      "dest": "/public/wedding.html"
-    },
-    {
-      "src": "/redeem",
-      "dest": "/public/redeem.html"
-    },
-    {
-      "src": "/gift/(.*)",
-      "dest": "/public/redeem.html"
-    },
-    {
-      "src": "/groomsmen-gifts",
-      "dest": "/public/groomsmen-gifts.html"
-    },
-    {
-      "src": "/bridesmaids-gifts",
-      "dest": "/public/bridesmaids-gifts.html"
-    },
-    {
-      "src": "/journal",
-      "dest": "/public/journal.html"
-    },
-    {
-      "src": "/how-to-choose-reading-glasses",
-      "dest": "/public/how-to-choose-reading-glasses.html"
-    },
-    {
-      "src": "/reading-glasses-match-regular-glasses",
-      "dest": "/public/reading-glasses-match-regular-glasses.html"
-    },
-    {
-      "src": "/reading-glasses-office-vs-dinner",
-      "dest": "/public/reading-glasses-office-vs-dinner.html"
-    },
-    {
-      "src": "/reading-glasses-women-over-50",
-      "dest": "/public/reading-glasses-women-over-50.html"
-    },
-    {
-      "src": "/reading-glasses-collection",
-      "dest": "/public/reading-glasses-collection.html"
-    },
-    {
-      "src": "/for-those-who-curate",
-      "dest": "/public/for-those-who-curate.html"
-    },
-    {
-      "src": "/curators",
-      "dest": "/public/curators.html"
-    },
-    {
-      "src": "/privacy",
-      "dest": "/public/privacy.html"
-    },
-    {
-      "src": "/terms",
-      "dest": "/public/terms.html"
-    },
-    {
-      "src": "/caddis-stylist-demo",
-      "dest": "/public/caddis-stylist-demo.html"
-    },
-    {
-      "src": "/partners",
-      "dest": "/public/partners.html"
-    },
-    {
-      "src": "/enterprise",
-      "dest": "/public/enterprise.html"
-    },
-    {
-      "src": "/(.*\\.(?:jpg|jpeg|png|webp|gif|svg|ico))",
-      "dest": "/public/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/app.html"
+      "source": "/join",
+      "destination": "https://buy.stripe.com/aFa6oI7BU2yVeQW4qzcZa00",
+      "permanent": false
     }
   ]
 }
