@@ -1,5 +1,8 @@
 {
   "outputDirectory": "public",
+  "buildCommand": "",
+  "installCommand": "",
+  "framework": null,
   "rewrites": [
     { "source": "/app", "destination": "/app.html" },
     { "source": "/wedding", "destination": "/wedding.html" },
