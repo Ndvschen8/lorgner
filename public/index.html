@@ -10,46 +10,32 @@
 
 <style>
 :root {
-  --void:    #060608;
-  --deep:    #0b0b0f;
-  --surface: #131318;
-  --lift:    #1a1a22;
-  --line:    rgba(212,192,152,0.11);
-  --line2:   rgba(212,192,152,0.22);
-  --line3:   rgba(212,192,152,0.40);
+  --warm:    #FAF6EE;
+  --paper:   #FFFCF5;
+  --line:    rgba(30,26,20,.10);
+  --line2:   rgba(30,26,20,.18);
+  --line3:   rgba(30,26,20,.32);
   --gold:    #C9A96E;
   --gold-l:  #DFC090;
   --gold-d:  #9A7A48;
-  --gold-bg: rgba(201,169,110,0.07);
-  --gold-b2: rgba(201,169,110,0.14);
-  --ivory:   #EEE9DF;
-  --ivory2:  #D5CEBC;
-  --ivory3:  #8A8272;
-  --ivory4:  #4A4438;
+  --gold-deep:#9A7A48;
+  --gold-bg: rgba(201,169,110,0.09);
+  --gold-b2: rgba(201,169,110,0.18);
+  --ink:     #1E1A14;
+  --ink-soft:#5A5244;
+  --ink-muted:#9A8E7E;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;scroll-behavior:smooth}
 body{
   font-family:'Jost',sans-serif;
-  background:var(--void);
-  color:var(--ivory);
+  background:var(--warm);
+  color:var(--ink);
   min-height:100vh;
   overflow-x:hidden;
 }
 
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.07'/%3E%3C/svg%3E");
-  background-size:256px;opacity:.5;
-}
-
-body::after{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 70% 55% at 18% 5%,rgba(201,169,110,0.04) 0%,transparent 60%),
-    radial-gradient(ellipse 50% 40% at 82% 95%,rgba(201,169,110,0.03) 0%,transparent 60%);
-}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -64,7 +50,7 @@ nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 48px;height:68px;
-  background:rgba(6,6,8,.85);
+  background:rgba(250,246,238,.95);
   backdrop-filter:blur(24px);
   border-bottom:1px solid var(--line);
 }
@@ -77,20 +63,20 @@ nav::after{
   font-family:'Cormorant Garamond',serif;
   font-weight:300;font-size:12px;
   letter-spacing:8px;text-transform:uppercase;
-  color:var(--gold);text-decoration:none;
+  color:var(--gold-d);text-decoration:none;
 }
 .nav-links{display:flex;align-items:center;gap:28px;}
 .nav-link{
   font-family:'DM Mono',monospace;font-size:9px;
   letter-spacing:2px;text-transform:uppercase;
-  color:var(--ivory3);text-decoration:none;
+  color:var(--ink-muted);text-decoration:none;
   transition:color .2s;
 }
 .nav-link:hover{color:var(--gold-l);}
 .nav-join{
   font-family:'Jost',sans-serif;font-size:11px;font-weight:400;
   letter-spacing:2px;text-transform:uppercase;
-  color:var(--void);background:var(--gold);
+  color:var(--ink);background:var(--gold);
   border:none;border-radius:2px;
   padding:9px 22px;cursor:pointer;
   transition:all .25s;text-decoration:none;
@@ -123,7 +109,7 @@ nav::after{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(48px,7vw,88px);
   font-weight:300;line-height:1.1;
-  color:var(--ivory);
+  color:var(--ink);
   margin-bottom:16px;
   letter-spacing:-.5px;
   animation:fadeUp .9s ease .35s both;
@@ -142,7 +128,7 @@ nav::after{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(18px,2.2vw,24px);
   font-weight:300;font-style:italic;
-  color:var(--ivory3);max-width:520px;
+  color:var(--ink-muted);max-width:520px;
   line-height:1.75;margin-bottom:48px;
   animation:fadeUp .9s ease .55s both;
 }
@@ -154,7 +140,7 @@ nav::after{
 .btn-primary{
   font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;
   letter-spacing:4px;text-transform:uppercase;
-  color:var(--void);background:var(--gold);
+  color:var(--ink);background:var(--gold);
   border:none;border-radius:2px;padding:18px 44px;
   cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block;
 }
@@ -162,17 +148,17 @@ nav::after{
 .btn-ghost{
   font-family:'DM Mono',monospace;font-size:9px;
   letter-spacing:2.5px;text-transform:uppercase;
-  color:var(--ivory3);background:transparent;
+  color:var(--ink-muted);background:transparent;
   border:1px solid var(--line2);border-radius:2px;
   padding:18px 28px;cursor:pointer;transition:all .25s;
   text-decoration:none;display:inline-block;
 }
-.btn-ghost:hover{border-color:var(--line3);color:var(--ivory);}
+.btn-ghost:hover{border-color:var(--line3);color:var(--ink);}
 
 .hero-footnote{
   margin-top:48px;
   font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:2px;text-transform:uppercase;color:var(--ivory4);
+  letter-spacing:2px;text-transform:uppercase;color:var(--gold-d);
   animation:fadeUp .8s ease .85s both;
 }
 
@@ -183,7 +169,7 @@ nav::after{
 }
 .scroll-hint span{
   font-family:'DM Mono',monospace;font-size:8px;
-  letter-spacing:3px;text-transform:uppercase;color:var(--ivory4);
+  letter-spacing:3px;text-transform:uppercase;color:var(--gold-d);
 }
 .scroll-arrow{
   width:1px;height:36px;
@@ -204,11 +190,11 @@ nav::after{
 .sec-title{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(32px,4vw,52px);font-weight:300;
-  color:var(--ivory);line-height:1.15;margin-bottom:16px;
+  color:var(--ink);line-height:1.15;margin-bottom:16px;
 }
 .sec-title em{font-style:italic;color:var(--gold-l);}
 .sec-body{
-  font-size:15px;font-weight:300;color:var(--ivory3);
+  font-size:15px;font-weight:300;color:var(--ink-muted);
   line-height:1.9;max-width:560px;margin-bottom:40px;
 }
 .sec-rule{
@@ -219,7 +205,7 @@ nav::after{
 
 .problem-section{
   position:relative;z-index:1;
-  background:var(--deep);
+  background:var(--paper);
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line);
   padding:100px 48px;text-align:center;
@@ -227,13 +213,13 @@ nav::after{
 .problem-quote{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(24px,3.5vw,44px);font-weight:300;
-  line-height:1.4;color:var(--ivory);
+  line-height:1.4;color:var(--ink);
   max-width:760px;margin:0 auto 24px;
 }
 .problem-quote em{font-style:italic;color:var(--gold-l);}
 .problem-attr{
   font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:3px;text-transform:uppercase;color:var(--ivory4);
+  letter-spacing:3px;text-transform:uppercase;color:var(--gold-d);
 }
 
 .steps-grid{
@@ -242,10 +228,10 @@ nav::after{
   border:1px solid var(--line);margin-top:48px;
 }
 .step{
-  background:var(--void);padding:40px 32px;
+  background:var(--warm);padding:40px 32px;
   transition:background .25s;
 }
-.step:hover{background:var(--surface);}
+.step:hover{background:var(--paper);}
 .step-num{
   font-family:'Cormorant Garamond',serif;
   font-size:44px;font-weight:300;
@@ -255,17 +241,17 @@ nav::after{
 .step-title{
   font-family:'Cormorant Garamond',serif;
   font-size:20px;font-weight:400;
-  color:var(--ivory);margin-bottom:10px;
+  color:var(--ink);margin-bottom:10px;
 }
 .step-title em{font-style:italic;color:var(--gold-l);}
 .step-desc{
   font-size:13px;font-weight:300;
-  color:var(--ivory3);line-height:1.75;
+  color:var(--ink-muted);line-height:1.75;
 }
 
 .answer-section{
   position:relative;z-index:1;
-  background:var(--deep);
+  background:var(--paper);
   border-top:1px solid var(--line);
   padding:120px 48px;
   text-align:center;
@@ -274,7 +260,7 @@ nav::after{
 .answer-context{
   font-family:'DM Mono',monospace;font-size:9px;
   letter-spacing:3px;text-transform:uppercase;
-  color:var(--ivory4);margin-bottom:32px;
+  color:var(--gold-d);margin-bottom:32px;
   display:flex;align-items:center;justify-content:center;gap:12px;
 }
 .answer-context::before,.answer-context::after{
@@ -284,12 +270,12 @@ nav::after{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(14px,1.5vw,17px);font-weight:300;
   letter-spacing:2px;text-transform:uppercase;
-  color:var(--ivory3);margin-bottom:20px;
+  color:var(--ink-muted);margin-bottom:20px;
 }
 .answer-frame{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(60px,10vw,120px);font-weight:300;
-  color:var(--ivory);line-height:1;
+  color:var(--ink);line-height:1;
   letter-spacing:-2px;margin-bottom:16px;
   animation:goldPulse 4s ease-in-out infinite;
 }
@@ -297,7 +283,7 @@ nav::after{
 .answer-qualifier{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(13px,1.4vw,16px);font-weight:300;
-  font-style:italic;color:var(--ivory3);
+  font-style:italic;color:var(--ink-muted);
   margin-bottom:48px;letter-spacing:.3px;
 }
 .answer-rule{
@@ -309,7 +295,7 @@ nav::after{
 .answer-note{
   font-family:'DM Mono',monospace;font-size:9px;
   letter-spacing:3px;text-transform:uppercase;
-  color:var(--ivory4);
+  color:var(--gold-d);
 }
 
 .benefits-section{
@@ -322,7 +308,7 @@ nav::after{
   gap:24px;margin-top:48px;
 }
 .benefit-card{
-  background:var(--surface);border:1px solid var(--line);
+  background:var(--paper);border:1px solid var(--line);
   padding:32px 28px;transition:border-color .25s;
 }
 .benefit-card:hover{border-color:var(--line2);}
@@ -333,15 +319,15 @@ nav::after{
 }
 .bc-title{
   font-family:'Cormorant Garamond',serif;
-  font-size:20px;font-weight:400;color:var(--ivory);
+  font-size:20px;font-weight:400;color:var(--ink);
   margin-bottom:10px;line-height:1.3;
 }
 .bc-title em{font-style:italic;color:var(--gold-l);}
-.bc-desc{font-size:13px;font-weight:300;color:var(--ivory3);line-height:1.75;}
+.bc-desc{font-size:13px;font-weight:300;color:var(--ink-muted);line-height:1.75;}
 
 .editorial-section{
   position:relative;z-index:1;
-  background:var(--deep);
+  background:var(--paper);
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line);
   padding:100px 48px;text-align:center;
@@ -356,11 +342,11 @@ nav::after{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(20px,2.8vw,30px);
   font-weight:300;font-style:italic;
-  color:var(--ivory);line-height:1.6;margin-bottom:24px;
+  color:var(--ink);line-height:1.6;margin-bottom:24px;
 }
 .editorial-source{
   font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:3px;text-transform:uppercase;color:var(--ivory4);
+  letter-spacing:3px;text-transform:uppercase;color:var(--gold-d);
 }
 
 .pricing-section{
@@ -369,7 +355,7 @@ nav::after{
   max-width:800px;margin:0 auto;text-align:center;
 }
 .price-card{
-  background:var(--surface);border:1px solid var(--line2);
+  background:var(--paper);border:1px solid var(--line2);
   padding:56px 48px;margin-top:48px;position:relative;
   overflow:hidden;
 }
@@ -388,13 +374,13 @@ nav::after{
 .price-amount{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(52px,7vw,80px);font-weight:300;
-  color:var(--ivory);line-height:1;margin-bottom:4px;
+  color:var(--ink);line-height:1;margin-bottom:4px;
 }
 .price-amount sup{font-size:40%;vertical-align:top;margin-top:.4em;color:var(--gold);}
 .price-period{
   font-family:'DM Mono',monospace;font-size:10px;
   letter-spacing:3px;text-transform:uppercase;
-  color:var(--ivory3);margin-bottom:32px;
+  color:var(--ink-muted);margin-bottom:32px;
 }
 .price-items{
   list-style:none;display:flex;flex-direction:column;gap:10px;
@@ -403,18 +389,18 @@ nav::after{
 }
 .price-items li{
   display:flex;align-items:center;gap:12px;
-  font-size:14px;font-weight:300;color:var(--ivory2);
+  font-size:14px;font-weight:300;color:var(--ink-soft);
 }
 .price-items li::before{content:'✦';font-size:9px;color:var(--gold);flex-shrink:0;}
 .price-note{
   font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:2px;text-transform:uppercase;color:var(--ivory4);
+  letter-spacing:2px;text-transform:uppercase;color:var(--gold-d);
   margin-top:20px;
 }
 .price-launch{
   font-family:'Cormorant Garamond',serif;
   font-size:14px;font-style:italic;
-  color:var(--ivory3);margin-top:12px;
+  color:var(--ink-muted);margin-top:12px;
 }
 .perks-badge{
   display:inline-flex;align-items:center;gap:7px;
@@ -430,7 +416,7 @@ nav::after{
 
 .final-cta{
   position:relative;z-index:1;
-  background:var(--deep);
+  background:var(--paper);
   border-top:1px solid var(--line);
   padding:100px 48px;text-align:center;
 }
@@ -450,12 +436,12 @@ nav::after{
 .final-title{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(34px,5vw,60px);font-weight:300;
-  color:var(--ivory);line-height:1.15;margin-bottom:16px;
+  color:var(--ink);line-height:1.15;margin-bottom:16px;
 }
 .final-title em{font-style:italic;color:var(--gold-l);}
 .final-sub{
   font-size:14px;font-weight:300;
-  color:var(--ivory3);margin-bottom:40px;line-height:1.8;
+  color:var(--ink-muted);margin-bottom:40px;line-height:1.8;
 }
 .final-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
 
@@ -464,7 +450,7 @@ footer{
   padding:32px 48px;
   border-top:1px solid var(--line);
   display:flex;align-items:center;justify-content:space-between;
-  background:var(--void);
+  background:var(--warm);
 }
 .footer-brand{
   font-family:'Cormorant Garamond',serif;
@@ -475,12 +461,12 @@ footer{
 .footer-link{
   font-family:'DM Mono',monospace;font-size:8px;
   letter-spacing:2px;text-transform:uppercase;
-  color:var(--ivory4);text-decoration:none;transition:color .2s;
+  color:var(--gold-d);text-decoration:none;transition:color .2s;
 }
-.footer-link:hover{color:var(--ivory3);}
+.footer-link:hover{color:var(--ink-muted);}
 .footer-note{
   font-family:'DM Mono',monospace;font-size:8px;
-  letter-spacing:1px;text-transform:uppercase;color:var(--ivory4);
+  letter-spacing:1px;text-transform:uppercase;color:var(--gold-d);
 }
 
 @media(max-width:768px){
@@ -665,7 +651,7 @@ footer{
     <div class="final-actions">
       <a href="https://www.lorgner.co/join" class="btn-primary">Get Started — $29/month</a>
     </div>
-    <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory4);">
+    <p style="margin-top:20px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-d);">
       Private · Founded 2026
     </p>
   </div>

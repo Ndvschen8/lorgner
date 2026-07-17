@@ -18,24 +18,24 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --void:    #0a0a0a;
-    --surface: #111111;
-    --line:    #1e1e1e;
-    --line2:   #2a2a2a;
-    --ivory:   #e8e0d0;
-    --ivory2:  #cfc8b8;
-    --ivory3:  #a09888;
-    --ivory4:  #6a6258;
-    --gold:    #c9a96e;
-    --gold-d:  #8a6e3e;
-    --gold-bg: rgba(201,169,110,.07);
+    --warm:#FAF6EE;
+    --paper:#FFFCF5;
+    --line:rgba(30,26,20,.10);
+    --line2:rgba(30,26,20,.18);
+    --ink:#1E1A14;
+    --ink-soft:#5A5244;
+    --ink-muted:#9A8E7E;
+    --gold-deep:#9A7A48;
+    --gold:#C9A96E;
+    --gold-bg:rgba(201,169,110,.09);
+    --gold-line:rgba(201,169,110,.30);
   }
 
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--void);
-    color: var(--ivory2);
+    background: var(--warm);
+    color: var(--ink-soft);
     font-family: 'Jost', sans-serif;
     font-weight: 300;
     line-height: 1.7;
@@ -51,7 +51,8 @@
     justify-content: space-between;
     position: sticky;
     top: 0;
-    background: var(--void);
+    background: rgba(250,246,238,.95);
+    backdrop-filter: blur(12px);
     z-index: 100;
   }
   .nav-brand {
@@ -60,7 +61,7 @@
     font-size: 13px;
     letter-spacing: 9px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-deep);
     text-decoration: none;
   }
   .nav-cta {
@@ -68,14 +69,14 @@
     font-size: 9px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: var(--ivory3);
+    color: var(--ink-muted);
     text-decoration: none;
     border: 1px solid var(--line2);
     padding: 8px 16px;
     border-radius: 2px;
     transition: all .2s;
   }
-  .nav-cta:hover { color: var(--gold); border-color: var(--gold-d); }
+  .nav-cta:hover { color: var(--gold); border-color: var(--gold-deep); }
 
   /* HERO */
   .hero {
@@ -89,21 +90,21 @@
     font-size: 9px;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-deep);
     margin-bottom: 20px;
   }
   .hero-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(32px, 5vw, 52px);
     font-weight: 300;
-    color: var(--ivory);
+    color: var(--ink);
     line-height: 1.15;
     margin-bottom: 20px;
   }
   .hero-title em { font-style: italic; color: var(--gold); }
   .hero-sub {
     font-size: 15px;
-    color: var(--ivory3);
+    color: var(--ink-muted);
     max-width: 520px;
     line-height: 1.8;
   }
@@ -120,7 +121,7 @@
     font-size: 8px;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--ivory4);
+    color: var(--gold-deep);
     margin-bottom: 24px;
   }
   .index-list { list-style: none; }
@@ -133,7 +134,7 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: 18px;
     font-weight: 400;
-    color: var(--ivory2);
+    color: var(--ink-soft);
     text-decoration: none;
     display: flex;
     justify-content: space-between;
@@ -145,7 +146,7 @@
     content: '→';
     font-family: 'Jost', sans-serif;
     font-size: 13px;
-    color: var(--ivory4);
+    color: var(--gold-deep);
   }
 
   /* ARTICLES */
@@ -166,7 +167,7 @@
     font-size: 8px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-deep);
   }
   .article-rule {
     flex: 1;
@@ -177,7 +178,7 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(26px, 4vw, 38px);
     font-weight: 300;
-    color: var(--ivory);
+    color: var(--ink);
     line-height: 1.2;
     margin-bottom: 32px;
   }
@@ -186,19 +187,19 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: 18px;
     font-weight: 300;
-    color: var(--ivory2);
+    color: var(--ink-soft);
     line-height: 1.9;
   }
   .article-body p { margin-bottom: 22px; }
   .article-body p:last-of-type { margin-bottom: 0; }
-  .article-body strong { font-weight: 500; color: var(--ivory); }
+  .article-body strong { font-weight: 500; color: var(--ink); }
   .article-body em { font-style: italic; }
 
   /* CTA */
   .article-cta {
     margin-top: 44px;
     padding: 32px 36px;
-    background: var(--surface);
+    background: var(--paper);
     border: 1px solid var(--line2);
     border-radius: 2px;
   }
@@ -207,14 +208,14 @@
     font-size: 8px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-deep);
     margin-bottom: 10px;
   }
   .article-cta-text {
     font-family: 'Cormorant Garamond', serif;
     font-size: 18px;
     font-weight: 300;
-    color: var(--ivory2);
+    color: var(--ink-soft);
     margin-bottom: 18px;
     line-height: 1.6;
   }
@@ -224,7 +225,7 @@
     font-size: 9px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: var(--void);
+    color: var(--warm);
     background: var(--gold);
     padding: 12px 22px;
     border-radius: 2px;
@@ -248,14 +249,14 @@
     font-size: 12px;
     letter-spacing: 7px;
     text-transform: uppercase;
-    color: var(--ivory4);
+    color: var(--gold-deep);
   }
   .footer-note {
     font-family: 'DM Mono', monospace;
     font-size: 8px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--ivory4);
+    color: var(--gold-deep);
   }
 
   /* GIFT GUIDE CARDS */
@@ -270,7 +271,7 @@
     font-size: 8px;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-deep);
     margin-bottom: 24px;
   }
   .gift-grid {
@@ -283,12 +284,12 @@
     grid-template-columns: repeat(3, 1fr);
   }
   .gift-card {
-    background: var(--surface);
+    background: var(--paper);
     text-decoration: none;
     display: block;
     transition: background .2s;
   }
-  .gift-card:hover { background: #161616; }
+  .gift-card:hover { background: var(--gold-bg); }
   .gift-card-img {
     height: 180px;
     overflow: hidden;
@@ -306,14 +307,14 @@
     font-size: 8px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-deep);
     margin-bottom: 10px;
   }
   .gift-card-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 18px;
     font-weight: 300;
-    color: var(--ivory);
+    color: var(--ink);
     line-height: 1.35;
     margin-bottom: 16px;
   }
@@ -322,7 +323,7 @@
     font-size: 8px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--ivory4);
+    color: var(--gold-deep);
     transition: color .2s;
   }
   .gift-card:hover .gift-card-cta { color: var(--gold); }
@@ -361,7 +362,7 @@
       <div class="gift-card-body" style="padding:32px 36px;display:flex;flex-direction:column;justify-content:center;">
         <div class="gift-card-tag">Partnerships · Curators</div>
         <h2 class="gift-card-title" style="font-size:22px;margin-bottom:12px;">For those who curate</h2>
-        <p style="font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:300;color:var(--ivory3);line-height:1.75;margin-bottom:20px;">Two disciplines. One quietly useful partner. Whether you are orchestrating a guest's day or sourcing for a client's collection.</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:300;color:var(--ink-muted);line-height:1.75;margin-bottom:20px;">Two disciplines. One quietly useful partner. Whether you are orchestrating a guest's day or sourcing for a client's collection.</p>
         <span class="gift-card-cta">Read the article →</span>
       </div>
     </a>
