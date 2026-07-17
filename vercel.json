@@ -25,6 +25,7 @@
     { "source": "/caddis-stylist-demo", "destination": "/caddis-stylist-demo.html" },
     { "source": "/partners", "destination": "/partners.html" },
     { "source": "/enterprise", "destination": "/enterprise.html" },
+    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
     { "source": "/(.*)", "destination": "/app.html" }
   ],
   "redirects": [
