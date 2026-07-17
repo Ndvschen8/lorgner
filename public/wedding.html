@@ -80,14 +80,14 @@ a { color: inherit; text-decoration: none; }
 .wordmark {
   font-family: 'Cormorant Garamond', serif;
   font-weight: 300; font-size: 14px; letter-spacing: 8px;
-  text-transform: uppercase; color: var(--gold);
+  text-transform: uppercase; color:var(--ink);
 }
 .topbar nav { display: flex; gap: 32px; }
 .topbar nav a {
   font-size: 12px; font-weight: 300; letter-spacing: 0.5px;
   color: var(--ink-soft); transition: color 0.2s;
 }
-.topbar nav a:hover { color: var(--gold); }
+.topbar nav a:hover { color:var(--ink); }
 @media(max-width:640px) { .topbar nav { display: none; } }
 
 /* HERO */
@@ -112,7 +112,7 @@ a { color: inherit; text-decoration: none; }
 .hero-eyebrow {
   font-family: 'Jost', sans-serif;
   font-size: 11px; font-weight: 400; letter-spacing: 3.5px;
-  text-transform: uppercase; color: var(--gold-deep);
+  text-transform: uppercase; color:var(--ink);
   margin-bottom: 20px;
   display: flex; align-items: center; gap: 14px;
 }
@@ -125,7 +125,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 300; line-height: 1.08; color: var(--ink);
   max-width: 760px; margin-bottom: 24px;
 }
-.hero-h1 em { font-style: italic; color: var(--gold-deep); }
+.hero-h1 em { font-style: italic; color:var(--ink); }
 .hero-lede {
   font-size: 17px; font-weight: 300; color: var(--ink-soft);
   max-width: 540px; line-height: 1.75; margin-bottom: 40px;
@@ -140,20 +140,20 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase; border: none; cursor: pointer;
   transition: background 0.25s;
 }
-.btn-primary:hover { background: var(--gold-deep); }
+.btn-primary:hover { background:var(--ink); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 .link-quiet {
   font-size: 14px; font-weight: 300; color: var(--ink-soft);
   border-bottom: 1px solid var(--gold-line); padding-bottom: 2px;
   transition: color 0.2s, border-color 0.2s; cursor: pointer;
 }
-.link-quiet:hover { color: var(--ink); border-color: var(--gold); }
+.link-quiet:hover { color: var(--ink); border-color:var(--ink); }
 
 /* SECTION SHELL */
 section { padding: 80px 0; border-bottom: 1px solid var(--line); }
 .sec-eyebrow {
   font-size: 10px; font-weight: 400; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--gold-deep); margin-bottom: 14px;
+  text-transform: uppercase; color:var(--ink); margin-bottom: 14px;
 }
 .sec-h2 {
   font-family: 'Cormorant Garamond', serif;
@@ -161,7 +161,7 @@ section { padding: 80px 0; border-bottom: 1px solid var(--line); }
   font-weight: 300; line-height: 1.2; color: var(--ink);
   max-width: 620px; margin-bottom: 52px;
 }
-.sec-h2 em { font-style: italic; color: var(--gold-deep); }
+.sec-h2 em { font-style: italic; color:var(--ink); }
 
 /* TIMELINE */
 .timeline-scroll { overflow-x: auto; padding-bottom: 8px; }
@@ -177,7 +177,7 @@ section { padding: 80px 0; border-bottom: 1px solid var(--line); }
 .t-node { flex: 1; position: relative; padding-right: 16px; }
 .t-dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: var(--gold); margin-bottom: 18px;
+  background:var(--ink); margin-bottom: 18px;
   position: relative; z-index: 1;
   box-shadow: 0 0 0 3px rgba(201,169,110,0.18);
 }
@@ -191,7 +191,7 @@ section { padding: 80px 0; border-bottom: 1px solid var(--line); }
   max-width: 580px; line-height: 1.8; font-family: 'Cormorant Garamond', serif;
   font-size: 18px;
 }
-.timeline-caption em { font-style: italic; color: var(--gold-deep); }
+.timeline-caption em { font-style: italic; color:var(--ink); }
 
 /* WHO IT'S FOR */
 .for-grid {
@@ -207,7 +207,7 @@ section { padding: 80px 0; border-bottom: 1px solid var(--line); }
   font-style: italic; font-size: 26px; font-weight: 300;
   color: var(--ink); margin-bottom: 14px;
 }
-.for-card .role span { color: var(--gold-deep); }
+.for-card .role span { color:var(--ink); }
 .for-card p { font-size: 15px; font-weight: 300; color: var(--ink-soft); line-height: 1.8; margin: 0; }
 
 /* PARTY BUILDER */
@@ -277,7 +277,7 @@ section { padding: 80px 0; border-bottom: 1px solid var(--line); }
 
 .checkout-btn {
   width: 100%; margin-top: 6px;
-  background: var(--gold); color: var(--ink);
+  background:var(--ink); color: var(--ink);
   border: none; padding: 18px;
   font-family: 'Cormorant Garamond', serif;
   font-size: 16px; font-weight: 400; letter-spacing: 2.5px;
@@ -296,13 +296,13 @@ section { padding: 80px 0; border-bottom: 1px solid var(--line); }
   padding: 6px 12px;
   font-family: 'DM Mono', monospace;
   font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--gold-deep);
+  color:var(--ink);
   margin-bottom: 14px;
 }
 .perks-badge::before {
   content: '✦';
   font-size: 7px;
-  color: var(--gold);
+  color:var(--ink);
 }
 .party-error {
   background: rgba(180,60,60,0.06); border: 1px solid rgba(180,60,60,0.2);
@@ -319,7 +319,7 @@ section { padding: 80px 0; border-bottom: 1px solid var(--line); }
 .step-card { border-top: 2px solid var(--gold-line); padding-top: 28px; }
 .step-num {
   font-family: 'Cormorant Garamond', serif; font-style: italic;
-  font-size: 15px; color: var(--gold-deep); margin-bottom: 12px;
+  font-size: 15px; color:var(--ink); margin-bottom: 12px;
   display: block;
 }
 .step-card h3 {
@@ -334,7 +334,7 @@ section { padding: 80px 0; border-bottom: 1px solid var(--line); }
   max-width: 600px;
 }
 .steps-note p { font-size: 14px; font-weight: 300; color: var(--ink-soft); line-height: 1.8; margin: 0; }
-.steps-note p em { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-deep); font-size: 16px; }
+.steps-note p em { font-family: 'Cormorant Garamond', serif; font-style: italic; color:var(--ink); font-size: 16px; }
 
 /* CLOSING */
 .closing { text-align: center; padding: 96px 0 110px; border-bottom: none; }
@@ -344,7 +344,7 @@ section { padding: 80px 0; border-bottom: 1px solid var(--line); }
   font-weight: 300; color: var(--ink); line-height: 1.15;
   max-width: 640px; margin: 0 auto 36px;
 }
-.closing h2 em { font-style: italic; color: var(--gold-deep); }
+.closing h2 em { font-style: italic; color:var(--ink); }
 .closing .fine {
   margin-top: 22px; font-size: 13px; font-weight: 300;
   color: var(--ink-muted); letter-spacing: 0.3px;
@@ -571,8 +571,8 @@ footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0
     <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink-muted);margin-bottom:16px;">From The Frame Journal</p>
     <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--ink);margin-bottom:24px;">Gift guides for the wedding party</h3>
     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-      <a href="/groomsmen-gifts" style="font-family:'Jost',sans-serif;font-size:13px;font-weight:400;color:var(--gold-deep);text-decoration:none;border:1px solid var(--gold-line);padding:12px 24px;transition:background .2s;" onmouseover="this.style.background='var(--gold-bg)'" onmouseout="this.style.background='transparent'">The Best Groomsmen Gifts: 5 Outside-the-Box Ideas →</a>
-      <a href="/bridesmaids-gifts" style="font-family:'Jost',sans-serif;font-size:13px;font-weight:400;color:var(--gold-deep);text-decoration:none;border:1px solid var(--gold-line);padding:12px 24px;transition:background .2s;" onmouseover="this.style.background='var(--gold-bg)'" onmouseout="this.style.background='transparent'">The Best Bridesmaid Gifts: 5 Outside-the-Box Ideas →</a>
+      <a href="/groomsmen-gifts" style="font-family:'Jost',sans-serif;font-size:13px;font-weight:400;color:var(--ink);text-decoration:none;border:1px solid var(--gold-line);padding:12px 24px;transition:background .2s;" onmouseover="this.style.background='var(--gold-bg)'" onmouseout="this.style.background='transparent'">The Best Groomsmen Gifts: 5 Outside-the-Box Ideas →</a>
+      <a href="/bridesmaids-gifts" style="font-family:'Jost',sans-serif;font-size:13px;font-weight:400;color:var(--ink);text-decoration:none;border:1px solid var(--gold-line);padding:12px 24px;transition:background .2s;" onmouseover="this.style.background='var(--gold-bg)'" onmouseout="this.style.background='transparent'">The Best Bridesmaid Gifts: 5 Outside-the-Box Ideas →</a>
     </div>
   </div>
 </section>
