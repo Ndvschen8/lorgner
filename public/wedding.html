@@ -277,7 +277,7 @@ section { padding: 80px 0; border-bottom: 1px solid var(--line); }
 
 .checkout-btn {
   width: 100%; margin-top: 6px;
-  background:var(--ink); color: var(--ink);
+  background:var(--ink); color: #fff;
   border: none; padding: 18px;
   font-family: 'Cormorant Garamond', serif;
   font-size: 16px; font-weight: 400; letter-spacing: 2.5px;
@@ -402,7 +402,7 @@ footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0
 
 <div class="wrap">
   <div class="topbar">
-    <div class="wordmark">L O R G N E R</div>
+    <a href="/" style="text-decoration:none;color:inherit"><div class="wordmark">L O R G N E R</div></a>
     <nav>
       <a href="#occasion">The Occasion</a>
       <a href="#party">Build Your Party</a>
@@ -501,7 +501,7 @@ footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0
         <div class="stepper-label">How many people are in your wedding party?</div>
         <div class="stepper">
           <button class="step-btn" id="minusBtn" aria-label="Decrease">−</button>
-          <div class="step-count" id="countDisplay">4</div>
+          <div class="step-count" id="countDisplay">1</div>
           <button class="step-btn" id="plusBtn" aria-label="Increase">+</button>
         </div>
         <p class="step-note">Each person gets their own private redemption link — nothing shared, no codes to split, no coordination needed.</p>
@@ -514,7 +514,7 @@ footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0
       <!-- Right: total + form -->
       <div class="party-right">
         <div class="total-eyebrow">Your wedding party gift</div>
-        <div class="total-amount" id="totalDisplay">$516</div>
+        <div class="total-amount" id="totalDisplay">$129</div>
         <div class="total-sub" id="totalSubDisplay">$129 per person · 6 months each</div>
 
         <div id="partyError" class="party-error"></div>
@@ -601,8 +601,8 @@ footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0
 const BACKEND = 'https://lorgner-production.up.railway.app';
 
 // Party size state
-let count = 4;
-const MIN = 2, MAX = 20;
+let count = 1;
+const MIN = 1, MAX = 20;
 
 const PRICE = 129;
 

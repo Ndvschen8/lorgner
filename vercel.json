@@ -18,6 +18,7 @@
     { "source": "/reading-glasses-collection", "destination": "/reading-glasses-collection.html" },
     { "source": "/for-those-who-curate", "destination": "/for-those-who-curate.html" },
     { "source": "/curators", "destination": "/curators.html" },
+    { "source": "/founder", "destination": "/founder.html" },
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/terms", "destination": "/terms.html" },
     { "source": "/caddis-stylist-demo", "destination": "/caddis-stylist-demo.html" },
