@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lorgner — For Partners</title>
-<meta name="robots" content="noindex, nofollow">
-<meta name="googlebot" content="noindex, nofollow">
+<title>Lorgner — Partner with Us</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -49,6 +47,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .what-body{font-size:15px;font-weight:300;color:var(--ink-muted);line-height:1.9;margin-bottom:28px;}
 .what-body p{margin-bottom:14px;}
 .what-body p:last-child{margin-bottom:0;}
+.what-body ul{margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:8px;}
+.what-body ul li{line-height:1.7;}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);margin-top:32px;}
 .stat{padding:20px 24px 16px;border-right:1px solid var(--line);}
 .stat:last-child{border-right:none;}
@@ -107,7 +107,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .pr-desc{font-size:11px;font-weight:300;color:var(--ink-muted);}
 .pr-price{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--ink);white-space:nowrap;text-align:right;min-width:140px;}
 .pr-price small{font-size:12px;color:var(--ink);font-family:'DM Mono',monospace;display:block;margin-top:2px;letter-spacing:.5px;}
-.pricing-note{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;font-weight:300;color:var(--ink);line-height:1.7;font-style:italic;}
 .cta-block{text-align:center;animation:fadeUp .8s ease 1s both;opacity:0;}
 .cta-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink);margin-bottom:18px;}
 .cta-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--ink);margin-bottom:14px;line-height:1.2;}
@@ -125,7 +124,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .submit-btn{width:100%;margin-top:8px;background:var(--ink);border:none;border-radius:2px;padding:16px;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--warm);cursor:pointer;transition:all .3s;}
 .submit-btn:hover{background:var(--ink-soft);transform:translateY(-1px);}
 .submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-.form-note{text-align:center;margin-top:13px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink);}
 .form-success{display:none;text-align:center;padding:32px;background:var(--paper);border:1px solid var(--line);border-radius:2px;}
 .form-success.on{display:block;}
 .fs-glyph{font-family:'Cormorant Garamond',serif;font-size:42px;color:var(--ink);margin-bottom:14px;}
@@ -134,9 +132,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 .footer{margin-top:80px;padding-top:28px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;animation:fadeIn 1s ease 1.1s both;opacity:0;}
 .footer-brand{font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:5px;text-transform:uppercase;color:var(--ink);}
 .footer-note{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--ink);text-transform:uppercase;}
-.conf-banner{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--paper);border-top:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:12px;}
-.conf-dot{width:5px;height:5px;border-radius:50%;background:var(--ink);flex-shrink:0;}
-.conf-text{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink);}
 @media(max-width:640px){
   .page{padding:48px 24px 100px;}
   .what-block,.pricing-block{padding:28px 24px;}
@@ -154,19 +149,26 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 <div class="page">
 
   <div class="header">
-    <span class="wordmark">L O R G N E R</span>
+    <a href="/" style="text-decoration:none;"><span class="wordmark">L O R G N E R</span></a>
     <div class="header-rule"></div>
-    <div class="eyebrow">Private Partner Briefing</div>
-    <h1 class="hero-title">The styling intelligence<br>your customers<br><em>don't know they're missing.</em></h1>
-    <p class="hero-sub">Lorgner is a private AI intelligence service that helps people style the glasses they already own. We build it. You brand it. Your customers never know we exist.</p>
+    <div class="eyebrow">Partner with Lorgner</div>
+    <h1 class="hero-title">The eyewear stylist<br>for your <em>customers.</em></h1>
+    <p class="hero-sub">The eyewear stylist for your customers makes recommendations based on your product inventory.</p>
   </div>
 
   <div class="what-block">
     <div class="sec-label">What Lorgner is</div>
-    <h2 class="what-title">A private stylist for<br><em>eyewear collectors.</em></h2>
+    <h2 class="what-title">A personalized eyewear stylist<br><em>for your customers.</em></h2>
     <div class="what-body">
-      <p>Your customers own multiple pairs of glasses. They spent $250 on one pair and $195 on another and they reach for the same one every morning out of habit. Nobody has ever helped them think about which pair to wear to a board meeting versus a dinner versus a weekend morning.</p>
-      <p>Lorgner does exactly that. A member uploads photos of their collection, tells Lorgner the occasion, and receives a specific recommendation — with a real reason behind it — in seconds. When Lorgner identifies a gap in their collection it recommends exactly the right frame to fill it. Under your brand name.</p>
+      <p>Lorgner is a personalized eyewear stylist that helps your customers decide which pair of glasses to wear for which occasion. Customers upload images of their current collection and the stylist engine recommends the perfect pair. When the engine identifies a gap it makes recommendations based on your product inventory.</p>
+      <p>Your customers just bought a few pairs of glasses with you — they walk away feeling great. Yet no one has helped them decide which pair to wear for which occasion.</p>
+      <p>Your customers come in primarily for their annual eye exam and decide to purchase one or two pairs of glasses. After the sale, that's it — you send them a reminder for their next eye exam. But what about the time in between? That's where Lorgner comes in. Customers upload pictures of their glasses and get advice on which pair to wear with which outfit and occasion. If there is a gap in their collection the engine recommends exactly the right frame from your product inventory, driving customers back to your shop for purchases in between exams.</p>
+      <p><strong>How the eyewear stylist works:</strong></p>
+      <ul>
+        <li>Customers can upload up to 8 pairs of glasses</li>
+        <li>Customers engage with the chat engine asking which pair of glasses works with which outfit</li>
+        <li>The engine provides a personalized response based on their glasses — if there is a gap in their collection it recommends exactly the right frame from your product inventory</li>
+      </ul>
     </div>
     <div class="stats">
       <div class="stat"><div class="stat-val">8</div><div class="stat-lbl">Pairs max per<br>consultation</div></div>
@@ -208,10 +210,10 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
   <div class="how-block">
     <div class="sec-label">How white-label works</div>
     <div class="steps-list">
-      <div class="step-row"><div class="step-num">I</div><div class="step-body"><div class="step-title">You provide your brand assets</div><div class="step-desc">Logo, color palette, brand voice, and your frame catalog. A simple spreadsheet with frame names and descriptions is enough. We do the rest.</div></div></div>
-      <div class="step-row"><div class="step-num">II</div><div class="step-body"><div class="step-title">We build your <em>branded experience</em></div><div class="step-desc">Your name. Your colors. Your voice. Your frames. The AI learns your catalog and speaks in your register. No mention of Lorgner anywhere in the product.</div></div></div>
-      <div class="step-row"><div class="step-num">III</div><div class="step-body"><div class="step-title">It lives on your domain</div><div class="step-desc">A simple DNS record points yourbrand.com/stylist at our infrastructure. Your customers see only your domain. SSL handled automatically. Live within 5 business days.</div></div></div>
-      <div class="step-row"><div class="step-num">IV</div><div class="step-body"><div class="step-title">Your customers' data stays <em>yours</em></div><div class="step-desc">All end-user data belongs to you. We never sell it, share it, or use it for any purpose beyond running the service. Full export available any time.</div></div></div>
+      <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title">You provide your brand assets</div><div class="step-desc">Logo, color palette, and your frame catalog. A simple spreadsheet with frame names and descriptions is enough. We do the rest.</div></div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title">We build your <em>branded experience</em></div><div class="step-desc">Your name. Your colors. Your frames. The engine learns your product inventory and matches every recommendation to what you carry. No mention of Lorgner anywhere in the product.</div></div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title">It lives on your website</div><div class="step-desc">The stylist engine is embedded directly on your website. Your customers see only your brand. Live within 5 business days.</div></div></div>
+      <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title">Your customers' data stays <em>yours</em></div><div class="step-desc">All end-user data belongs to you. We never sell it, share it, or use it for any purpose beyond running the service. Full export available any time.</div></div></div>
     </div>
   </div>
 
@@ -219,20 +221,17 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
     <div style="grid-column:1/-1;"><div class="sec-label">Who this is for</div></div>
     <div class="partner-card"><div class="pc-icon">👓</div><div class="pc-title">Independent Optical Boutiques</div><div class="pc-desc">Keep clients engaged between visits. When the stylist identifies a gap it recommends your frames, not a competitor's. The tool pays for itself with one additional pair sold per month.</div></div>
     <div class="partner-card"><div class="pc-icon">✦</div><div class="pc-title">Eyewear Brands</div><div class="pc-desc">A post-purchase experience that increases lifetime value. Your customers who own three pairs buy a fourth because the stylist showed them what they were missing.</div></div>
-    <div class="partner-card"><div class="pc-icon">🌿</div><div class="pc-title">Luxury Wellness & Spa Clubs</div><div class="pc-desc">A member benefit that extends your lifestyle offering into personal style. Position it as a private styling service available exclusively to your members.</div></div>
-    <div class="partner-card"><div class="pc-icon">◈</div><div class="pc-title">Private Membership Organizations</div><div class="pc-desc">A genuinely useful exclusive benefit for your membership. Something members actually use rather than a discount they ignore.</div></div>
   </div>
 
   <div class="pricing-block">
-    <div class="sec-label">Investment</div>
+    <div class="sec-label">Pricing</div>
     <h3 class="pricing-title">Straightforward pricing.</h3>
     <p class="pricing-sub">No revenue share. No per-user fees. No surprises.</p>
     <div class="price-tiers">
-      <div class="price-row"><div class="pr-label"><div class="pr-title">One-Time Setup</div><div class="pr-desc">Branding, catalog integration, subdomain configuration, staging review, launch</div></div><div class="pr-price">$999<small>one time</small></div></div>
-      <div class="price-row"><div class="pr-label"><div class="pr-title">Monthly Platform Fee</div><div class="pr-desc">Unlimited member sessions · hosting · updates · support · full data ownership</div></div><div class="pr-price" style="font-size:16px;">From $799<small>per month · varies by portfolio<br>size, locations &amp; scope</small></div></div>
-      <div class="price-row" style="background:var(--gold-bg);margin:0 -44px;padding:16px 44px;"><div class="pr-label"><div class="pr-title" style="color:var(--ink);">Annual Prepay</div><div class="pr-desc">Two months free — save $1,598 annually</div></div><div class="pr-price" style="color:var(--ink);">$7,990<small>per year</small></div></div>
+      <div class="price-row"><div class="pr-label"><div class="pr-title">One-Time Setup</div><div class="pr-desc">Branding, catalog integration, website embed, staging review, launch</div></div><div class="pr-price">$499<small>one time</small></div></div>
+      <div class="price-row"><div class="pr-label"><div class="pr-title">Monthly Platform Fee</div><div class="pr-desc">Unlimited member sessions · hosting · updates · support · full data ownership</div></div><div class="pr-price" style="font-size:16px;">From $199<small>per month · varies by portfolio<br>size, locations &amp; scope</small></div></div>
+      <div class="price-row" style="background:var(--gold-bg);margin:0 -44px;padding:16px 44px;"><div class="pr-label"><div class="pr-title" style="color:var(--ink);">Annual Prepay</div><div class="pr-desc">Two months free — save $398 annually</div></div><div class="pr-price" style="color:var(--ink);">$1,990<small>per year</small></div></div>
     </div>
-    <div class="pricing-note">We are currently onboarding our first cohort of white-label partners. Timing matters — early partners receive terms that will not be available after the initial cohort is complete. Reach out to discuss what that means for you.</div>
   </div>
 
   <div class="cta-block">
@@ -250,35 +249,25 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
           <option value="" disabled selected>Select your category</option>
           <option>Independent optical boutique</option>
           <option>Eyewear brand</option>
-          <option>Luxury wellness or spa club</option>
-          <option>Private membership organization</option>
-          <option>Hotel or resort</option>
           <option>Other</option>
         </select>
       </div>
       <div class="field"><label class="field-label">Anything else (optional)</label><textarea class="field-ta" id="cf-note" rows="3" placeholder="What you're hoping to achieve, questions about the product, or anything else worth mentioning…"></textarea></div>
       <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">Request a Demo</button>
-      <div class="form-note">We respond within one business day · No sales calls unless you request one</div>
     </div>
 
     <div class="form-success" id="formSuccess">
       <div class="fs-glyph">✦</div>
       <div class="fs-title">Thank you.</div>
-      <div class="fs-sub">We'll be in touch within one business day.<br>If you'd like to speak sooner, email us directly at<br>partnerships@lorgner.co</div>
+      <div class="fs-sub">We'll be in touch shortly.<br>You can also reach us directly at<br>partnerships@lorgner.co</div>
     </div>
   </div>
 
   <div class="footer">
     <div class="footer-brand">Lorgner</div>
-    <div class="footer-note">partnerships@lorgner.co · lorgner.co</div>
+    <div class="footer-note">© 2026 LORGNER · Powered by Digital Junction LLC</div>
   </div>
 
-</div>
-
-<div class="conf-banner">
-  <div class="conf-dot"></div>
-  <div class="conf-text">Private · Not indexed by search engines · For partners only</div>
-  <div class="conf-dot"></div>
 </div>
 
 <script>
