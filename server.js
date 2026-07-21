@@ -505,6 +505,30 @@ app.post('/partner-inquiry', async (req, res) => {
   const { name, email, company, type, note, timestamp } = req.body;
   if (!name || !email || !company || !type) {
     return res.status(400).json({ error: true, message: 'Missing required fields.' });
+    app.post('/unsubscribe', async (req, res) => {
+  const { email, timestamp } = req.body;
+  if (!email) return res.status(400).json({ error: true, message: 'Email required.' });
+
+  try {
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+      from:    'Lorgner <hello@lorgner.co>',
+      to:      'hello@lorgner.co',
+      subject: `Unsubscribe request — ${email}`,
+      html: `<p style="font-family:sans-serif;font-size:15px;color:#333;">
+        <strong>${email}</strong> has requested to be removed from the Lorgner email list.<br><br>
+        <span style="color:#999;font-size:13px;">Submitted: ${timestamp || new Date().toISOString()}</span>
+      </p>`
+    });
+    console.log(`[LORGNER] Unsubscribe: ${email}`);
+  } catch (err) {
+    console.error('[LORGNER] Unsubscribe email error:', err.message);
+  }
+
+  res.json({ ok: true });
+});
+
   }
   try {
     const { Resend } = require('resend');
@@ -1102,13 +1126,7 @@ async function handleWeddingCheckout(session) {
 ══════════════════════════════════════════════ */
 app.post('/create-wedding-checkout', async (req, res) => {
   if (!process.env.STRIPE_SECRET_KEY) {
-    return res.status(500).json({ error: true, message: 'Stripe not configured.' }); 
-    app.post('/unsubscribe', (req, res) => {
-  const { email, timestamp } = req.body;
-  console.log(`Unsubscribe request: ${email} at ${timestamp}`);
-  res.json({ ok: true });
-});
-
+        return res.status(500).json({ error: true, message: 'Stripe not configured.' });
   }
 
   const { name, email, partySize } = req.body;
