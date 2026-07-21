@@ -1102,7 +1102,13 @@ async function handleWeddingCheckout(session) {
 ══════════════════════════════════════════════ */
 app.post('/create-wedding-checkout', async (req, res) => {
   if (!process.env.STRIPE_SECRET_KEY) {
-    return res.status(500).json({ error: true, message: 'Stripe not configured.' });
+    return res.status(500).json({ error: true, message: 'Stripe not configured.' }); 
+    app.post('/unsubscribe', (req, res) => {
+  const { email, timestamp } = req.body;
+  console.log(`Unsubscribe request: ${email} at ${timestamp}`);
+  res.json({ ok: true });
+});
+
   }
 
   const { name, email, partySize } = req.body;
