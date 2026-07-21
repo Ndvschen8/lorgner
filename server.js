@@ -48,14 +48,10 @@ function generateInviteCode(len = 6) {
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-/* ══════════════════════════════════════════════
-   CONFIGURATION — ALL FROM ENVIRONMENT VARIABLES
-   No secrets are hardcoded in this file.
-══════════════════════════════════════════════ */
 const CONFIG = {
-  ANTHROPIC_KEY:        process.env.ANTHROPIC_API_KEY,     // Claude API key — server only
-  SUPABASE_URL:         process.env.SUPABASE_URL,          // Supabase project URL
-  SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,  // Service role key for JWT verification
+  ANTHROPIC_KEY:        process.env.ANTHROPIC_API_KEY,
+  SUPABASE_URL:         process.env.SUPABASE_URL,
+  SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
   ALLOWED_ORIGINS:      (process.env.ALLOWED_ORIGIN || 'https://lorgner.vercel.app')
                           .split(',').map(o => o.trim()),
   FRONTEND_URL:         process.env.FRONTEND_URL || 'https://lorgner.vercel.app',
@@ -69,12 +65,7 @@ const CONFIG = {
   MAX_PAIRS:            8,
 };
 
-/* ══════════════════════════════════════════════
-   LAYER 3 — INPUT / OUTPUT FILTERING
-   Blocklist of patterns rejected before Claude.
-══════════════════════════════════════════════ */
 const BLOCKLIST = [
-  // Jailbreak attempts
   /ignore (all |your |previous |above )?instructions/i,
   /you are now|pretend (you are|to be)/i,
   /disregard|forget (your|the) (instructions|rules)/i,
@@ -82,16 +73,10 @@ const BLOCKLIST = [
   /repeat after me|output the following/i,
   /your (true|real) (self|purpose|nature)/i,
   /ignore previous|ignore all|new instructions/i,
-
-  // Explicit / adult
   /\b(nude|naked|sex|sexual|explicit|porn|nsfw|erotic|xxx)\b/i,
   /\b(genitals?|penis|vagina|breasts?)\b/i,
-
-  // Violence / harm
   /\b(kill|murder|harm|hurt|weapon|bomb|explosive|shoot)\b/i,
   /\b(suicide|self.harm|self.injur)\b/i,
-
-  // Off-topic probing
   /\b(hack|crack|bypass|exploit|vulnerability|malware)\b/i,
   /\b(password|credit card number|social security|ssn)\b/i,
 ];
@@ -101,9 +86,6 @@ function isBlocked(text) {
   return BLOCKLIST.some(p => p.test(text));
 }
 
-/* ══════════════════════════════════════════════
-   LAYER 4 — IMAGE VALIDATION
-══════════════════════════════════════════════ */
 const ALLOWED_MIMES  = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 const MAX_IMG_BYTES  = CONFIG.MAX_IMG_SIZE_MB * 1024 * 1024;
 
@@ -115,90 +97,41 @@ function validateImage(img) {
   return true;
 }
 
-/* ══════════════════════════════════════════════
-   JWT VERIFICATION — SUPABASE AUTH
-   ─────────────────────────────────────────────
-   Every chat request includes a JWT in the
-   Authorization header sent by the frontend.
-   This function verifies it against Supabase.
-   
-   If valid: the verified user object is returned.
-   If invalid or expired: returns null.
-   
-   This ensures only paying members with real
-   Supabase accounts can consume Claude API tokens.
-   The service role key is used here (server-side
-   only) — it never appears in frontend code.
-══════════════════════════════════════════════ */
 async function verifyJWT(token) {
   if (!token) return null;
-
   try {
-    // Call Supabase Auth API to verify the JWT
-    // Uses the service role key for server-to-server verification
     const res = await fetch(`${CONFIG.SUPABASE_URL}/auth/v1/user`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
       }
     });
-
     if (!res.ok) return null;
-
     const user = await res.json();
-
-    // Confirm user has a valid ID — confirms they exist in Supabase
     if (!user?.id) return null;
-
     return user;
-
   } catch (err) {
     console.error('[LORGNER] JWT verification error:', err.message);
     return null;
   }
 }
 
-/* ══════════════════════════════════════════════
-   JWT MIDDLEWARE
-   Runs on every /chat request before anything else.
-   Extracts JWT from Authorization header.
-   Verifies it. Attaches user to request.
-   Rejects with 401 if invalid.
-══════════════════════════════════════════════ */
 async function requireAuth(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token      = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
-
   if (!token) {
     console.warn(`[LORGNER] No JWT provided from ${req.ip}`);
-    return res.status(401).json({
-      error: true,
-      code: 'UNAUTHORIZED',
-      message: 'Authentication required.'
-    });
+    return res.status(401).json({ error: true, code: 'UNAUTHORIZED', message: 'Authentication required.' });
   }
-
   const user = await verifyJWT(token);
-
   if (!user) {
     console.warn(`[LORGNER] Invalid JWT from ${req.ip}`);
-    return res.status(401).json({
-      error: true,
-      code: 'INVALID_TOKEN',
-      message: 'Your session has expired. Please sign in again.'
-    });
+    return res.status(401).json({ error: true, code: 'INVALID_TOKEN', message: 'Your session has expired. Please sign in again.' });
   }
-
-  // Attach verified user to request for downstream use
   req.lorgnerUser = user;
   next();
 }
 
-/* ══════════════════════════════════════════════
-   MIDDLEWARE STACK
-══════════════════════════════════════════════ */
-
-// Layer 7 — Helmet security headers
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'same-site' },
   contentSecurityPolicy: {
@@ -209,10 +142,8 @@ app.use(helmet({
   }
 }));
 
-// Body parser — 50MB limit to accommodate image payloads
 app.use(express.json({ limit: '50mb' }));
 
-// Layer 7 — CORS: only Lorgner's frontend can call this proxy
 app.use(cors({
   origin: (origin, cb) => {
     if (!origin || CONFIG.ALLOWED_ORIGINS.includes(origin)) {
@@ -226,25 +157,17 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-// Layer 5 — Rate limiting: 20 messages per IP per hour
 const chatLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: CONFIG.RATE_LIMIT_MAX,
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
-    console.warn(`[LORGNER] Rate limited: ${req.ip} (user: ${req.lorgnerUser?.id || 'unverified'})`);
-    res.status(429).json({
-      error: true,
-      code: 'RATE_LIMITED',
-      message: 'Lorgner is here for your collection. What are we styling today?'
-    });
+    console.warn(`[LORGNER] Rate limited: ${req.ip}`);
+    res.status(429).json({ error: true, code: 'RATE_LIMITED', message: 'Lorgner is here for your collection. What are we styling today?' });
   }
 });
 
-/* ══════════════════════════════════════════════
-   SHARED HELPER — SEND MAGIC LINK VIA RESEND
-══════════════════════════════════════════════ */
 async function sendMagicLinkEmail(email, name = '') {
   const magicRes = await fetch(`${CONFIG.SUPABASE_URL}/auth/v1/admin/generate_link`, {
     method: 'POST',
@@ -318,10 +241,6 @@ app.get('/health', (req, res) => {
 
 /* ══════════════════════════════════════════════
    MAGIC LINK ENDPOINT
-   POST /send-magic-link
-   Called by the sign-in form. Generates a token
-   via Supabase admin API and sends it via Resend.
-   Always returns 200 to prevent email enumeration.
 ══════════════════════════════════════════════ */
 const magicLinkLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
@@ -336,39 +255,22 @@ app.post('/send-magic-link', magicLinkLimiter, async (req, res) => {
   if (!email || typeof email !== 'string') {
     return res.status(400).json({ error: true, message: 'Email required.' });
   }
-
   try {
     await sendMagicLinkEmail(email.trim().toLowerCase());
     console.log(`[LORGNER] Magic link sent: ${email}`);
   } catch (err) {
     console.error('[LORGNER] send-magic-link error:', err.message);
   }
-
-  // Always 200 — prevents account enumeration
   res.json({ ok: true });
 });
 
 /* ══════════════════════════════════════════════
    MAIN CHAT ENDPOINT
-   POST /chat
-   
-   Protection order:
-   1. JWT verification (requireAuth middleware)
-   2. Rate limiting (chatLimiter middleware)
-   3. Input filtering (isBlocked)
-   4. Image validation (validateImage)
-   5. Claude API call (API key added server-side)
-   6. Output filtering (isBlocked on response)
 ══════════════════════════════════════════════ */
-app.post('/chat',
-  requireAuth,    // JWT must be valid before anything else
-  chatLimiter,    // Rate limit after auth confirmation
-  async (req, res) => {
-
+app.post('/chat', requireAuth, chatLimiter, async (req, res) => {
   const { system, messages, max_tokens } = req.body;
-  const user = req.lorgnerUser; // Set by requireAuth middleware
+  const user = req.lorgnerUser;
 
-  /* ── BASIC VALIDATION ── */
   if (!messages || !Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: true, message: 'Invalid request.' });
   }
@@ -376,28 +278,17 @@ app.post('/chat',
     return res.status(400).json({ error: true, message: 'Session complete. Please begin a new consultation.' });
   }
 
-  /* ── LAYER 3: INPUT FILTERING ──
-     Check latest user message for blocked content.
-  */
   const latest = messages[messages.length - 1];
   if (latest?.role === 'user') {
     const textParts = Array.isArray(latest.content)
       ? latest.content.filter(c => c.type === 'text').map(c => c.text).join(' ')
       : (typeof latest.content === 'string' ? latest.content : '');
-
     if (isBlocked(textParts)) {
       console.log(`[LORGNER] Input blocked | user:${user.id} | "${textParts.slice(0,80)}"`);
-      return res.status(200).json({
-        error: true,
-        code: 'BLOCKED',
-        message: 'Lorgner is here for your collection. What are we styling today?'
-      });
+      return res.status(200).json({ error: true, code: 'BLOCKED', message: 'Lorgner is here for your collection. What are we styling today?' });
     }
   }
 
-  /* ── LAYER 4: IMAGE VALIDATION ──
-     Validate all images across the message history.
-  */
   let imageCount = 0;
   for (const msg of messages) {
     if (!Array.isArray(msg.content)) continue;
@@ -406,47 +297,28 @@ app.post('/chat',
         imageCount++;
         if (!validateImage(part)) {
           console.warn(`[LORGNER] Invalid image | user:${user.id}`);
-          return res.status(400).json({
-            error: true,
-            message: 'One or more images could not be processed. Please use JPEG or PNG under 5MB.'
-          });
+          return res.status(400).json({ error: true, message: 'One or more images could not be processed. Please use JPEG or PNG under 5MB.' });
         }
       }
     }
   }
   if (imageCount > CONFIG.MAX_PAIRS) {
-    return res.status(400).json({
-      error: true,
-      message: `Lorgner supports up to ${CONFIG.MAX_PAIRS} pairs per consultation.`
-    });
+    return res.status(400).json({ error: true, message: `Lorgner supports up to ${CONFIG.MAX_PAIRS} pairs per consultation.` });
   }
 
-  /* ── CALL CLAUDE API ──
-     ANTHROPIC_API_KEY is an environment variable on Railway.
-     It is added here on the server side.
-     The browser never sees it.
-     It does not appear in network requests from the browser.
-     It does not appear in this file as a string literal.
-  */
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type':      'application/json',
-        'x-api-key':         CONFIG.ANTHROPIC_KEY,       // ← From Railway env var only
+        'x-api-key':         CONFIG.ANTHROPIC_KEY,
         'anthropic-version': '2023-06-01',
-        'anthropic-beta':    'prompt-caching-2024-07-31', // Prompt caching — reduces cost ~40%
+        'anthropic-beta':    'prompt-caching-2024-07-31',
       },
       body: JSON.stringify({
         model:      CONFIG.MODEL,
         max_tokens: max_tokens || CONFIG.MAX_TOKENS,
-        system: [
-          {
-            type:          'text',
-            text:          system,
-            cache_control: { type: 'ephemeral' }, // Cache system prompt across calls
-          }
-        ],
+        system: [{ type: 'text', text: system, cache_control: { type: 'ephemeral' } }],
         messages,
       })
     });
@@ -455,80 +327,31 @@ app.post('/chat',
 
     if (!response.ok) {
       console.error(`[LORGNER] Anthropic error | user:${user.id} |`, data.error?.message);
-      return res.status(500).json({
-        error: true,
-        message: data.error?.message || 'Lorgner is momentarily unavailable. Please try again.'
-      });
+      return res.status(500).json({ error: true, message: data.error?.message || 'Lorgner is momentarily unavailable. Please try again.' });
     }
 
-    /* ── LAYER 3: OUTPUT FILTERING ──
-       Scan Claude's response for any blocked content.
-       Extremely rare given Layer 1 system prompt + Layer 2 Anthropic safety,
-       but this provides a final catch.
-    */
     const aiText = data.content?.[0]?.text || '';
     if (isBlocked(aiText)) {
       console.warn(`[LORGNER] Output filtered | user:${user.id}`);
-      return res.status(200).json({
-        content: [{
-          type: 'text',
-          text: 'Lorgner is here for your collection. What are we styling today?'
-        }]
-      });
+      return res.status(200).json({ content: [{ type: 'text', text: 'Lorgner is here for your collection. What are we styling today?' }] });
     }
 
-    // Success
     res.status(200).json(data);
-
-    // Log for Railway monitoring (no sensitive data logged)
-    console.log(
-      `[LORGNER] Chat | user:${user.id.slice(0,8)}… | ` +
-      `in:${data.usage?.input_tokens} out:${data.usage?.output_tokens} ` +
-      `cached:${data.usage?.cache_read_input_tokens || 0}`
-    );
+    console.log(`[LORGNER] Chat | user:${user.id.slice(0,8)}… | in:${data.usage?.input_tokens} out:${data.usage?.output_tokens} cached:${data.usage?.cache_read_input_tokens || 0}`);
 
   } catch (err) {
     console.error(`[LORGNER] Server error | user:${user.id} |`, err.message);
-    res.status(500).json({
-      error: true,
-      message: 'Lorgner is momentarily unavailable. Please try again.'
-    });
+    res.status(500).json({ error: true, message: 'Lorgner is momentarily unavailable. Please try again.' });
   }
 });
 
 /* ══════════════════════════════════════════════
    PARTNER INQUIRY ENDPOINT
-   POST /partner-inquiry
-   Emails inquiry to partnerships@lorgner.co via Resend.
 ══════════════════════════════════════════════ */
 app.post('/partner-inquiry', async (req, res) => {
   const { name, email, company, type, note, timestamp } = req.body;
   if (!name || !email || !company || !type) {
     return res.status(400).json({ error: true, message: 'Missing required fields.' });
-    app.post('/unsubscribe', async (req, res) => {
-  const { email, timestamp } = req.body;
-  if (!email) return res.status(400).json({ error: true, message: 'Email required.' });
-
-  try {
-    const { Resend } = require('resend');
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    await resend.emails.send({
-      from:    'Lorgner <hello@lorgner.co>',
-      to:      'hello@lorgner.co',
-      subject: `Unsubscribe request — ${email}`,
-      html: `<p style="font-family:sans-serif;font-size:15px;color:#333;">
-        <strong>${email}</strong> has requested to be removed from the Lorgner email list.<br><br>
-        <span style="color:#999;font-size:13px;">Submitted: ${timestamp || new Date().toISOString()}</span>
-      </p>`
-    });
-    console.log(`[LORGNER] Unsubscribe: ${email}`);
-  } catch (err) {
-    console.error('[LORGNER] Unsubscribe email error:', err.message);
-  }
-
-  res.json({ ok: true });
-});
-
   }
   try {
     const { Resend } = require('resend');
@@ -560,9 +383,35 @@ app.post('/partner-inquiry', async (req, res) => {
 });
 
 /* ══════════════════════════════════════════════
-   DEMO CHAT ENDPOINT — white-label demos only
-   POST /demo-chat
-   No auth required. Tighter rate limit (5/hr per IP).
+   UNSUBSCRIBE ENDPOINT
+   POST /unsubscribe
+══════════════════════════════════════════════ */
+app.post('/unsubscribe', async (req, res) => {
+  const { email, timestamp } = req.body;
+  if (!email) return res.status(400).json({ error: true, message: 'Email required.' });
+
+  try {
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+      from:    'Lorgner <hello@lorgner.co>',
+      to:      'hello@lorgner.co',
+      subject: `Unsubscribe request — ${email}`,
+      html: `<p style="font-family:sans-serif;font-size:15px;color:#333;">
+        <strong>${email}</strong> has requested to be removed from the Lorgner email list.<br><br>
+        <span style="color:#999;font-size:13px;">Submitted: ${timestamp || new Date().toISOString()}</span>
+      </p>`
+    });
+    console.log(`[LORGNER] Unsubscribe: ${email}`);
+  } catch (err) {
+    console.error('[LORGNER] Unsubscribe email error:', err.message);
+  }
+
+  res.json({ ok: true });
+});
+
+/* ══════════════════════════════════════════════
+   DEMO CHAT ENDPOINT
 ══════════════════════════════════════════════ */
 const demoLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
@@ -576,11 +425,9 @@ const demoLimiter = rateLimit({
 
 app.post('/demo-chat', demoLimiter, async (req, res) => {
   const { system, messages, max_tokens } = req.body;
-
   if (!messages || !Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: true, message: 'Invalid request.' });
   }
-
   const latest = messages[messages.length - 1];
   if (latest?.role === 'user') {
     const textParts = Array.isArray(latest.content)
@@ -590,7 +437,6 @@ app.post('/demo-chat', demoLimiter, async (req, res) => {
       return res.status(200).json({ error: true, code: 'BLOCKED', message: 'Please keep questions about eyewear styling.' });
     }
   }
-
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -606,7 +452,6 @@ app.post('/demo-chat', demoLimiter, async (req, res) => {
         messages,
       })
     });
-
     const data = await response.json();
     if (!response.ok) return res.status(500).json({ error: true, message: 'Service momentarily unavailable.' });
     res.status(200).json(data);
@@ -618,11 +463,6 @@ app.post('/demo-chat', demoLimiter, async (req, res) => {
 
 /* ══════════════════════════════════════════════
    STRIPE CHECKOUT ENDPOINT
-   POST /create-checkout-session
-   Creates a Stripe Checkout URL for the founding
-   member subscription. Frontend redirects the
-   user to this URL. Stripe handles the payment
-   form and calls the webhook on success.
 ══════════════════════════════════════════════ */
 app.post('/create-checkout-session', async (req, res) => {
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -630,37 +470,26 @@ app.post('/create-checkout-session', async (req, res) => {
   }
   const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
   const { email, name } = req.body;
-
   try {
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       payment_method_types: ['card'],
       allow_promotion_codes: true,
       customer_email: email || undefined,
-      line_items: [
-        {
-          price: process.env.STRIPE_PRICE_ID || 'price_1TX9YYJdJONprYpJHpVIcF6p',
-          quantity: 1,
-        }
-      ],
+      line_items: [{ price: process.env.STRIPE_PRICE_ID || 'price_1TX9YYJdJONprYpJHpVIcF6p', quantity: 1 }],
       success_url: `${CONFIG.FRONTEND_URL}/?subscribed=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url:  `${CONFIG.FRONTEND_URL}/`,
       metadata: { full_name: name || '' },
     });
-
     res.json({ checkoutUrl: session.url });
-
   } catch (err) {
     console.error('[LORGNER] Stripe checkout error:', JSON.stringify(err));
-    res.status(500).json({ error: true, message: err.message || err.toString() || 'Checkout unavailable.' });
+    res.status(500).json({ error: true, message: err.message || 'Checkout unavailable.' });
   }
 });
 
 /* ══════════════════════════════════════════════
    BILLING PORTAL ENDPOINT
-   POST /create-portal-session
-   Looks up Stripe customer ID from Supabase members table,
-   then creates a Stripe Customer Portal session.
 ══════════════════════════════════════════════ */
 app.post('/create-portal-session', requireAuth, async (req, res) => {
   try {
@@ -668,16 +497,10 @@ app.post('/create-portal-session', requireAuth, async (req, res) => {
     const email = req.lorgnerUser.email;
     const customers = await stripe.customers.list({ email, limit: 1 });
     const customerId = customers.data?.[0]?.id;
-
     if (!customerId) {
       return res.status(404).json({ error: true, message: 'No billing account found for this email.' });
     }
-
-    const session = await stripe.billingPortal.sessions.create({
-      customer:   customerId,
-      return_url: CONFIG.FRONTEND_URL,
-    });
-
+    const session = await stripe.billingPortal.sessions.create({ customer: customerId, return_url: CONFIG.FRONTEND_URL });
     res.json({ portalUrl: session.url });
   } catch (err) {
     console.error('[LORGNER] Portal session error:', err.message);
@@ -687,43 +510,29 @@ app.post('/create-portal-session', requireAuth, async (req, res) => {
 
 /* ══════════════════════════════════════════════
    SESSION ENDPOINT
-   POST /session
-   Receives session metadata from frontend.
-   Writes to Supabase for analytics.
-   Only accepts requests from verified users.
 ══════════════════════════════════════════════ */
 app.post('/session', requireAuth, async (req, res) => {
   const { occasion, aiReply, pairCount, pairNames } = req.body;
   const user = req.lorgnerUser;
-
-  // Write to Supabase using service key
-  // This bypasses RLS for server-to-server writes
   try {
-    const response = await fetch(
-      `${CONFIG.SUPABASE_URL}/rest/v1/sessions`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey':       CONFIG.SUPABASE_SERVICE_KEY,
-          'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
-          'Prefer':       'return=minimal',
-        },
-        body: JSON.stringify({
-          user_id:    user.id,
-          occasion:   occasion?.slice(0, 200),
-          ai_reply:   aiReply?.slice(0, 500),
-          pair_count: pairCount || 0,
-          pair_names: pairNames || [],
-          created_at: new Date().toISOString(),
-        })
-      }
-    );
-
-    if (!response.ok) {
-      console.error('[LORGNER] Session write failed:', response.status);
-    }
-
+    const response = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/sessions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey':       CONFIG.SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
+        'Prefer':       'return=minimal',
+      },
+      body: JSON.stringify({
+        user_id:    user.id,
+        occasion:   occasion?.slice(0, 200),
+        ai_reply:   aiReply?.slice(0, 500),
+        pair_count: pairCount || 0,
+        pair_names: pairNames || [],
+        created_at: new Date().toISOString(),
+      })
+    });
+    if (!response.ok) console.error('[LORGNER] Session write failed:', response.status);
     res.status(200).json({ ok: true });
   } catch (err) {
     console.error('[LORGNER] Session error:', err.message);
@@ -732,11 +541,7 @@ app.post('/session', requireAuth, async (req, res) => {
 });
 
 /* ══════════════════════════════════════════════
-   IMAGE MODERATION ENDPOINT (OPTIONAL)
-   POST /moderate-image
-   Validates uploaded image contains eyewear.
-   Uses Claude Haiku for cost efficiency.
-   Uncomment when ready to activate.
+   IMAGE MODERATION ENDPOINT
 ══════════════════════════════════════════════ */
 app.post('/moderate-image', requireAuth, async (req, res) => {
   const { base64, mime } = req.body;
@@ -759,7 +564,7 @@ app.post('/moderate-image', requireAuth, async (req, res) => {
           role: 'user',
           content: [
             { type: 'image', source: { type: 'base64', media_type: mime, data: base64 } },
-            { type: 'text', text: 'Is the PRIMARY subject of this image a pair of eyeglasses, sunglasses, or optical frames — meaning glasses are the main focus, clearly visible and identifiable as wearable eyewear? Answer YES only if glasses or sunglasses are the dominant subject. Answer NO if glasses are absent, in the background, or if the image is of anything else (people, scenery, clothing, accessories, patterns, etc).' }
+            { type: 'text', text: 'Is the PRIMARY subject of this image a pair of eyeglasses, sunglasses, or optical frames? Answer YES only if glasses or sunglasses are the dominant subject. Answer NO otherwise.' }
           ]
         }]
       })
@@ -783,29 +588,7 @@ app.post('/moderate-image', requireAuth, async (req, res) => {
 
 /* ══════════════════════════════════════════════
    STRIPE WEBHOOK ENDPOINT
-   POST /stripe-webhook
-   ─────────────────────────────────────────────
-   Stripe calls this URL automatically after
-   every successful payment. This is what creates
-   the Supabase account and sends the magic link.
-
-   SETUP IN STRIPE DASHBOARD:
-   1. Go to Developers → Webhooks
-   2. Add endpoint: https://your-proxy.railway.app/stripe-webhook
-   3. Select events: checkout.session.completed
-      + customer.subscription.deleted
-      + invoice.payment_failed
-   4. Copy the webhook signing secret
-   5. Add to Railway env vars as STRIPE_WEBHOOK_SECRET
-
-   Add STRIPE_SECRET_KEY to Railway env vars too.
-   ─────────────────────────────────────────────
-   ENVIRONMENT VARIABLES NEEDED:
-     STRIPE_SECRET_KEY       your Stripe secret key
-     STRIPE_WEBHOOK_SECRET   your Stripe webhook signing secret
 ══════════════════════════════════════════════ */
-
-// Raw body needed for Stripe signature verification
 app.use('/stripe-webhook', express.raw({ type: 'application/json' }));
 
 app.post('/stripe-webhook', async (req, res) => {
@@ -814,8 +597,6 @@ app.post('/stripe-webhook', async (req, res) => {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
 
   let event;
-
-  // Verify the webhook came from Stripe — not a spoofed request
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, secret);
   } catch (err) {
@@ -825,23 +606,20 @@ app.post('/stripe-webhook', async (req, res) => {
 
   console.log(`[LORGNER] Stripe event received: ${event.type}`);
 
-  // ── PAYMENT SUCCEEDED — ROUTE BY TYPE ──
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
 
     if (session.metadata?.type === 'wedding_bundle') {
-      // Wedding party bundle — generate redemption links
       try { await handleWeddingCheckout(session); }
       catch (err) { console.error('[LORGNER] Wedding checkout handler failed:', err.message); }
       return res.status(200).json({ received: true });
     }
 
-    // ── INDIVIDUAL SUBSCRIPTION — CREATE ACCOUNT ──
-    const email         = session.customer_details?.email || session.customer_email;
-    const name          = session.customer_details?.name || '';
-    const customerId    = session.customer;
+    const email          = session.customer_details?.email || session.customer_email;
+    const name           = session.customer_details?.name || '';
+    const customerId     = session.customer;
     const subscriptionId = session.subscription;
-    const amountPaid    = session.amount_total; // in cents
+    const amountPaid     = session.amount_total;
 
     if (!email) {
       console.error('[LORGNER] No email in Stripe session');
@@ -849,7 +627,6 @@ app.post('/stripe-webhook', async (req, res) => {
     }
 
     try {
-      // 1. Create Supabase Auth user
       const signUpRes = await fetch(`${CONFIG.SUPABASE_URL}/auth/v1/admin/users`, {
         method: 'POST',
         headers: {
@@ -859,7 +636,7 @@ app.post('/stripe-webhook', async (req, res) => {
         },
         body: JSON.stringify({
           email,
-          email_confirm: true,  // Skip email confirmation — they just paid
+          email_confirm: true,
           user_metadata: {
             full_name:    name,
             member_tier:  amountPaid <= 2900 ? 'founding' : 'standard',
@@ -871,7 +648,6 @@ app.post('/stripe-webhook', async (req, res) => {
       let authUser = await signUpRes.json();
 
       if (!authUser?.id) {
-        // User already exists — look them up by email
         console.log(`[LORGNER] User may already exist, looking up: ${email}`);
         const listRes = await fetch(
           `${CONFIG.SUPABASE_URL}/auth/v1/admin/users?email=${encodeURIComponent(email)}`,
@@ -883,7 +659,6 @@ app.post('/stripe-webhook', async (req, res) => {
 
       const userId = authUser?.id;
 
-      // 2. Insert into members table
       if (userId) {
         await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/members`, {
           method: 'POST',
@@ -906,75 +681,53 @@ app.post('/stripe-webhook', async (req, res) => {
         });
       }
 
-      // 3. Send magic link via Resend
       const sent = await sendMagicLinkEmail(email, name);
       if (sent) {
-        console.log(`[LORGNER] ✓ Account created, magic link sent via Resend: ${email}`);
+        console.log(`[LORGNER] ✓ Account created, magic link sent: ${email}`);
       } else {
         console.error(`[LORGNER] ✗ Magic link generation failed for: ${email}`);
       }
 
     } catch (err) {
       console.error('[LORGNER] Account creation failed:', err.message);
-      // Return 200 anyway — Stripe retries on non-200 responses
-      // Log manually and handle edge cases in dashboard
     }
   }
 
-  // ── SUBSCRIPTION CANCELLED ──
   if (event.type === 'customer.subscription.deleted') {
     const subscription = event.data.object;
     const customerId   = subscription.customer;
-
-    // Update member tier to cancelled in Supabase
-    await fetch(
-      `${CONFIG.SUPABASE_URL}/rest/v1/members?stripe_customer_id=eq.${customerId}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
-          'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
-        },
-        body: JSON.stringify({ member_tier: 'cancelled' })
-      }
-    );
-
+    await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/members?stripe_customer_id=eq.${customerId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
+      },
+      body: JSON.stringify({ member_tier: 'cancelled' })
+    });
     console.log(`[LORGNER] Subscription cancelled: customer ${customerId}`);
   }
 
-  // ── PAYMENT FAILED ──
   if (event.type === 'invoice.payment_failed') {
     const invoice    = event.data.object;
     const customerId = invoice.customer;
-
-    // Update member tier to paused
-    await fetch(
-      `${CONFIG.SUPABASE_URL}/rest/v1/members?stripe_customer_id=eq.${customerId}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
-          'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
-        },
-        body: JSON.stringify({ member_tier: 'paused' })
-      }
-    );
-
+    await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/members?stripe_customer_id=eq.${customerId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
+      },
+      body: JSON.stringify({ member_tier: 'paused' })
+    });
     console.log(`[LORGNER] Payment failed: customer ${customerId}`);
   }
 
-  // Always return 200 to Stripe — otherwise it retries
   res.status(200).json({ received: true });
 });
 
 /* ══════════════════════════════════════════════
-   WEDDING BUNDLE — HELPER
-   Called by the Stripe webhook when a wedding
-   bundle checkout completes. Generates one UUID
-   redemption token per guest, stores them in
-   Supabase, and emails all links to the buyer.
+   WEDDING BUNDLE HELPER
 ══════════════════════════════════════════════ */
 async function handleWeddingCheckout(session) {
   const buyerEmail = session.customer_details?.email || session.customer_email;
@@ -984,7 +737,6 @@ async function handleWeddingCheckout(session) {
 
   if (!buyerEmail) { console.error('[LORGNER] Wedding checkout: no buyer email'); return; }
 
-  // Generate short invite codes + UUID internal tokens
   const invitations = Array.from({ length: partySize }, () => ({
     token:       randomUUID(),
     invite_code: generateInviteCode(),
@@ -1010,51 +762,27 @@ async function handleWeddingCheckout(session) {
     });
   }
 
-  // Build invitation cards — one per person, with pre-written forwarding copy
-  const firstName   = buyerName ? buyerName.split(' ')[0] : 'your host';
   const inviteCards = invitations.map((inv, i) => {
     const url     = `${CONFIG.FRONTEND_URL}/gift/${inv.invite_code}`;
     const message = `I've given you six months with Lorgner — a private styling service for your glasses collection, there when you need a considered second opinion. Here's your invitation: ${url}`;
     return `
-    <table width="100%" cellpadding="0" cellspacing="0"
-           style="margin-bottom:20px;border:1px solid rgba(201,169,110,0.25);background:#FFFCF5;">
-      <tr>
-        <td style="padding:20px 24px 0;">
-          <p style="margin:0;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#9A7A48;">
-            Invitation ${i + 1} of ${partySize}
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding:10px 24px 6px;">
-          <p style="margin:0;font-size:11px;color:#9A8E7E;line-height:1.5;">
-            Copy and send this to your next guest:
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding:0 24px 20px;">
-          <table width="100%" cellpadding="0" cellspacing="0"
-                 style="background:rgba(201,169,110,0.06);border-left:2px solid #C9A96E;">
-            <tr>
-              <td style="padding:16px 18px;">
-                <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;
-                          color:#1E1A14;line-height:1.8;">
-                  &ldquo;${message}&rdquo;
-                </p>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding:0 24px 16px;">
-          <p style="margin:0;font-size:11px;color:#9A8E7E;">
-            Or share the link directly:
-            <a href="${url}" style="color:#C9A96E;text-decoration:none;">lorgner.co/gift/${inv.invite_code}</a>
-          </p>
-        </td>
-      </tr>
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;border:1px solid rgba(201,169,110,0.25);background:#FFFCF5;">
+      <tr><td style="padding:20px 24px 0;">
+        <p style="margin:0;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#9A7A48;">Invitation ${i + 1} of ${partySize}</p>
+      </td></tr>
+      <tr><td style="padding:10px 24px 6px;">
+        <p style="margin:0;font-size:11px;color:#9A8E7E;line-height:1.5;">Copy and send this to your next guest:</p>
+      </td></tr>
+      <tr><td style="padding:0 24px 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(201,169,110,0.06);border-left:2px solid #C9A96E;">
+          <tr><td style="padding:16px 18px;">
+            <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#1E1A14;line-height:1.8;">&ldquo;${message}&rdquo;</p>
+          </td></tr>
+        </table>
+      </td></tr>
+      <tr><td style="padding:0 24px 16px;">
+        <p style="margin:0;font-size:11px;color:#9A8E7E;">Or share the link directly: <a href="${url}" style="color:#C9A96E;text-decoration:none;">lorgner.co/gift/${inv.invite_code}</a></p>
+      </td></tr>
     </table>`;
   }).join('');
 
@@ -1073,39 +801,21 @@ async function handleWeddingCheckout(session) {
     <tr><td align="center">
       <table width="580" cellpadding="0" cellspacing="0" style="max-width:580px;width:100%;">
         <tr><td align="center" style="padding-bottom:40px;">
-          <span style="font-family:Georgia,serif;font-size:13px;letter-spacing:8px;
-                       color:#C9A96E;text-transform:uppercase;">L O R G N E R</span>
+          <span style="font-family:Georgia,serif;font-size:13px;letter-spacing:8px;color:#C9A96E;text-transform:uppercase;">L O R G N E R</span>
         </td></tr>
         <tr><td style="background:#FFFCF5;border:1px solid rgba(30,26,20,0.10);padding:44px 44px 32px;">
-          <p style="margin:0 0 6px;font-size:10px;letter-spacing:3px;
-                    text-transform:uppercase;color:#9A7A48;">Your Wedding Party Gift</p>
-          <p style="margin:0 0 20px;font-family:Georgia,serif;font-size:26px;
-                    font-weight:normal;color:#1E1A14;line-height:1.2;">
-            ${partySize} invitation${partySize > 1 ? 's' : ''}, ready to send.
-          </p>
+          <p style="margin:0 0 6px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#9A7A48;">Your Wedding Party Gift</p>
+          <p style="margin:0 0 20px;font-family:Georgia,serif;font-size:26px;font-weight:normal;color:#1E1A14;line-height:1.2;">${partySize} invitation${partySize > 1 ? 's' : ''}, ready to send.</p>
           <p style="margin:0 0 32px;font-size:14px;line-height:1.8;color:#5A5244;">
             ${buyerName ? `Dear ${buyerName},` : 'Hello,'}<br><br>
-            Your gift is confirmed. Below are ${partySize} private invitation${partySize > 1 ? 's' : ''} —
-            one for each person. Each card has a message ready to copy and forward.
-            Every link is unique and single-use.
+            Your gift is confirmed. Below are ${partySize} private invitation${partySize > 1 ? 's' : ''} — one for each person. Each card has a message ready to copy and forward. Every link is unique and single-use.
           </p>
-
           ${inviteCards}
-
-          <p style="margin:24px 0 0;font-size:13px;line-height:1.8;color:#9A8E7E;">
-            Each person's six months begins the day they accept their invitation — nobody
-            loses time waiting on someone else. After six months they'll have the option
-            to continue at $49/month.
-          </p>
+          <p style="margin:24px 0 0;font-size:13px;line-height:1.8;color:#9A8E7E;">Each person's six months begins the day they accept their invitation. After six months they'll have the option to continue at $49/month.</p>
         </td></tr>
         <tr><td style="padding:24px 0 0;text-align:center;">
-          <p style="margin:0;font-size:11px;color:#9A8E7E;letter-spacing:1px;">
-            LORGNER &middot; A PRIVATE STYLING MEMBERSHIP
-          </p>
-          <p style="margin:6px 0 0;font-size:11px;color:#9A8E7E;">
-            Questions?
-            <a href="mailto:hello@lorgner.co" style="color:#C9A96E;text-decoration:none;">hello@lorgner.co</a>
-          </p>
+          <p style="margin:0;font-size:11px;color:#9A8E7E;letter-spacing:1px;">LORGNER &middot; A PRIVATE STYLING MEMBERSHIP</p>
+          <p style="margin:6px 0 0;font-size:11px;color:#9A8E7E;">Questions? <a href="mailto:hello@lorgner.co" style="color:#C9A96E;text-decoration:none;">hello@lorgner.co</a></p>
         </td></tr>
       </table>
     </td></tr>
@@ -1119,20 +829,16 @@ async function handleWeddingCheckout(session) {
 
 /* ══════════════════════════════════════════════
    WEDDING CHECKOUT ENDPOINT
-   POST /create-wedding-checkout
-   Creates a Stripe one-time Checkout session for
-   N × $129 (or volume-discounted price). Frontend
-   redirects the buyer to the returned URL.
 ══════════════════════════════════════════════ */
 app.post('/create-wedding-checkout', async (req, res) => {
   if (!process.env.STRIPE_SECRET_KEY) {
-        return res.status(500).json({ error: true, message: 'Stripe not configured.' });
+    return res.status(500).json({ error: true, message: 'Stripe not configured.' });
   }
 
   const { name, email, partySize } = req.body;
   const size = parseInt(partySize, 10);
 
-  if (!email || !name || !size || size < 2 || size > 20) {
+  if (!email || !name || !size || size < 1 || size > 20) {
     return res.status(400).json({ error: true, message: 'Invalid request.' });
   }
 
@@ -1142,17 +848,10 @@ app.post('/create-wedding-checkout', async (req, res) => {
       mode:                 'payment',
       payment_method_types: ['card'],
       customer_email:       email,
-      line_items: [{
-        price:    CONFIG.STRIPE_WEDDING_PRICE_ID,
-        quantity: size,
-      }],
+      line_items: [{ price: CONFIG.STRIPE_WEDDING_PRICE_ID, quantity: size }],
       success_url: `${CONFIG.FRONTEND_URL}/wedding?purchased=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url:  `${CONFIG.FRONTEND_URL}/wedding`,
-      metadata: {
-        type:        'wedding_bundle',
-        buyer_name:  name,
-        party_size:  String(size),
-      },
+      metadata: { type: 'wedding_bundle', buyer_name: name, party_size: String(size) },
     });
 
     console.log(`[LORGNER] Wedding checkout created: ${size} guests for ${email}`);
@@ -1166,9 +865,6 @@ app.post('/create-wedding-checkout', async (req, res) => {
 
 /* ══════════════════════════════════════════════
    VALIDATE WEDDING TOKEN
-   POST /validate-wedding-token
-   Called by redeem.html on load to check if a
-   token is valid before showing the form.
 ══════════════════════════════════════════════ */
 app.post('/validate-wedding-token', async (req, res) => {
   const { code } = req.body;
@@ -1193,11 +889,6 @@ app.post('/validate-wedding-token', async (req, res) => {
 
 /* ══════════════════════════════════════════════
    REDEEM WEDDING GIFT
-   POST /redeem-wedding-gift
-   Called when a groomsman submits their name +
-   email on redeem.html. Validates the token,
-   creates their Supabase account, marks the token
-   redeemed, and sends them a magic link.
 ══════════════════════════════════════════════ */
 app.post('/redeem-wedding-gift', async (req, res) => {
   const { code, name, email } = req.body;
@@ -1207,7 +898,6 @@ app.post('/redeem-wedding-gift', async (req, res) => {
   }
 
   try {
-    // Fetch the record by invite_code
     const r    = await fetch(
       `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?invite_code=eq.${encodeURIComponent(code.toUpperCase())}&select=*`,
       { headers: { apikey: CONFIG.SUPABASE_SERVICE_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}` } }
@@ -1222,10 +912,9 @@ app.post('/redeem-wedding-gift', async (req, res) => {
       return res.status(409).json({ error: true, code: 'ALREADY_REDEEMED', message: 'This invitation has already been used.' });
     }
 
-    // Create Supabase Auth account
     const membershipEndsAt = new Date(Date.now() + 6 * 30 * 24 * 60 * 60 * 1000).toISOString();
 
-    const signUpRes  = await fetch(`${CONFIG.SUPABASE_URL}/auth/v1/admin/users`, {
+    const signUpRes = await fetch(`${CONFIG.SUPABASE_URL}/auth/v1/admin/users`, {
       method:  'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1236,17 +925,16 @@ app.post('/redeem-wedding-gift', async (req, res) => {
         email,
         email_confirm: true,
         user_metadata: {
-          full_name:           name,
-          member_tier:         'wedding_gift',
-          member_since:        new Date().toISOString(),
-          membership_ends_at:  membershipEndsAt,
-          gifted_by:           row.buyer_name || row.buyer_email,
+          full_name:          name,
+          member_tier:        'wedding_gift',
+          member_since:       new Date().toISOString(),
+          membership_ends_at: membershipEndsAt,
+          gifted_by:          row.buyer_name || row.buyer_email,
         },
       }),
     });
     let authUser = await signUpRes.json();
 
-    // If user already exists, look them up
     if (!authUser?.id) {
       const listRes  = await fetch(
         `${CONFIG.SUPABASE_URL}/auth/v1/admin/users?email=${encodeURIComponent(email)}`,
@@ -1258,7 +946,6 @@ app.post('/redeem-wedding-gift', async (req, res) => {
 
     const userId = authUser?.id;
 
-    // Insert into members table
     if (userId) {
       await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/members`, {
         method:  'POST',
@@ -1269,17 +956,16 @@ app.post('/redeem-wedding-gift', async (req, res) => {
           'Prefer':        'return=minimal,resolution=ignore-duplicates',
         },
         body: JSON.stringify({
-          id:                userId,
+          id:                 userId,
           email,
-          full_name:         name,
-          member_tier:       'wedding_gift',
-          member_since:      new Date().toISOString(),
+          full_name:          name,
+          member_tier:        'wedding_gift',
+          member_since:       new Date().toISOString(),
           membership_ends_at: membershipEndsAt,
         }),
       });
     }
 
-    // Mark the invitation as redeemed
     await fetch(
       `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?invite_code=eq.${encodeURIComponent(code.toUpperCase())}`,
       {
@@ -1298,7 +984,6 @@ app.post('/redeem-wedding-gift', async (req, res) => {
       }
     );
 
-    // Send magic link so they can access the app immediately
     await sendMagicLinkEmail(email, name);
 
     console.log(`[LORGNER] Wedding gift redeemed: ${email} (gifted by ${row.buyer_email})`);
@@ -1311,174 +996,8 @@ app.post('/redeem-wedding-gift', async (req, res) => {
 });
 
 /* ══════════════════════════════════════════════
-   WEDDING RENEWAL CHECK — CRON ENDPOINT
-   POST /wedding-renewal-check
-   Called daily by a cron service (e.g. cron-job.org).
-   Finds wedding memberships expiring in ~30 days
-   that haven't had a renewal email sent yet and
-   emails each member their conversion offer.
-
-   SETUP: Point a daily cron job at:
-     POST https://your-proxy.railway.app/wedding-renewal-check
-     Header: x-cron-secret: <your CRON_SECRET env var>
-══════════════════════════════════════════════ */
-app.post('/wedding-renewal-check', async (req, res) => {
-  if (req.headers['x-cron-secret'] !== CONFIG.CRON_SECRET) {
-    return res.status(401).json({ error: 'Unauthorized.' });
-  }
-
-  try {
-    const now           = new Date();
-    const in20Days      = new Date(now.getTime() + 20 * 24 * 60 * 60 * 1000).toISOString();
-    const in35Days      = new Date(now.getTime() + 35 * 24 * 60 * 60 * 1000).toISOString();
-
-    // Find redeemed tokens expiring between 20 and 35 days from now, no renewal email sent yet
-    const r    = await fetch(
-      `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions` +
-      `?redeemed_at=not.is.null` +
-      `&renewal_email_sent=eq.false` +
-      `&membership_ends_at=gt.${in20Days}` +
-      `&membership_ends_at=lt.${in35Days}` +
-      `&select=redeemed_by_email,redeemed_by_name,membership_ends_at,token`,
-      { headers: { apikey: CONFIG.SUPABASE_SERVICE_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}` } }
-    );
-    const expiring = await r.json();
-
-    if (!expiring?.length) {
-      console.log('[LORGNER] Wedding renewal check: no memberships expiring soon.');
-      return res.json({ ok: true, sent: 0 });
-    }
-
-    const { Resend } = require('resend');
-    const resend = new Resend(CONFIG.RESEND_KEY);
-    let sent = 0;
-
-    for (const member of expiring) {
-      const endsDate = new Date(member.membership_ends_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-      await resend.emails.send({
-        from:    'Lorgner <hello@lorgner.co>',
-        to:      member.redeemed_by_email,
-        subject: 'Your Lorgner membership is ending soon',
-        html: `<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#FAF6EE;font-family:Georgia,serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#FAF6EE;padding:60px 20px;">
-    <tr><td align="center">
-      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
-        <tr><td align="center" style="padding-bottom:40px;">
-          <span style="font-family:Georgia,serif;font-size:13px;letter-spacing:8px;color:#C9A96E;text-transform:uppercase;">L O R G N E R</span>
-        </td></tr>
-        <tr><td style="background:#FFFCF5;border:1px solid rgba(30,26,20,0.10);padding:48px 44px;">
-          <p style="margin:0 0 24px;font-family:Georgia,serif;font-size:26px;font-weight:normal;color:#1E1A14;line-height:1.2;">
-            ${member.redeemed_by_name ? `${member.redeemed_by_name},` : 'Hello,'}<br>your membership ends ${endsDate}.
-          </p>
-          <p style="margin:0 0 24px;font-size:14px;line-height:1.8;color:#5A5244;">
-            Your six-month wedding party membership is coming to a close. If Lorgner has been useful — for the engagement photos, the trip, the rehearsal dinner — you can keep it going at the standard rate.
-          </p>
-          <p style="margin:0 0 32px;font-family:Georgia,serif;font-size:22px;color:#1E1A14;">$49 / month</p>
-          <table cellpadding="0" cellspacing="0" style="margin:0 0 32px;">
-            <tr><td style="background:#C9A96E;padding:14px 36px;">
-              <a href="${CONFIG.FRONTEND_URL}/app" style="color:#1E1A14;text-decoration:none;font-family:Georgia,serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;">Continue with Lorgner</a>
-            </td></tr>
-          </table>
-          <p style="margin:0;font-size:12px;color:#9A8E7E;line-height:1.6;">No obligation. If you decide not to continue, your membership simply ends on ${endsDate} and no charge is made.</p>
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`,
-      });
-
-      // Mark renewal email as sent
-      await fetch(
-        `${CONFIG.SUPABASE_URL}/rest/v1/wedding_redemptions?token=eq.${member.token}`,
-        {
-          method:  'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey':        CONFIG.SUPABASE_SERVICE_KEY,
-            'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
-          },
-          body: JSON.stringify({ renewal_email_sent: true }),
-        }
-      );
-
-      console.log(`[LORGNER] Renewal email sent to ${member.redeemed_by_email} (ends ${endsDate})`);
-      sent++;
-    }
-
-    res.json({ ok: true, sent });
-
-  } catch (err) {
-    console.error('[LORGNER] wedding-renewal-check error:', err.message);
-    res.status(500).json({ error: true, message: err.message });
-  }
-});
-
-/* ══════════════════════════════════════════════
    START SERVER
 ══════════════════════════════════════════════ */
 app.listen(PORT, () => {
-  const missingVars = ['ANTHROPIC_API_KEY','SUPABASE_URL','SUPABASE_SERVICE_KEY','RESEND_API_KEY']
-    .filter(k => !process.env[k]);
-
-  if (missingVars.length > 0) {
-    console.warn(`\n  ⚠ Missing environment variables: ${missingVars.join(', ')}\n`);
-  }
-
-  console.log(`
-  ╔════════════════════════════════════════╗
-  ║  LORGNER — Backend Proxy               ║
-  ║  Port    : ${String(PORT).padEnd(28)}  ║
-  ║  Origin  : ${CONFIG.FRONTEND_URL.slice(0,28).padEnd(28)}  ║
-  ╚════════════════════════════════════════╝
-
-  Security layers active:
-  [Auth]  JWT verification (Supabase)        ✓
-  [1]     System prompt scope constraint     ✓ (in frontend)
-  [2]     Anthropic constitutional AI        ✓ (model level)
-  [3]     Input + output filtering           ✓
-  [4]     Image validation                   ✓
-  [5]     Rate limiting (${CONFIG.RATE_LIMIT_MAX}/hr per IP)          ✓
-  [6]     Membership payment barrier         ✓ (Stripe)
-  [7]     CORS + Helmet security headers     ✓
-
-  API key status:
-  [✓]     ANTHROPIC_API_KEY in env vars only
-  [✓]     Never transmitted to browser
-  [✓]     Never appears in frontend code
-  `);
+  console.log(`[LORGNER] Server running on port ${PORT}`);
 });
-
-/* ══════════════════════════════════════════════
-   HOW THE API KEY IS PROTECTED — SUMMARY
-   ──────────────────────────────────────────────
-   1. The key is set in Railway's environment
-      variables dashboard. It is never in code.
-
-   2. Railway injects it as process.env.ANTHROPIC_API_KEY
-      at runtime on their secure servers.
-
-   3. When the frontend wants to call Claude it
-      sends a request to THIS proxy with its JWT.
-
-   4. This proxy verifies the JWT, then adds the
-      API key to the outgoing Anthropic request.
-
-   5. The browser's network inspector shows:
-      - Request to: your-lorgner-proxy.railway.app
-      - No API key in request headers
-      - No API key in response
-
-   6. The Anthropic API call happens entirely
-      server-to-server between Railway and Anthropic.
-      The browser is never part of that connection.
-
-   RESULT: A user inspecting your frontend source
-   code, your HTML, your JavaScript, or their
-   browser's network tab will find no trace of
-   the Claude API key anywhere.
-══════════════════════════════════════════════ */
