@@ -3,342 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Frame Journal — Lorgner</title>
-<meta name="description" content="Editorial guidance on reading glasses — how to choose them, wear them, and build a collection that works for your life.">
-<!-- Google tag (gtag.js) -->
+<title>The Ultimate Glasses Journal — Lorgner</title>
+<meta name="description" content="Tidbits on how to choose, wear, and build your glasses collection. The ultimate glasses journal from Lorgner.">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-X3VM9B57WC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X3VM9B57WC');
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X3VM9B57WC');</script>
 <link rel="icon" type="image/png" href="/newlogo.png">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FEF9F6;--blush:#FAECF2;--paper:#FFFCF9;
+  --ink:#160D1E;--ink-soft:#3D2D48;--ink-muted:#8A7A92;
+  --line:rgba(22,13,30,.09);--line2:rgba(22,13,30,.16);
+  --magenta:#C4176A;--pink:#F0A8C8;--mint:#2BBF8A;--gold:#C9A84C;
+  --dark:#130A1C;--dark2:#1E1028;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink-soft);font-family:'Plus Jakarta Sans',sans-serif;font-weight:300;line-height:1.7;font-size:15px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
 
-  :root {
-    --cream:     #FEF9F6;
-    --blush:     #FAECF2;
-    --paper:     #FFFCF9;
-    --ink:       #160D1E;
-    --ink-soft:  #3D2D48;
-    --ink-muted: #8A7A92;
-    --line:      rgba(22,13,30,.09);
-    --line2:     rgba(22,13,30,.16);
-    --magenta:   #C4176A;
-    --pink:      #F0A8C8;
-    --mint:      #2BBF8A;
-    --gold:      #C9A84C;
-    --dark:      #130A1C;
-    --dark2:     #1E1028;
-  }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:72px;background:rgba(19,10,28,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(196,23,106,.2)}
+.nav-wordmark{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.3px;color:#fff;text-decoration:none}
+.nav-wordmark span{color:#C9A84C}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-link{font-size:13px;font-weight:500;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s}
+.nav-link:hover{color:#fff}
+.nav-join{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#fff;background:#C4176A;border:none;border-radius:6px;padding:10px 24px;cursor:pointer;transition:all .25s;text-decoration:none}
+.nav-join:hover{background:#A81259;transform:translateY(-1px)}
+@media(max-width:768px){nav{padding:0 20px}.nav-links{display:none}}
 
-  html { scroll-behavior: smooth; }
+/* MASTHEAD */
+.masthead{
+  background:var(--dark);
+  padding:120px 64px 80px;
+  border-bottom:3px solid var(--magenta);
+}
+.masthead-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end}
+.masthead-left{}
+.masthead-issue{font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--pink);margin-bottom:24px}
+.masthead-title{font-family:'Syne',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:800;line-height:1.0;color:#fff;margin-bottom:28px}
+.masthead-title span{color:var(--magenta)}
+.masthead-desc{font-size:16px;color:rgba(255,255,255,.55);line-height:1.8;max-width:440px}
+.masthead-right{border-left:1px solid rgba(255,255,255,.08);padding-left:64px}
+.masthead-hook{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:8px}
+.masthead-simple{font-size:13px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:28px}
+.btn-how{display:inline-flex;align-items:center;gap:10px;background:var(--magenta);color:#fff;padding:14px 28px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-radius:6px;transition:all .25s}
+.btn-how:hover{background:#A81259;transform:translateY(-2px)}
+.btn-how::after{content:'→';font-size:14px}
+@media(max-width:900px){
+  .masthead{padding:100px 24px 60px}
+  .masthead-inner{grid-template-columns:1fr;gap:48px}
+  .masthead-right{border-left:none;border-top:1px solid rgba(255,255,255,.08);padding-left:0;padding-top:40px}
+}
 
-  body {
-    background: var(--cream);
-    color: var(--ink-soft);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-    font-size: 15px;
-    padding-top: 72px;
-  }
+/* CONTENTS LAYOUT */
+.wrap{max-width:1100px;margin:0 auto;padding:0 64px}
+@media(max-width:768px){.wrap{padding:0 24px}}
 
-  nav{
-    position:fixed;top:0;left:0;right:0;z-index:100;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:0 48px;height:72px;
-    background:rgba(19,10,28,.95);
-    backdrop-filter:blur(20px);
-    border-bottom:1px solid rgba(196,23,106,.2);
-  }
-  .nav-wordmark{
-    font-family:'Syne',sans-serif;
-    font-weight:800;font-size:20px;letter-spacing:-.3px;
-    color:#fff;text-decoration:none;
-  }
-  .nav-wordmark span{color:#C9A84C;}
-  .nav-links{display:flex;align-items:center;gap:32px;}
-  .nav-link{
-    font-size:13px;font-weight:500;
-    color:rgba(255,255,255,.5);text-decoration:none;
-    transition:color .2s;
-  }
-  .nav-link:hover{color:#fff;}
-  .nav-join{
-    font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
-    letter-spacing:.5px;text-transform:uppercase;
-    color:#fff;background:#C4176A;
-    border:none;border-radius:6px;
-    padding:10px 24px;cursor:pointer;
-    transition:all .25s;text-decoration:none;
-  }
-  .nav-join:hover{background:#A81259;transform:translateY(-1px);}
-  @media(max-width:768px){
-    nav{padding:0 20px;}
-    .nav-links{display:none;}
-  }
+/* SECTION HEADER */
+.section-strip{
+  display:flex;align-items:center;gap:20px;
+  padding:32px 0 24px;
+  border-bottom:1px solid var(--line2);
+  margin-bottom:32px;
+}
+.section-strip-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--magenta)}
+.section-strip-rule{flex:1;height:1px;background:var(--line)}
+.section-strip-count{font-size:11px;color:var(--ink-muted);letter-spacing:1px}
 
-  /* HERO */
-  .hero {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 80px 40px 60px;
-    border-bottom: 1px solid var(--line);
-  }
-  .hero-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color:var(--ink);
-    margin-bottom: 20px;
-  }
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(32px, 5vw, 52px);
-    font-weight: 300;
-    color: var(--ink);
-    line-height: 1.15;
-    margin-bottom: 20px;
-  }
-  .hero-title em { font-style: italic; color:var(--ink); }
-  .hero-sub {
-    font-size: 15px;
-    color: var(--ink-muted);
-    max-width: 520px;
-    line-height: 1.8;
-  }
+.content-block{padding:48px 0}
+.content-block+.content-block{border-top:1px solid var(--line)}
 
-  /* INDEX */
-  .index {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 48px 40px;
-    border-bottom: 1px solid var(--line);
-  }
-  .index-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color:var(--ink);
-    margin-bottom: 24px;
-  }
-  .index-list { list-style: none; }
-  .index-list li {
-    border-bottom: 1px solid var(--line);
-    padding: 16px 0;
-  }
-  .index-list li:last-child { border-bottom: none; }
-  .index-list a {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    font-weight: 400;
-    color: var(--ink-soft);
-    text-decoration: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: color .2s;
-  }
-  .index-list a:hover { color:var(--ink); }
-  .index-list a::after {
-    content: '→';
-    font-family: 'Jost', sans-serif;
-    font-size: 13px;
-    color:var(--ink);
-  }
+/* FEATURED — horizontal card */
+.featured-card{
+  display:grid;grid-template-columns:360px 1fr;
+  background:#fff;border:1px solid var(--line2);border-radius:8px;
+  overflow:hidden;transition:box-shadow .25s;
+}
+.featured-card:hover{box-shadow:0 8px 32px rgba(22,13,30,.1)}
+.featured-img{height:260px;overflow:hidden}
+.featured-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.featured-card:hover .featured-img img{transform:scale(1.04)}
+.featured-body{padding:40px 44px;display:flex;flex-direction:column;justify-content:center}
+.card-tag{font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--magenta);margin-bottom:12px}
+.card-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:12px}
+.card-desc{font-size:14px;color:var(--ink-muted);line-height:1.8;margin-bottom:24px}
+.card-read{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--magenta)}
+@media(max-width:780px){
+  .featured-card{grid-template-columns:1fr}
+  .featured-img{height:200px}
+  .featured-body{padding:28px 24px}
+}
 
-  /* ARTICLES */
-  .article {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 72px 40px;
-    border-bottom: 1px solid var(--line);
-  }
-  .article-meta {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 32px;
-  }
-  .article-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color:var(--ink);
-  }
-  .article-rule {
-    flex: 1;
-    height: 1px;
-    background: var(--line2);
-  }
-  .article-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(26px, 4vw, 38px);
-    font-weight: 300;
-    color: var(--ink);
-    line-height: 1.2;
-    margin-bottom: 32px;
-  }
-  .article-title em { font-style: italic; }
-  .article-body {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    font-weight: 300;
-    color: var(--ink-soft);
-    line-height: 1.9;
-  }
-  .article-body p { margin-bottom: 22px; }
-  .article-body p:last-of-type { margin-bottom: 0; }
-  .article-body strong { font-weight: 500; color: var(--ink); }
-  .article-body em { font-style: italic; }
+/* MAGAZINE GRID — 2 cols */
+.mag-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+.mag-grid--three{grid-template-columns:repeat(3,1fr)}
+.mag-card{background:var(--paper);text-decoration:none;display:block;transition:background .2s}
+.mag-card:hover{background:#fff}
+.mag-card-img{height:180px;overflow:hidden;background:var(--blush)}
+.mag-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.mag-card:hover .mag-card-img img{transform:scale(1.04)}
+.mag-card-body{padding:22px 24px 28px}
+.mag-card-tag{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--magenta);margin-bottom:8px}
+.mag-card-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:16px}
+.mag-card-read{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink-muted);transition:color .2s}
+.mag-card:hover .mag-card-read{color:var(--magenta)}
+@media(max-width:640px){
+  .mag-grid,.mag-grid--three{grid-template-columns:1fr}
+}
 
-  /* CTA */
-  .article-cta {
-    margin-top: 44px;
-    padding: 32px 36px;
-    background: var(--paper);
-    border: 1px solid var(--line2);
-    border-radius: 2px;
-  }
-  .article-cta-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color:var(--ink);
-    margin-bottom: 10px;
-  }
-  .article-cta-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    font-weight: 300;
-    color: var(--ink-soft);
-    margin-bottom: 18px;
-    line-height: 1.6;
-  }
-  .article-cta-link {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--warm);
-    background:var(--ink);
-    padding: 12px 22px;
-    border-radius: 2px;
-    text-decoration: none;
-    transition: opacity .2s;
-  }
-  .article-cta-link:hover { opacity: .85; }
+/* TABLE OF CONTENTS */
+.toc{border:1px solid var(--line2);border-radius:8px;overflow:hidden;background:#fff}
+.toc-header{background:var(--dark2);padding:18px 28px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.toc-item{display:flex;align-items:center;gap:20px;padding:16px 28px;border-bottom:1px solid var(--line);text-decoration:none;transition:background .15s}
+.toc-item:last-child{border-bottom:none}
+.toc-item:hover{background:var(--blush)}
+.toc-num{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--magenta);min-width:28px}
+.toc-title{flex:1;font-size:14px;font-weight:500;color:var(--ink);line-height:1.4}
+.toc-section{font-size:11px;color:var(--ink-muted);text-align:right;white-space:nowrap}
+.toc-arrow{color:var(--ink-muted);font-size:13px;margin-left:12px}
+@media(max-width:600px){
+  .toc-section{display:none}
+  .toc-item{padding:16px 20px}
+}
 
-  footer{
-    padding:36px 48px;
-    border-top:1px solid rgba(255,255,255,.05);
-    display:flex;align-items:center;justify-content:space-between;
-    background:#130A1C;
-  }
-  .footer-brand{
-    font-family:'Syne',sans-serif;
-    font-size:16px;font-weight:800;letter-spacing:-.3px;color:#fff;
-  }
-  .footer-brand span{color:#C9A84C;}
-  .footer-links{display:flex;gap:24px;}
-  .footer-link{
-    font-size:12px;font-weight:500;
-    color:rgba(255,255,255,.32);text-decoration:none;transition:color .2s;
-  }
-  .footer-link:hover{color:#fff;}
-  .footer-note{
-    font-size:11px;font-weight:400;
-    color:rgba(255,255,255,.18);letter-spacing:.3px;
-  }
-  @media(max-width:768px){
-    footer{flex-direction:column;gap:20px;text-align:center;padding:28px 20px;}
-    .footer-links{justify-content:center;flex-wrap:wrap;gap:12px;}
-  }
-
-  /* GIFT GUIDE CARDS */
-  .gift-section {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 56px 40px;
-    border-bottom: 1px solid var(--line);
-  }
-  .gift-section-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color:var(--ink);
-    margin-bottom: 24px;
-  }
-  .gift-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--line2);
-  }
-  .gift-grid--three {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .gift-card {
-    background: var(--paper);
-    text-decoration: none;
-    display: block;
-    transition: background .2s;
-  }
-  .gift-card:hover { background: var(--gold-bg); }
-  .gift-card-img {
-    height: 180px;
-    overflow: hidden;
-    background: var(--line);
-  }
-  .gift-card-img img {
-    width: 100%; height: 100%;
-    object-fit: cover; object-position: center;
-    transition: transform .4s ease;
-  }
-  .gift-card:hover .gift-card-img img { transform: scale(1.03); }
-  .gift-card-body { padding: 24px 26px 28px; }
-  .gift-card-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color:var(--ink);
-    margin-bottom: 10px;
-  }
-  .gift-card-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    font-weight: 300;
-    color: var(--ink);
-    line-height: 1.35;
-    margin-bottom: 16px;
-  }
-  .gift-card-cta {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color:var(--ink);
-    transition: color .2s;
-  }
-  .gift-card:hover .gift-card-cta { color:var(--ink); }
-
-  @media (max-width: 600px) {
-    .hero, .index, .article, .gift-section { padding-left: 20px; padding-right: 20px; }
-    .gift-grid, .gift-grid--three { grid-template-columns: 1fr; }
-    .gift-card[style*="grid-template-columns:320px"] { display: block !important; }
-    .gift-card-img[style*="height:240px"] { height: 200px !important; }
-  }
+/* FOOTER */
+footer{padding:36px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;background:#130A1C}
+.footer-brand{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:-.3px;color:#fff}
+.footer-brand span{color:#C9A84C}
+.footer-links{display:flex;gap:24px}
+.footer-link{font-size:12px;font-weight:500;color:rgba(255,255,255,.32);text-decoration:none;transition:color .2s}
+.footer-link:hover{color:#fff}
+.footer-note{font-size:11px;color:rgba(255,255,255,.18);letter-spacing:.3px}
+@media(max-width:768px){footer{flex-direction:column;gap:20px;text-align:center;padding:28px 20px}.footer-links{justify-content:center;flex-wrap:wrap;gap:12px}}
 </style>
 </head>
 <body>
@@ -354,114 +152,182 @@
   <a href="/join" class="nav-join">Join</a>
 </nav>
 
-<div class="hero">
-  <div class="hero-label">The Frame Journal</div>
-  <h1 class="hero-title">You have readers <em>everywhere.</em><br>Lorgner helps you wear the right ones.</h1>
-  <p class="hero-sub">Editorial guidance on reading glasses — how to choose them, wear them, and build a collection that actually works for your life. Lorgner helps you style the collection you have already built.</p>
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-left">
+      <div class="masthead-issue">The Frame Journal · Lorgner</div>
+      <h1 class="masthead-title">The Ultimate<br><span>Glasses</span> Journal</h1>
+      <p class="masthead-desc">You have glasses all over the place. Lorgner helps you wear the right ones. Tidbits on how to choose, wear, and build your glasses collection.</p>
+    </div>
+    <div class="masthead-right">
+      <p class="masthead-hook">Want to get your own personal eyewear stylist?</p>
+      <p class="masthead-simple">It's as simple as 1, 2, 3.</p>
+      <a href="/#how-it-works" class="btn-how">How It Works</a>
+    </div>
+  </div>
 </div>
 
-<!-- FEATURED -->
-<div class="gift-section">
-  <div class="gift-section-label">Featured</div>
-  <div class="gift-grid" style="grid-template-columns:1fr;">
-    <a href="/for-those-who-curate" class="gift-card" style="display:grid;grid-template-columns:320px 1fr;">
-      <div class="gift-card-img" style="height:240px;">
+<div style="padding:48px 0 80px">
+<div class="wrap">
+
+  <!-- FEATURED -->
+  <div class="content-block">
+    <div class="section-strip">
+      <span class="section-strip-label">Featured</span>
+      <span class="section-strip-rule"></span>
+    </div>
+    <a href="/for-those-who-curate" class="featured-card">
+      <div class="featured-img">
         <img src="/luxury.jpg" alt="For Those Who Curate">
       </div>
-      <div class="gift-card-body" style="padding:32px 36px;display:flex;flex-direction:column;justify-content:center;">
-        <div class="gift-card-tag">Partnerships · Curators</div>
-        <h2 class="gift-card-title" style="font-size:22px;margin-bottom:12px;">For those who curate</h2>
-        <p style="font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:300;color:var(--ink-muted);line-height:1.75;margin-bottom:20px;">Two disciplines. One quietly useful partner. Whether you are orchestrating a guest's day or sourcing for a client's collection.</p>
-        <span class="gift-card-cta">Read the article →</span>
+      <div class="featured-body">
+        <div class="card-tag">Partnerships · Curators</div>
+        <h2 class="card-title">For Those Who Curate</h2>
+        <p class="card-desc">Two disciplines. One quietly useful partner. Whether you are orchestrating a guest's day or sourcing for a client's collection.</p>
+        <span class="card-read">Read the article →</span>
       </div>
     </a>
   </div>
-</div>
 
-<!-- GIFT GUIDES -->
-<div class="gift-section">
-  <div class="gift-section-label">Gift Guides</div>
-  <div class="gift-grid">
-    <a href="/groomsmen-gifts" class="gift-card">
-      <div class="gift-card-img">
-        <img src="/mensglasses.jpg" alt="Groomsmen gift guide">
-      </div>
-      <div class="gift-card-body">
-        <div class="gift-card-tag">For the Groomsmen</div>
-        <h2 class="gift-card-title">The Best Groomsmen Gifts for Guys Who Are Sick of Flasks</h2>
-        <span class="gift-card-cta">Read the guide →</span>
-      </div>
-    </a>
-    <a href="/bridesmaids-gifts" class="gift-card">
-      <div class="gift-card-img">
-        <img src="/womensglasses.jpg" alt="Bridesmaid gift guide">
-      </div>
-      <div class="gift-card-body">
-        <div class="gift-card-tag">For the Bridesmaids</div>
-        <h2 class="gift-card-title">The Best Bridesmaid Gifts for Women Who Are Sick of Robes</h2>
-        <span class="gift-card-cta">Read the guide →</span>
-      </div>
-    </a>
+  <!-- GIFT GUIDES -->
+  <div class="content-block">
+    <div class="section-strip">
+      <span class="section-strip-label">Gift Guides</span>
+      <span class="section-strip-rule"></span>
+      <span class="section-strip-count">2 articles</span>
+    </div>
+    <div class="mag-grid">
+      <a href="/groomsmen-gifts" class="mag-card">
+        <div class="mag-card-img"><img src="/mensglasses.jpg" alt="Groomsmen gift guide"></div>
+        <div class="mag-card-body">
+          <div class="mag-card-tag">For the Groomsmen</div>
+          <h2 class="mag-card-title">The Best Groomsmen Gifts for Guys Who Are Sick of Flasks</h2>
+          <span class="mag-card-read">Read the guide →</span>
+        </div>
+      </a>
+      <a href="/bridesmaids-gifts" class="mag-card">
+        <div class="mag-card-img"><img src="/womensglasses.jpg" alt="Bridesmaid gift guide"></div>
+        <div class="mag-card-body">
+          <div class="mag-card-tag">For the Bridesmaids</div>
+          <h2 class="mag-card-title">The Best Bridesmaid Gifts for Women Who Are Sick of Robes</h2>
+          <span class="mag-card-read">Read the guide →</span>
+        </div>
+      </a>
+    </div>
   </div>
-</div>
 
-<div class="gift-section">
-  <div class="gift-section-label">Reading Glasses</div>
-  <div class="gift-grid gift-grid--three">
-    <a href="/how-to-choose-reading-glasses" class="gift-card">
-      <div class="gift-card-img"><img src="/glasses1.jpg" alt="How to choose reading glasses"></div>
-      <div class="gift-card-body">
-        <div class="gift-card-tag">Style Guide</div>
-        <h2 class="gift-card-title">How to choose reading glasses that actually look good on you</h2>
-        <span class="gift-card-cta">Read the guide →</span>
-      </div>
-    </a>
-    <a href="/reading-glasses-match-regular-glasses" class="gift-card">
-      <div class="gift-card-img"><img src="/glasses2.jpg" alt="Do reading glasses have to match"></div>
-      <div class="gift-card-body">
-        <div class="gift-card-tag">Style Guide</div>
-        <h2 class="gift-card-title">Do your reading glasses have to match your regular glasses?</h2>
-        <span class="gift-card-cta">Read the guide →</span>
-      </div>
-    </a>
-    <a href="/reading-glasses-office-vs-dinner" class="gift-card">
-      <div class="gift-card-img"><img src="/glasses3.jpg" alt="Office vs dinner reading glasses"></div>
-      <div class="gift-card-body">
-        <div class="gift-card-tag">Style Guide</div>
-        <h2 class="gift-card-title">The reading glasses you wear to the office versus the ones you wear to dinner</h2>
-        <span class="gift-card-cta">Read the guide →</span>
-      </div>
-    </a>
-    <a href="/reading-glasses-women-over-50" class="gift-card">
-      <div class="gift-card-img"><img src="/glasses4.jpg" alt="Reading glasses for women over 50"></div>
-      <div class="gift-card-body">
-        <div class="gift-card-tag">Style Guide</div>
-        <h2 class="gift-card-title">Best reading glasses for women over 50 who actually care about style</h2>
-        <span class="gift-card-cta">Read the guide →</span>
-      </div>
-    </a>
-    <a href="/reading-glasses-collection" class="gift-card">
-      <div class="gift-card-img"><img src="/glasses5.jpg" alt="How to build a reading glasses collection"></div>
-      <div class="gift-card-body">
-        <div class="gift-card-tag">Style Guide</div>
-        <h2 class="gift-card-title">How to build a reading glasses collection that works for your life</h2>
-        <span class="gift-card-cta">Read the guide →</span>
-      </div>
-    </a>
+  <!-- READING GLASSES -->
+  <div class="content-block">
+    <div class="section-strip">
+      <span class="section-strip-label">Reading Glasses</span>
+      <span class="section-strip-rule"></span>
+      <span class="section-strip-count">5 articles</span>
+    </div>
+    <div class="mag-grid mag-grid--three">
+      <a href="/how-to-choose-reading-glasses" class="mag-card">
+        <div class="mag-card-img"><img src="/glasses1.jpg" alt="How to choose reading glasses"></div>
+        <div class="mag-card-body">
+          <div class="mag-card-tag">Style Guide</div>
+          <h2 class="mag-card-title">How to choose reading glasses that actually look good on you</h2>
+          <span class="mag-card-read">Read →</span>
+        </div>
+      </a>
+      <a href="/reading-glasses-match-regular-glasses" class="mag-card">
+        <div class="mag-card-img"><img src="/glasses2.jpg" alt="Do reading glasses have to match"></div>
+        <div class="mag-card-body">
+          <div class="mag-card-tag">Style Guide</div>
+          <h2 class="mag-card-title">Do your reading glasses have to match your regular glasses?</h2>
+          <span class="mag-card-read">Read →</span>
+        </div>
+      </a>
+      <a href="/reading-glasses-office-vs-dinner" class="mag-card">
+        <div class="mag-card-img"><img src="/glasses3.jpg" alt="Office vs dinner reading glasses"></div>
+        <div class="mag-card-body">
+          <div class="mag-card-tag">Style Guide</div>
+          <h2 class="mag-card-title">The reading glasses you wear to the office versus the ones you wear to dinner</h2>
+          <span class="mag-card-read">Read →</span>
+        </div>
+      </a>
+      <a href="/reading-glasses-women-over-50" class="mag-card">
+        <div class="mag-card-img"><img src="/glasses4.jpg" alt="Reading glasses for women over 50"></div>
+        <div class="mag-card-body">
+          <div class="mag-card-tag">Style Guide</div>
+          <h2 class="mag-card-title">Best reading glasses for women over 50 who actually care about style</h2>
+          <span class="mag-card-read">Read →</span>
+        </div>
+      </a>
+      <a href="/reading-glasses-collection" class="mag-card">
+        <div class="mag-card-img"><img src="/glasses5.jpg" alt="How to build a reading glasses collection"></div>
+        <div class="mag-card-body">
+          <div class="mag-card-tag">Style Guide</div>
+          <h2 class="mag-card-title">How to build a reading glasses collection that works for your life</h2>
+          <span class="mag-card-read">Read →</span>
+        </div>
+      </a>
+    </div>
   </div>
-</div>
 
-<div class="index">
-  <div class="index-label">In This Journal</div>
-  <ul class="index-list">
-    <li><a href="/groomsmen-gifts">5 groomsmen gifts for guys who are sick of flasks</a></li>
-    <li><a href="/bridesmaids-gifts">5 bridesmaid gifts for women who are sick of robes</a></li>
-    <li><a href="/how-to-choose-reading-glasses">How to choose reading glasses that actually look good on you</a></li>
-    <li><a href="/reading-glasses-match-regular-glasses">Do your reading glasses have to match your regular glasses?</a></li>
-    <li><a href="/reading-glasses-office-vs-dinner">The reading glasses you wear to the office versus the ones you wear to dinner</a></li>
-    <li><a href="/reading-glasses-women-over-50">Best reading glasses for women over 50 who actually care about style</a></li>
-    <li><a href="/reading-glasses-collection">How to build a reading glasses collection that works for your life</a></li>
-  </ul>
+  <!-- TABLE OF CONTENTS -->
+  <div class="content-block">
+    <div class="section-strip">
+      <span class="section-strip-label">All Articles</span>
+      <span class="section-strip-rule"></span>
+    </div>
+    <div class="toc">
+      <div class="toc-header">In This Journal</div>
+      <a href="/for-those-who-curate" class="toc-item">
+        <span class="toc-num">01</span>
+        <span class="toc-title">For those who curate</span>
+        <span class="toc-section">Featured</span>
+        <span class="toc-arrow">→</span>
+      </a>
+      <a href="/groomsmen-gifts" class="toc-item">
+        <span class="toc-num">02</span>
+        <span class="toc-title">5 groomsmen gifts for guys who are sick of flasks</span>
+        <span class="toc-section">Gift Guides</span>
+        <span class="toc-arrow">→</span>
+      </a>
+      <a href="/bridesmaids-gifts" class="toc-item">
+        <span class="toc-num">03</span>
+        <span class="toc-title">5 bridesmaid gifts for women who are sick of robes</span>
+        <span class="toc-section">Gift Guides</span>
+        <span class="toc-arrow">→</span>
+      </a>
+      <a href="/how-to-choose-reading-glasses" class="toc-item">
+        <span class="toc-num">04</span>
+        <span class="toc-title">How to choose reading glasses that actually look good on you</span>
+        <span class="toc-section">Reading Glasses</span>
+        <span class="toc-arrow">→</span>
+      </a>
+      <a href="/reading-glasses-match-regular-glasses" class="toc-item">
+        <span class="toc-num">05</span>
+        <span class="toc-title">Do your reading glasses have to match your regular glasses?</span>
+        <span class="toc-section">Reading Glasses</span>
+        <span class="toc-arrow">→</span>
+      </a>
+      <a href="/reading-glasses-office-vs-dinner" class="toc-item">
+        <span class="toc-num">06</span>
+        <span class="toc-title">The reading glasses you wear to the office versus the ones you wear to dinner</span>
+        <span class="toc-section">Reading Glasses</span>
+        <span class="toc-arrow">→</span>
+      </a>
+      <a href="/reading-glasses-women-over-50" class="toc-item">
+        <span class="toc-num">07</span>
+        <span class="toc-title">Best reading glasses for women over 50 who actually care about style</span>
+        <span class="toc-section">Reading Glasses</span>
+        <span class="toc-arrow">→</span>
+      </a>
+      <a href="/reading-glasses-collection" class="toc-item">
+        <span class="toc-num">08</span>
+        <span class="toc-title">How to build a reading glasses collection that works for your life</span>
+        <span class="toc-section">Reading Glasses</span>
+        <span class="toc-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+</div>
 </div>
 
 <footer>
