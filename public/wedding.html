@@ -38,28 +38,30 @@
   "url": "https://www.lorgner.co/wedding"
 }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --warm:       #FAF6EE;
-  --paper:      #FFFCF5;
-  --ink:        #1E1A14;
-  --ink-soft:   #5A5244;
-  --ink-muted:  #9A8E7E;
-  --gold:       #C9A96E;
-  --gold-deep:  #9A7A48;
-  --gold-light: #DFC090;
-  --gold-bg:    rgba(201,169,110,0.09);
-  --gold-line:  rgba(201,169,110,0.30);
-  --line:       rgba(30,26,20,0.10);
-  --line-soft:  rgba(30,26,20,0.06);
+  --cream:     #FEF9F6;
+  --blush:     #FAECF2;
+  --paper:     #FFFCF9;
+  --ink:       #160D1E;
+  --ink-soft:  #3D2D48;
+  --ink-muted: #8A7A92;
+  --line:      rgba(22,13,30,.09);
+  --line2:     rgba(22,13,30,.16);
+  --magenta:   #C4176A;
+  --pink:      #F0A8C8;
+  --mint:      #2BBF8A;
+  --gold:      #C9A84C;
+  --dark:      #130A1C;
+  --dark2:     #1E1028;
 }
 
 *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'Jost', sans-serif;
-  background: var(--warm);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--cream);
   color: var(--ink);
   font-size: 16px;
   line-height: 1.6;
@@ -72,23 +74,40 @@ a { color: inherit; text-decoration: none; }
 .wrap { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
 @media(max-width:640px) { .wrap { padding: 0 20px; } }
 
-/* TOPBAR */
-.topbar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 28px 0; border-bottom: 1px solid var(--line);
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:72px;
+  background:rgba(19,10,28,.95);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(196,23,106,.2);
 }
-.wordmark {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 300; font-size: 14px; letter-spacing: 8px;
-  text-transform: uppercase; color:var(--ink);
+.nav-wordmark{
+  font-family:'Syne',sans-serif;
+  font-weight:800;font-size:20px;letter-spacing:-.3px;
+  color:#fff;text-decoration:none;
 }
-.topbar nav { display: flex; gap: 32px; }
-.topbar nav a {
-  font-size: 12px; font-weight: 300; letter-spacing: 0.5px;
-  color: var(--ink-soft); transition: color 0.2s;
+.nav-wordmark span{color:#C9A84C;}
+.nav-links{display:flex;align-items:center;gap:32px;}
+.nav-link{
+  font-size:13px;font-weight:500;
+  color:rgba(255,255,255,.5);text-decoration:none;
+  transition:color .2s;
 }
-.topbar nav a:hover { color:var(--ink); }
-@media(max-width:640px) { .topbar nav { display: none; } }
+.nav-link:hover{color:#fff;}
+.nav-join{
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;
+  color:#fff;background:#C4176A;
+  border:none;border-radius:6px;
+  padding:10px 24px;cursor:pointer;
+  transition:all .25s;text-decoration:none;
+}
+.nav-join:hover{background:#A81259;transform:translateY(-1px);}
+@media(max-width:768px){
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+}
 
 /* HERO */
 .hero-photo {
@@ -350,13 +369,31 @@ section { padding: 80px 0; border-bottom: 1px solid var(--line); }
   color: var(--ink-muted); letter-spacing: 0.3px;
 }
 
-/* FOOTER */
-footer {
-  border-top: 1px solid var(--line); padding: 36px 0 48px;
-  background: var(--paper);
+footer{
+  padding:36px 48px;
+  border-top:1px solid rgba(255,255,255,.05);
+  display:flex;align-items:center;justify-content:space-between;
+  background:#130A1C;
 }
-.footer-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0; }
+.footer-brand{
+  font-family:'Syne',sans-serif;
+  font-size:16px;font-weight:800;letter-spacing:-.3px;color:#fff;
+}
+.footer-brand span{color:#C9A84C;}
+.footer-links{display:flex;gap:24px;}
+.footer-link{
+  font-size:12px;font-weight:500;
+  color:rgba(255,255,255,.32);text-decoration:none;transition:color .2s;
+}
+.footer-link:hover{color:#fff;}
+.footer-note{
+  font-size:11px;font-weight:400;
+  color:rgba(255,255,255,.18);letter-spacing:.3px;
+}
+@media(max-width:768px){
+  footer{flex-direction:column;gap:20px;text-align:center;padding:28px 20px;}
+  .footer-links{justify-content:center;flex-wrap:wrap;gap:12px;}
+}
 
 /* SUCCESS STATE (post-purchase) */
 .purchase-success {
@@ -373,8 +410,6 @@ footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0
   .for-card { padding: 36px 24px; }
   .steps-grid { gap: 28px; }
   .closing { padding: 72px 0 80px; }
-  /* topbar */
-  .wordmark { font-size: 12px; letter-spacing: 6px; }
   /* eyebrows / labels — all tiny DM Mono text */
   .sec-eyebrow { font-size: 11px; letter-spacing: 2px; }
   .stepper-label { font-size: 14px; }
@@ -400,16 +435,16 @@ footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0
 </head>
 <body>
 
-<div class="wrap">
-  <div class="topbar">
-    <a href="/" style="text-decoration:none;color:inherit"><div class="wordmark">L O R G N E R</div></a>
-    <nav>
-      <a href="#occasion">The Occasion</a>
-      <a href="#party">Build Your Party</a>
-      <a href="#how">How It Works</a>
-    </nav>
+<nav>
+  <a href="/" class="nav-wordmark">Lorgner<span>.</span></a>
+  <div class="nav-links">
+    <a href="/#how-it-works" class="nav-link">How it works</a>
+    <a href="/founder" class="nav-link">From the Founder</a>
+    <a href="/wedding" class="nav-link">Wedding Parties</a>
+    <a href="/partnerships" class="nav-link">Partnerships</a>
   </div>
-</div>
+  <a href="/join" class="nav-join">Join</a>
+</nav>
 
 <!-- Hero photo -->
 <div class="hero-photo">
@@ -586,14 +621,15 @@ footer p { font-size: 12px; font-weight: 300; color: var(--ink-muted); margin: 0
 </section>
 
 <footer>
-  <div class="wrap footer-row">
-    <a href="/" style="text-decoration:none;"><div class="wordmark">L O R G N E R</div></a>
-    <div style="display:flex;gap:20px;align-items:center;">
-      <a href="/journal" style="font-family:'Jost',sans-serif;font-size:12px;color:var(--ink-muted);text-decoration:none;">Journal</a>
-      <a href="mailto:hello@lorgner.co" style="font-family:'Jost',sans-serif;font-size:12px;color:var(--ink-muted);text-decoration:none;">Contact</a>
-    </div>
-    <p>© 2026 LORGNER · Powered by Digital Junction LLC</p>
+  <div class="footer-brand">Lorgner<span>.</span></div>
+  <div class="footer-links">
+    <a href="/wedding" class="footer-link">Wedding Parties</a>
+    <a href="/journal" class="footer-link">Journal</a>
+    <a href="/founder" class="footer-link">From the Founder</a>
+    <a href="/partnerships" class="footer-link">Partnerships</a>
+    <a href="mailto:hello@lorgner.co" class="footer-link">Contact</a>
   </div>
+  <div class="footer-note">© 2026 LORGNER · Powered by Digital Junction LLC</div>
 </footer>
 
 <script>
