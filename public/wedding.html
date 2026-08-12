@@ -3,434 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lorgner — A Gift for the Wedding Party</title>
-<meta name="description" content="Give your wedding party six months of personal styling guidance for their glasses collection. $79 per person. Individual invitation links for groomsmen or bridesmaids.">
+<title>Lorgner — Wedding Party Gift</title>
+<meta name="description" content="Gift your wedding party six months of personal eyewear styling. Perfect for bridesmaids and groomsmen — from engagement photos to wedding day.">
 <link rel="canonical" href="https://www.lorgner.co/wedding">
-<link rel="icon" type="image/png" href="/favicon.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "Lorgner Wedding Party Gift",
-  "description": "A six-month personal styling membership for wedding parties. The bride or groom purchases one bundle and each member of the wedding party receives a private invitation link to activate their own membership.",
-  "provider": {
-    "@type": "Organization",
-    "name": "Lorgner",
-    "url": "https://www.lorgner.co"
-  },
-  "serviceType": "Personal Styling Membership",
-  "audience": {
-    "@type": "Audience",
-    "audienceType": "Wedding parties, groomsmen, bridesmaids"
-  },
-  "offers": {
-    "@type": "Offer",
-    "price": "79",
-    "priceCurrency": "USD",
-    "description": "$79 per person for six months of personal eyewear styling guidance",
-    "eligibleQuantity": {
-      "@type": "QuantitativeValue",
-      "minValue": 2,
-      "maxValue": 20,
-      "unitText": "people"
-    }
-  },
-  "url": "https://www.lorgner.co/wedding"
-}
-</script>
+<link rel="icon" type="image/png" href="/newlogo.png">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X3VM9B57WC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X3VM9B57WC');</script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --cream:     #FEF9F6;
-  --blush:     #FAECF2;
-  --paper:     #FFFCF9;
-  --ink:       #160D1E;
-  --ink-soft:  #3D2D48;
-  --ink-muted: #8A7A92;
-  --line:      rgba(22,13,30,.09);
-  --line2:     rgba(22,13,30,.16);
-  --magenta:   #C4176A;
-  --pink:      #F0A8C8;
-  --mint:      #2BBF8A;
-  --gold:      #C9A84C;
-  --dark:      #130A1C;
-  --dark2:     #1E1028;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FEF9F6;--blush:#FAECF2;--paper:#FFFCF9;
+  --ink:#160D1E;--ink-soft:#3D2D48;--ink-muted:#8A7A92;
+  --line:rgba(22,13,30,.09);--line2:rgba(22,13,30,.16);
+  --magenta:#C4176A;--pink:#F0A8C8;--mint:#2BBF8A;--gold:#C9A84C;
+  --dark:#130A1C;--dark2:#1E1028;
 }
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--ink-soft);font-weight:300;line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
 
-*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: var(--cream);
-  color: var(--ink);
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
-a { color: inherit; text-decoration: none; }
-:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-
-/* LAYOUT */
-.wrap { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
-@media(max-width:640px) { .wrap { padding: 0 20px; } }
-
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 48px;height:72px;
-  background:rgba(19,10,28,.95);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(196,23,106,.2);
-}
-.nav-wordmark{
-  font-family:'Syne',sans-serif;
-  font-weight:800;font-size:20px;letter-spacing:-.3px;
-  color:#fff;text-decoration:none;
-}
-.nav-wordmark span{color:#C9A84C;}
-.nav-links{display:flex;align-items:center;gap:32px;}
-.nav-link{
-  font-size:13px;font-weight:500;
-  color:rgba(255,255,255,.5);text-decoration:none;
-  transition:color .2s;
-}
-.nav-link:hover{color:#fff;}
-.nav-join{
-  font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
-  letter-spacing:.5px;text-transform:uppercase;
-  color:#fff;background:#C4176A;
-  border:none;border-radius:6px;
-  padding:10px 24px;cursor:pointer;
-  transition:all .25s;text-decoration:none;
-}
-.nav-join:hover{background:#A81259;transform:translateY(-1px);}
-@media(max-width:768px){
-  nav{padding:0 20px;}
-  .nav-links{display:none;}
-}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:72px;background:rgba(19,10,28,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(196,23,106,.2)}
+.nav-wordmark{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.3px;color:#fff}
+.nav-wordmark span{color:#C9A84C}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-link{font-size:13px;font-weight:500;color:rgba(255,255,255,.5);transition:color .2s}
+.nav-link:hover{color:#fff}
+.nav-join{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#fff;background:#C4176A;border:none;border-radius:6px;padding:10px 24px;cursor:pointer;transition:all .25s}
+.nav-join:hover{background:#A81259;transform:translateY(-1px)}
+@media(max-width:768px){nav{padding:0 20px}.nav-links{display:none}}
 
 /* HERO */
-.hero-photo {
-  width: 100%; height: 70vh; max-height: 620px; min-height: 400px;
-  overflow: hidden; position: relative;
-}
-.hero-photo img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: center 18%;
-}
-.hero-photo::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(to bottom, rgba(250,246,238,0) 50%, rgba(250,246,238,0.55) 100%);
-}
+.hero-photo{width:100%;height:72vh;max-height:640px;min-height:420px;overflow:hidden;position:relative;margin-top:72px}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.hero-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(19,10,28,.2) 0%,rgba(19,10,28,.55) 100%)}
+.hero-overlay{position:absolute;inset:0;z-index:2;display:flex;align-items:flex-end;padding:0 64px 64px}
+.hero-tag{display:inline-block;font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.7);background:rgba(196,23,106,.35);border:1px solid rgba(196,23,106,.5);padding:6px 14px;border-radius:4px;margin-bottom:20px}
+.hero-h1{font-family:'Syne',sans-serif;font-size:clamp(32px,5vw,60px);font-weight:800;line-height:1.05;color:#fff;max-width:680px}
+.hero-h1 span{color:#F0A8C8}
+@media(max-width:640px){.hero-overlay{padding:0 24px 40px}.hero-h1{font-size:clamp(28px,7vw,40px)}}
 
-.hero-text {
-  padding: 64px 0 72px;
-  border-bottom: 1px solid var(--line);
-}
-.hero-eyebrow {
-  font-family: 'Jost', sans-serif;
-  font-size: 11px; font-weight: 400; letter-spacing: 3.5px;
-  text-transform: uppercase; color:var(--ink);
-  margin-bottom: 20px;
-  display: flex; align-items: center; gap: 14px;
-}
-.hero-eyebrow::before {
-  content: ''; width: 32px; height: 1px; background: var(--gold-line);
-}
-.hero-h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(38px, 5.5vw, 66px);
-  font-weight: 300; line-height: 1.08; color: var(--ink);
-  max-width: 760px; margin-bottom: 24px;
-}
-.hero-h1 em { font-style: italic; color:var(--ink); }
-.hero-lede {
-  font-size: 17px; font-weight: 300; color: var(--ink-soft);
-  max-width: 540px; line-height: 1.75; margin-bottom: 40px;
-}
-.hero-cta { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
-.btn-primary {
-  display: inline-block;
-  background: var(--ink); color: var(--paper);
-  padding: 16px 32px;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 15px; font-weight: 400; letter-spacing: 2px;
-  text-transform: uppercase; border: none; cursor: pointer;
-  transition: background 0.25s;
-}
-.btn-primary:hover { background:var(--ink); }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-.link-quiet {
-  font-size: 14px; font-weight: 300; color: var(--ink-soft);
-  border-bottom: 1px solid var(--gold-line); padding-bottom: 2px;
-  transition: color 0.2s, border-color 0.2s; cursor: pointer;
-}
-.link-quiet:hover { color: var(--ink); border-color:var(--ink); }
+/* SECTIONS */
+.wrap{max-width:1100px;margin:0 auto;padding:0 48px}
+@media(max-width:640px){.wrap{padding:0 24px}}
+section{padding:80px 0;border-bottom:1px solid var(--line)}
+.sec-eyebrow{font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--magenta);margin-bottom:16px}
+.sec-h2{font-family:'Syne',sans-serif;font-size:clamp(26px,3.5vw,38px);font-weight:800;line-height:1.15;color:var(--ink);max-width:620px;margin-bottom:12px}
+.sec-sub{font-size:16px;color:var(--ink-muted);max-width:560px;margin-bottom:52px;line-height:1.75}
 
-/* SECTION SHELL */
-section { padding: 80px 0; border-bottom: 1px solid var(--line); }
-.sec-eyebrow {
-  font-size: 10px; font-weight: 400; letter-spacing: 3px;
-  text-transform: uppercase; color:var(--ink); margin-bottom: 14px;
-}
-.sec-h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(28px, 3.5vw, 40px);
-  font-weight: 300; line-height: 1.2; color: var(--ink);
-  max-width: 620px; margin-bottom: 52px;
-}
-.sec-h2 em { font-style: italic; color:var(--ink); }
+/* INTRO / LEDE */
+.intro-section{padding:72px 0 80px;background:var(--blush)}
+.intro-lede{font-size:clamp(18px,2.5vw,24px);font-weight:400;color:var(--ink);max-width:680px;line-height:1.65;margin-bottom:36px}
+.intro-lede span{color:var(--magenta);font-weight:600}
+.btn-magenta{display:inline-block;background:var(--magenta);color:#fff;padding:16px 36px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:6px;transition:all .25s}
+.btn-magenta:hover{background:#A81259;transform:translateY(-2px)}
+
+/* HOW IT WORKS — 3 steps */
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:48px}
+@media(max-width:720px){.steps-grid{grid-template-columns:1fr;gap:32px}}
+.step-card{border-top:3px solid var(--magenta);padding-top:24px}
+.step-num{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;color:var(--magenta);margin-bottom:14px;display:block}
+.step-card h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:10px}
+.step-card p{font-size:14px;color:var(--ink-muted);line-height:1.8;margin:0}
 
 /* TIMELINE */
-.timeline-scroll { overflow-x: auto; padding-bottom: 8px; }
-.timeline {
-  display: flex; align-items: flex-start;
-  min-width: 640px; padding-top: 12px; position: relative;
-}
-.timeline::before {
-  content: '';
-  position: absolute; top: 30px; left: 4px; right: 0; height: 1px;
-  background: var(--gold-line);
-}
-.t-node { flex: 1; position: relative; padding-right: 16px; }
-.t-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background:var(--ink); margin-bottom: 18px;
-  position: relative; z-index: 1;
-  box-shadow: 0 0 0 3px rgba(201,169,110,0.18);
-}
-.t-node.ghost .t-dot { background: transparent; border: 1px solid var(--gold-line); box-shadow: none; }
-.t-label { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 400; margin-bottom: 4px; }
-.t-sub { font-size: 12px; font-weight: 300; color: var(--ink-muted); letter-spacing: 0.3px; }
-.t-node.ghost .t-label { color: var(--ink-muted); font-style: italic; font-weight: 300; }
+.timeline-section{background:var(--dark);padding:80px 0;border-bottom:none}
+.timeline-section .sec-eyebrow{color:var(--pink)}
+.timeline-section .sec-h2{color:#fff}
+.timeline-section .sec-sub{color:rgba(255,255,255,.5)}
+.timeline-wrap{display:flex;align-items:flex-start;gap:0;position:relative;margin-bottom:48px;overflow-x:auto;padding-bottom:8px}
+.timeline-wrap::before{content:'';position:absolute;top:13px;left:0;right:0;height:1px;background:rgba(240,168,200,.25)}
+.t-node{flex:1;min-width:140px;position:relative;padding-right:12px}
+.t-dot{width:8px;height:8px;border-radius:50%;background:var(--pink);margin-bottom:16px;flex-shrink:0;box-shadow:0 0 0 4px rgba(240,168,200,.18)}
+.t-node.ghost .t-dot{background:transparent;border:1px solid rgba(240,168,200,.35);box-shadow:none}
+.t-label{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.3}
+.t-node.ghost .t-label{color:rgba(255,255,255,.4);font-weight:400}
+.t-sub{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.5px}
+.timeline-caption{max-width:680px;font-size:16px;color:rgba(255,255,255,.6);line-height:1.8}
+.timeline-caption em{color:var(--pink);font-style:normal}
 
-.timeline-caption {
-  margin-top: 44px; font-size: 15px; font-weight: 300; color: var(--ink-soft);
-  max-width: 580px; line-height: 1.8; font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
-}
-.timeline-caption em { font-style: italic; color:var(--ink); }
+/* HOW GIFT GIVING WORKS */
+.gift-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:48px}
+@media(max-width:720px){.gift-steps{grid-template-columns:1fr;gap:28px}}
+.gift-card{background:var(--blush);border-radius:8px;padding:36px 32px}
+.gift-order{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--magenta);margin-bottom:12px}
+.gift-card h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:0}
+.after-note{margin-top:40px;background:#fff;border:1px solid var(--line2);border-radius:8px;padding:28px 32px;max-width:680px;font-size:15px;color:var(--ink-soft);line-height:1.8}
 
-/* WHO IT'S FOR */
-.for-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 1px; background: var(--line); border: 1px solid var(--line);
-}
-@media(max-width:680px) { .for-grid { grid-template-columns: 1fr; } }
-.for-card {
-  background: var(--paper); padding: 48px 44px;
-}
-.for-card .role {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-size: 26px; font-weight: 300;
-  color: var(--ink); margin-bottom: 14px;
-}
-.for-card .role span { color:var(--ink); }
-.for-card p { font-size: 15px; font-weight: 300; color: var(--ink-soft); line-height: 1.8; margin: 0; }
+/* JOURNAL */
+.journal-section{background:var(--dark2);padding:64px 0;border-bottom:none}
+.journal-section .sec-eyebrow{color:var(--gold)}
+.journal-section .sec-h2{color:#fff;margin-bottom:8px}
+.journal-hook{color:rgba(255,255,255,.45);font-size:15px;margin-bottom:36px;max-width:480px}
+.journal-links{display:flex;gap:16px;flex-wrap:wrap}
+.journal-link{display:inline-block;padding:14px 24px;border:1px solid rgba(201,168,76,.3);color:rgba(255,255,255,.7);font-size:13px;font-weight:500;border-radius:6px;transition:all .25s}
+.journal-link:hover{border-color:var(--gold);color:#fff;background:rgba(201,168,76,.08)}
 
-/* PARTY BUILDER */
-.party-panel {
-  background: var(--paper); border: 1px solid var(--line);
-  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
-}
-@media(max-width:780px) { .party-panel { grid-template-columns: 1fr; } }
-
-.party-left { padding: 52px 48px; border-right: 1px solid var(--line); }
-@media(max-width:780px) { .party-left { padding: 36px 28px; border-right: none; border-bottom: 1px solid var(--line); } }
-
-.stepper-label {
-  font-size: 10px; font-weight: 400; letter-spacing: 2.5px;
-  text-transform: uppercase; color: var(--ink-soft); margin-bottom: 18px;
-}
-.stepper { display: flex; align-items: center; gap: 20px; margin-bottom: 12px; }
-.step-btn {
-  width: 44px; height: 44px; border: 1px solid var(--ink);
-  background: transparent; font-size: 20px; cursor: pointer;
-  color: var(--ink); transition: all 0.2s; font-family: inherit;
-  display: flex; align-items: center; justify-content: center;
-}
-.step-btn:hover { background: var(--ink); color: var(--paper); }
-.step-count {
-  font-family: 'Jost', sans-serif; font-size: 48px;
-  font-weight: 300; min-width: 60px; text-align: center; color: var(--ink);
-}
-.step-note { font-size: 13px; font-weight: 300; color: var(--ink-muted); line-height: 1.65; }
-
-.flat-price-note {
-  margin-top: 28px; font-size: 13px; font-weight: 300;
-  color: var(--ink-muted); line-height: 1.6;
-  border-top: 1px solid var(--line-soft); padding-top: 20px;
-}
-
-.party-right { padding: 52px 48px; }
-@media(max-width:780px) { .party-right { padding: 36px 28px; } }
-
-.total-eyebrow {
-  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--ink-muted); margin-bottom: 8px;
-}
-.total-amount {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 60px; font-weight: 300; color: var(--ink);
-  line-height: 1; margin-bottom: 4px;
-}
-.total-sub {
-  font-size: 13px; font-weight: 300; color: var(--ink-muted); margin-bottom: 36px;
-}
-
-.form-row { margin-bottom: 14px; }
-.form-label {
-  display: block; font-size: 10px; font-weight: 400; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--ink-muted); margin-bottom: 7px;
-}
-.form-input {
-  width: 100%; background: var(--warm); border: 1px solid var(--line);
-  padding: 14px 16px; font-family: 'Jost', sans-serif;
-  font-size: 15px; font-weight: 300; color: var(--ink); outline: none;
-  transition: border-color 0.2s; border-radius: 0;
-}
-.form-input::placeholder { color: var(--ink-muted); }
-.form-input:focus { border-color: var(--gold-line); }
-.form-input.error { border-color: rgba(180,60,60,0.5); }
-
-.checkout-btn {
-  width: 100%; margin-top: 6px;
-  background:var(--ink); color: #fff;
-  border: none; padding: 18px;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 16px; font-weight: 400; letter-spacing: 2.5px;
-  text-transform: uppercase; cursor: pointer; transition: background 0.25s;
-}
-.checkout-btn:hover { background: var(--gold-light); }
-.checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.checkout-secure {
-  text-align: center; margin-top: 12px;
-  font-size: 11px; font-weight: 300; color: var(--ink-muted); letter-spacing: 0.5px;
-}
-.perks-badge {
-  display: inline-flex; align-items: center; gap: 7px;
-  border: 1px solid var(--gold-line);
-  background: var(--gold-bg);
-  padding: 6px 12px;
-  font-family: 'DM Mono', monospace;
-  font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
-  color:var(--ink);
-  margin-bottom: 14px;
-}
-.perks-badge::before {
-  content: '✦';
-  font-size: 7px;
-  color:var(--ink);
-}
-.party-error {
-  background: rgba(180,60,60,0.06); border: 1px solid rgba(180,60,60,0.2);
-  padding: 11px 14px; font-size: 13px; color: #B43C3C;
-  margin-bottom: 14px; display: none; line-height: 1.5;
-}
-.party-error.on { display: block; }
-
-/* HOW IT WORKS */
-.steps-grid {
-  display: grid; grid-template-columns: repeat(3,1fr); gap: 48px;
-}
-@media(max-width:720px) { .steps-grid { grid-template-columns: 1fr; gap: 36px; } }
-.step-card { border-top: 2px solid var(--gold-line); padding-top: 28px; }
-.step-num {
-  font-family: 'Cormorant Garamond', serif; font-style: italic;
-  font-size: 15px; color:var(--ink); margin-bottom: 12px;
-  display: block;
-}
-.step-card h3 {
-  font-family: 'Cormorant Garamond', serif; font-size: 22px;
-  font-weight: 400; margin-bottom: 10px; color: var(--ink);
-}
-.step-card p { font-size: 14px; font-weight: 300; color: var(--ink-soft); line-height: 1.75; margin: 0; }
-
-.steps-note {
-  margin-top: 48px; padding: 24px 28px;
-  background: var(--paper); border: 1px solid var(--line);
-  max-width: 600px;
-}
-.steps-note p { font-size: 14px; font-weight: 300; color: var(--ink-soft); line-height: 1.8; margin: 0; }
-.steps-note p em { font-family: 'Cormorant Garamond', serif; font-style: italic; color:var(--ink); font-size: 16px; }
-
-/* CLOSING */
-.closing { text-align: center; padding: 96px 0 110px; border-bottom: none; }
-.closing h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(30px, 4.5vw, 48px);
-  font-weight: 300; color: var(--ink); line-height: 1.15;
-  max-width: 640px; margin: 0 auto 36px;
-}
-.closing h2 em { font-style: italic; color:var(--ink); }
-.closing .fine {
-  margin-top: 22px; font-size: 13px; font-weight: 300;
-  color: var(--ink-muted); letter-spacing: 0.3px;
-}
-
-footer{
-  padding:36px 48px;
-  border-top:1px solid rgba(255,255,255,.05);
-  display:flex;align-items:center;justify-content:space-between;
-  background:#130A1C;
-}
-.footer-brand{
-  font-family:'Syne',sans-serif;
-  font-size:16px;font-weight:800;letter-spacing:-.3px;color:#fff;
-}
-.footer-brand span{color:#C9A84C;}
-.footer-links{display:flex;gap:24px;}
-.footer-link{
-  font-size:12px;font-weight:500;
-  color:rgba(255,255,255,.32);text-decoration:none;transition:color .2s;
-}
-.footer-link:hover{color:#fff;}
-.footer-note{
-  font-size:11px;font-weight:400;
-  color:rgba(255,255,255,.18);letter-spacing:.3px;
-}
-@media(max-width:768px){
-  footer{flex-direction:column;gap:20px;text-align:center;padding:28px 20px;}
-  .footer-links{justify-content:center;flex-wrap:wrap;gap:12px;}
-}
-
-/* SUCCESS STATE (post-purchase) */
-.purchase-success {
-  display: none; background: rgba(107,155,122,0.06);
-  border: 1px solid rgba(107,155,122,0.25);
-  padding: 20px 24px; margin-bottom: 20px;
-  font-size: 14px; color: #3A6B4A; line-height: 1.65;
-}
-.purchase-success.on { display: block; }
-
-@media(max-width:640px) {
-  section { padding: 60px 0; }
-  .hero-text { padding: 48px 0 56px; }
-  .for-card { padding: 36px 24px; }
-  .steps-grid { gap: 28px; }
-  .closing { padding: 72px 0 80px; }
-  /* eyebrows / labels — all tiny DM Mono text */
-  .sec-eyebrow { font-size: 11px; letter-spacing: 2px; }
-  .stepper-label { font-size: 14px; }
-  .total-eyebrow { font-size: 11px; letter-spacing: 2px; }
-  .form-label { font-size: 12px; letter-spacing: 1.5px; }
-  .flat-price-note { font-size: 14px; }
-  .checkout-secure { font-size: 13px; }
-  .step-note { font-size: 14px; line-height: 1.7; }
-  .total-sub { font-size: 14px; }
-  /* body copy */
-  .hero-sub { font-size: 17px; line-height: 1.8; }
-  .for-card p { font-size: 16px; line-height: 1.85; }
-  .step-card p { font-size: 15px; line-height: 1.8; }
-  .steps-note p { font-size: 15px; line-height: 1.8; }
-  .t-label { font-size: 18px; }
-  .t-sub { font-size: 13px; }
-  /* inputs */
-  .form-input { font-size: 16px; }
-  /* journal cross-link section */
-  .journal-xlink a { font-size: 14px !important; }
-}
+/* FOOTER */
+footer{padding:36px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;background:#130A1C}
+.footer-brand{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:-.3px;color:#fff}
+.footer-brand span{color:#C9A84C}
+.footer-links{display:flex;gap:24px}
+.footer-link{font-size:12px;font-weight:500;color:rgba(255,255,255,.32);text-decoration:none;transition:color .2s}
+.footer-link:hover{color:#fff}
+.footer-note{font-size:11px;color:rgba(255,255,255,.18);letter-spacing:.3px}
+@media(max-width:768px){footer{flex-direction:column;gap:20px;text-align:center;padding:28px 20px}.footer-links{justify-content:center;flex-wrap:wrap;gap:12px}}
 </style>
 </head>
 <body>
@@ -446,179 +124,122 @@ footer{
   <a href="/join" class="nav-join">Join</a>
 </nav>
 
-<!-- Hero photo -->
+<!-- Hero Photo -->
 <div class="hero-photo">
-  <img src="/weddingparty.jpg" alt="Wedding party celebration" loading="eager">
-</div>
-
-<!-- Hero text -->
-<div class="wrap">
-  <div class="hero-text">
-    <p class="hero-eyebrow">A Gift for the Wedding Party</p>
-    <h1 class="hero-h1">Give them something they'll actually <em>wear again.</em></h1>
-    <p class="hero-lede">Six months of private styling for your groomsmen or bridesmaids — which pair, for which occasion, decided before they have to think about it. From the engagement photos to the wedding day.</p>
-    <div class="hero-cta">
-      <a href="#party" class="btn-primary">Build Your Wedding Party Gift</a>
-      <a href="#how" class="link-quiet">See how it works</a>
+  <img src="/bridalparty.png" alt="Wedding party celebration" loading="eager">
+  <div class="hero-overlay">
+    <div>
+      <div class="hero-tag">A Gift for the Wedding Party</div>
+      <h1 class="hero-h1">Congrats,<br>she said <span>"I do."</span></h1>
     </div>
   </div>
 </div>
 
-<!-- The occasion / timeline -->
-<section id="occasion">
+<!-- Intro -->
+<div class="intro-section">
   <div class="wrap">
-    <p class="sec-eyebrow">Timed to the Season</p>
+    <p class="intro-lede">Now the planning begins. Need a unique gift for your bridal and groom party? Want to make sure the entire party looks <span>photo-ready for every event?</span> Lorgner is perfect for that — gift them a six-month subscription.</p>
+    <a href="/join" class="btn-magenta">Gift a Subscription</a>
+  </div>
+</div>
+
+<!-- How Lorgner Works -->
+<section id="how-it-works">
+  <div class="wrap">
+    <p class="sec-eyebrow">How Lorgner Works</p>
+    <h2 class="sec-h2">Easy and simple. Tailor-made for you.</h2>
+    <p class="sec-sub">Upload photos of all your glasses. Ask your on-demand stylist which pair to wear and get a tailor-made answer.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <span class="step-num">01</span>
+        <h3>Upload your glasses</h3>
+        <p>Add a photo of each pair you own. Lorgner keeps track of all of them.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">02</span>
+        <h3>Ask your stylist</h3>
+        <p>Heading to a wedding? Virtual interview? Going on vacation? Tell us what you're doing.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">03</span>
+        <h3>Get your answer</h3>
+        <p>A personalized recommendation based on the glasses you already own. Tailor-made, every time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Timeline -->
+<div class="timeline-section">
+  <div class="wrap">
+    <p class="sec-eyebrow">Perfect for Your Wedding Timeline</p>
     <h2 class="sec-h2">The six months that actually matter.</h2>
-    <div class="timeline-scroll">
-      <div class="timeline">
-        <div class="t-node">
-          <div class="t-dot"></div>
-          <div class="t-label">Engagement Photos</div>
-          <div class="t-sub">Month 1</div>
-        </div>
-        <div class="t-node">
-          <div class="t-dot"></div>
-          <div class="t-label">Bachelor / Bachelorette</div>
-          <div class="t-sub">Month 3</div>
-        </div>
-        <div class="t-node">
-          <div class="t-dot"></div>
-          <div class="t-label">Rehearsal Dinner</div>
-          <div class="t-sub">Month 5</div>
-        </div>
-        <div class="t-node">
-          <div class="t-dot"></div>
-          <div class="t-label">Wedding Day</div>
-          <div class="t-sub">Month 6</div>
-        </div>
-        <div class="t-node ghost">
-          <div class="t-dot"></div>
-          <div class="t-label">Continues, if they choose</div>
-          <div class="t-sub">No obligation</div>
-        </div>
+    <div class="timeline-wrap">
+      <div class="t-node">
+        <div class="t-dot"></div>
+        <div class="t-label">Engagement Photos</div>
+        <div class="t-sub">Month 1</div>
+      </div>
+      <div class="t-node">
+        <div class="t-dot"></div>
+        <div class="t-label">Bachelor / Bachelorette Party &amp; Outings</div>
+        <div class="t-sub">Month 3</div>
+      </div>
+      <div class="t-node">
+        <div class="t-dot"></div>
+        <div class="t-label">Rehearsal Dinner</div>
+        <div class="t-sub">Month 5</div>
+      </div>
+      <div class="t-node">
+        <div class="t-dot"></div>
+        <div class="t-label">Wedding Day</div>
+        <div class="t-sub">Month 6</div>
+      </div>
+      <div class="t-node ghost">
+        <div class="t-dot"></div>
+        <div class="t-label">Continues, if they choose</div>
+        <div class="t-sub">No obligation</div>
       </div>
     </div>
     <p class="timeline-caption">Most gifts are given once and forgotten by the reception. This one is built around the actual stretch of time your wedding party is getting dressed for something — <em>useful exactly when it matters, not just for one photograph.</em></p>
   </div>
-</section>
+</div>
 
-<!-- Who it's for -->
-<section>
+<!-- How the Gift Giving Works -->
+<section id="gift">
   <div class="wrap">
-    <p class="sec-eyebrow">Who It's For</p>
-    <h2 class="sec-h2">The same question, asked by everyone in your wedding party.</h2>
-    <div class="for-grid">
-      <div class="for-card">
-        <div class="role">For the <span>groomsmen</span></div>
-        <p>Which pair for the rehearsal dinner, which for the golf outing, which for the reception photos — sorted out before he has to think about it.</p>
-      </div>
-      <div class="for-card">
-        <div class="role">For the <span>bridesmaids</span></div>
-        <p>Sunglasses for the bachelorette trip, the right frames for the engagement shoot, glasses that actually work with the dress — decided in advance.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Party builder -->
-<section id="party">
-  <div class="wrap">
-    <p class="sec-eyebrow">Build Your Party</p>
-    <h2 class="sec-h2">Priced by how many stand up there with you.</h2>
-
-    <div id="purchaseSuccess" class="purchase-success">
-      Your wedding party gift has been confirmed — check your inbox for the redemption links to forward to each person.
-    </div>
-
-    <div class="party-panel">
-      <!-- Left: stepper + tiers -->
-      <div class="party-left">
-        <div class="stepper-label">How many people are in your wedding party?</div>
-        <div class="stepper">
-          <button class="step-btn" id="minusBtn" aria-label="Decrease">−</button>
-          <div class="step-count" id="countDisplay">1</div>
-          <button class="step-btn" id="plusBtn" aria-label="Increase">+</button>
-        </div>
-        <p class="step-note">Each person gets their own private redemption link — nothing shared, no codes to split, no coordination needed.</p>
-
-        <div class="flat-price-note">
-          $79 per person · 6 months each · cancel anytime after
-        </div>
-      </div>
-
-      <!-- Right: total + form -->
-      <div class="party-right">
-        <div class="total-eyebrow">Your wedding party gift</div>
-        <div class="total-amount" id="totalDisplay">$79</div>
-        <div class="total-sub" id="totalSubDisplay">$79 per person · 6 months each</div>
-
-        <div id="partyError" class="party-error"></div>
-
-        <div class="form-row">
-          <label class="form-label" for="buyerName">Your name</label>
-          <input type="text" class="form-input" id="buyerName" placeholder="The bride or groom">
-        </div>
-        <div class="form-row">
-          <label class="form-label" for="buyerEmail">Your email</label>
-          <input type="email" class="form-input" id="buyerEmail" placeholder="Where we'll send the redemption links">
-        </div>
-
-        <button class="checkout-btn" id="checkoutBtn" onclick="handleCheckout()">
-          Continue to Checkout
-        </button>
-        <p class="checkout-secure">Secured by Stripe · $79 per person · 6 months each</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- How it works -->
-<section id="how">
-  <div class="wrap">
-    <p class="sec-eyebrow">How It Works</p>
+    <p class="sec-eyebrow">How the Gift Giving Works</p>
     <h2 class="sec-h2">One purchase. Everyone redeems on their own.</h2>
-    <div class="steps-grid">
-      <div class="step-card">
-        <span class="step-num">First</span>
+    <div class="gift-steps">
+      <div class="gift-card">
+        <div class="gift-order">First</div>
         <h3>Buy the bundle</h3>
-        <p>Choose your party size and pay once, at checkout, on this site.</p>
       </div>
-      <div class="step-card">
-        <span class="step-num">Second</span>
+      <div class="gift-card">
+        <div class="gift-order">Second</div>
         <h3>Send the invitation</h3>
-        <p>Everyone in your party gets their own private link — not a code they have to share or split.</p>
       </div>
-      <div class="step-card">
-        <span class="step-num">Third</span>
+      <div class="gift-card">
+        <div class="gift-order">Third</div>
         <h3>They redeem it themselves</h3>
-        <p>Each person's six months begins the day they activate — no one loses time waiting on someone else.</p>
       </div>
     </div>
-    <div class="steps-note">
-      <p>After six months, anyone who wants to keep going simply continues at the standard <em>$24.99/month</em> membership rate. No pressure, no auto-charge surprise — just an option to keep something that turned out to be useful.</p>
-    </div>
+    <div class="after-note">After six months, anyone who wants to keep going simply continues at the standard $24.99/month membership rate. No pressure, no auto-charge surprise — just an option to keep something that turned out to be useful.</div>
   </div>
 </section>
 
 <!-- Journal cross-links -->
-<section style="background:var(--warm);border-top:1px solid var(--gold-line);padding:48px 0;">
-  <div class="wrap" style="text-align:center;">
-    <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink-muted);margin-bottom:16px;">From The Frame Journal</p>
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--ink);margin-bottom:24px;">Gift guides for the wedding party</h3>
-    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-      <a href="/groomsmen-gifts" style="font-family:'Jost',sans-serif;font-size:13px;font-weight:400;color:var(--ink);text-decoration:none;border:1px solid var(--gold-line);padding:12px 24px;transition:background .2s;" onmouseover="this.style.background='var(--gold-bg)'" onmouseout="this.style.background='transparent'">The Best Groomsmen Gifts: 5 Outside-the-Box Ideas →</a>
-      <a href="/bridesmaids-gifts" style="font-family:'Jost',sans-serif;font-size:13px;font-weight:400;color:var(--ink);text-decoration:none;border:1px solid var(--gold-line);padding:12px 24px;transition:background .2s;" onmouseover="this.style.background='var(--gold-bg)'" onmouseout="this.style.background='transparent'">The Best Bridesmaid Gifts: 5 Outside-the-Box Ideas →</a>
+<div class="journal-section">
+  <div class="wrap">
+    <p class="sec-eyebrow">From the Frame Journal</p>
+    <h2 class="sec-h2">Gift guides for the wedding party</h2>
+    <p class="journal-hook">Need ideas on wedding gifts and wedding favors? Check out our blog.</p>
+    <div class="journal-links">
+      <a href="/groomsmen-gifts" class="journal-link">The Best Groomsmen Gifts: 5 Outside-the-Box Ideas →</a>
+      <a href="/bridesmaids-gifts" class="journal-link">The Best Bridesmaid Gifts: 5 Outside-the-Box Ideas →</a>
     </div>
   </div>
-</section>
-
-<!-- Closing CTA -->
-<section class="closing">
-  <div class="wrap">
-    <h2>Give something that <em>outlasts the toast.</em></h2>
-    <a href="#party" class="btn-primary">Build Your Wedding Party Gift</a>
-  </div>
-</section>
+</div>
 
 <footer>
   <div class="footer-brand">Lorgner<span>.</span></div>
@@ -632,81 +253,5 @@ footer{
   <div class="footer-note">© 2026 LORGNER · Powered by Digital Junction LLC</div>
 </footer>
 
-<script>
-const BACKEND = 'https://lorgner-production.up.railway.app';
-
-// Party size state
-let count = 1;
-const MIN = 1, MAX = 20;
-
-const PRICE = 79;
-
-function renderParty() {
-  document.getElementById('countDisplay').textContent  = count;
-  document.getElementById('totalDisplay').textContent  = '$' + (PRICE * count).toLocaleString('en-US');
-  document.getElementById('totalSubDisplay').textContent = '$' + PRICE + ' per person · 6 months each';
-  document.getElementById('minusBtn').disabled = count <= MIN;
-  document.getElementById('plusBtn').disabled  = count >= MAX;
-}
-
-document.getElementById('minusBtn').addEventListener('click', () => { if (count > MIN) { count--; renderParty(); } });
-document.getElementById('plusBtn').addEventListener('click',  () => { if (count < MAX) { count++; renderParty(); } });
-
-async function handleCheckout() {
-  const name  = document.getElementById('buyerName').value.trim();
-  const email = document.getElementById('buyerEmail').value.trim();
-  const errEl = document.getElementById('partyError');
-  const btn   = document.getElementById('checkoutBtn');
-
-  errEl.classList.remove('on');
-  document.getElementById('buyerName').classList.remove('error');
-  document.getElementById('buyerEmail').classList.remove('error');
-
-  if (!name) {
-    document.getElementById('buyerName').classList.add('error');
-    errEl.textContent = 'Please enter your name.';
-    errEl.classList.add('on');
-    return;
-  }
-  if (!email || !email.includes('@')) {
-    document.getElementById('buyerEmail').classList.add('error');
-    errEl.textContent = 'Please enter a valid email address.';
-    errEl.classList.add('on');
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = 'Preparing checkout…';
-
-  try {
-    const res  = await fetch(BACKEND + '/create-wedding-checkout', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ name, email, partySize: count }),
-    });
-    const data = await res.json();
-
-    if (data.checkoutUrl) {
-      window.location.href = data.checkoutUrl;
-    } else {
-      throw new Error(data.message || 'Checkout unavailable.');
-    }
-  } catch (err) {
-    errEl.textContent = err.message || 'Something went wrong. Please try again.';
-    errEl.classList.add('on');
-    btn.disabled     = false;
-    btn.textContent  = 'Continue to Checkout';
-  }
-}
-
-// Show success state if redirected back after purchase
-if (new URLSearchParams(window.location.search).get('purchased') === 'true') {
-  document.getElementById('purchaseSuccess').classList.add('on');
-  document.getElementById('purchaseSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-document.getElementById('copyrightYear').textContent = new Date().getFullYear();
-renderParty();
-</script>
 </body>
 </html>
