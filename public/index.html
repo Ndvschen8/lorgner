@@ -3,539 +3,468 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lorgner — Eyewear Stylists</title>
-<meta name="description" content="Lorgner — Eyewear Stylist">
+<title>Lorgner — Your Personal Eyewear Stylist</title>
+<meta name="description" content="A tailor-made personal stylist for your glasses. Upload your collection, ask any occasion, get your answer.">
 
 <link rel="icon" type="image/png" href="/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --warm:    #FAF6EE;
-  --paper:   #FFFCF5;
-  --line:    rgba(30,26,20,.10);
-  --line2:   rgba(30,26,20,.18);
-  --line3:   rgba(30,26,20,.32);
-  --gold:    #C9A96E;
-  --gold-l:  #DFC090;
-  --gold-d:  #9A7A48;
-  --gold-deep:#9A7A48;
-  --gold-bg: rgba(201,169,110,0.09);
-  --gold-b2: rgba(201,169,110,0.18);
-  --ink:     #1E1A14;
-  --ink-soft:#5A5244;
-  --ink-muted:#9A8E7E;
+  --cream:     #FFF9F2;
+  --paper:     #FFFCF7;
+  --ink:       #0C0A06;
+  --ink-soft:  #3A3328;
+  --ink-muted: #7A7068;
+  --line:      rgba(12,10,6,.10);
+  --line2:     rgba(12,10,6,.18);
+  --gold:      #F0A500;
+  --coral:     #FF4F1F;
+  --plum:      #2D1B69;
+  --mint:      #00C896;
+  --purple:    #A855F7;
+  --dark:      #0C0A06;
+  --dark2:     #1A140A;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;scroll-behavior:smooth}
 body{
-  font-family:'Jost',sans-serif;
-  background:var(--warm);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--cream);
   color:var(--ink);
   min-height:100vh;
   overflow-x:hidden;
 }
 
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes lineGrow{from{width:0}to{width:100%}}
-@keyframes goldPulse{0%,100%{opacity:.7}50%{opacity:1}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s ease;}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease;}
 .reveal.vis{opacity:1;transform:translateY(0);}
 
+/* ── NAV ── */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 48px;height:68px;
-  background:rgba(250,246,238,.95);
-  backdrop-filter:blur(24px);
-  border-bottom:1px solid var(--line);
-}
-nav::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
-  background:var(--line2);
-  opacity:.35;
+  padding:0 48px;height:72px;
+  background:rgba(12,10,6,.94);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(240,165,0,.15);
+  transition:border-color .3s;
 }
 .nav-wordmark{
-  font-family:'Cormorant Garamond',serif;
-  font-weight:300;font-size:12px;
-  letter-spacing:8px;text-transform:uppercase;
-  color:var(--ink);text-decoration:none;
+  font-family:'Syne',sans-serif;
+  font-weight:800;font-size:20px;letter-spacing:-.3px;
+  color:#fff;text-decoration:none;
 }
-.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-wordmark span{color:var(--gold);}
+.nav-links{display:flex;align-items:center;gap:32px;}
 .nav-link{
-  font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:2px;text-transform:uppercase;
-  color:var(--ink-muted);text-decoration:none;
+  font-size:13px;font-weight:500;
+  color:rgba(255,255,255,.55);text-decoration:none;
   transition:color .2s;
 }
-.nav-link:hover{color:var(--ink);}
+.nav-link:hover{color:#fff;}
 .nav-join{
-  font-family:'Jost',sans-serif;font-size:11px;font-weight:400;
-  letter-spacing:2px;text-transform:uppercase;
-  color:var(--warm);background:var(--ink);
-  border:none;border-radius:2px;
-  padding:9px 22px;cursor:pointer;
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;
+  color:var(--ink);background:var(--gold);
+  border:none;border-radius:6px;
+  padding:10px 24px;cursor:pointer;
   transition:all .25s;text-decoration:none;
 }
-.nav-join:hover{background:var(--ink-soft);transform:translateY(-1px);}
+.nav-join:hover{background:#fff;transform:translateY(-1px);}
 
+/* ── HERO ── */
 .hero{
-  position:relative;z-index:1;
+  position:relative;
   min-height:100vh;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   padding:120px 48px 140px;
   text-align:center;
+  background:var(--dark);
+  overflow:hidden;
 }
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 15% 10%,rgba(240,165,0,.13) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 85%,rgba(255,79,31,.11) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 50% at 50% 50%,rgba(45,27,105,.35) 0%,transparent 70%);
+}
+.hero-content{position:relative;z-index:1;}
 
-.hero-eyebrow{
-  font-family:'DM Mono',monospace;font-size:14px;
-  letter-spacing:4px;text-transform:uppercase;
-  color:var(--ink);margin-bottom:28px;
-  display:flex;align-items:center;gap:16px;
-  animation:fadeUp .8s ease .2s both;
+.hero-tag{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(240,165,0,.12);
+  border:1px solid rgba(240,165,0,.3);
+  border-radius:100px;
+  padding:8px 20px;
+  font-size:11px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:36px;
+  animation:fadeUp .7s ease .1s both;
 }
-.hero-eyebrow::before,.hero-eyebrow::after{
-  content:'';width:32px;height:1px;
-  background:var(--line2);
-}
-.hero-eyebrow::after{background:var(--line2);}
+.hero-tag::before{content:'✦';font-size:9px;}
 
 .hero-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(48px,7vw,88px);
-  font-weight:300;line-height:1.1;
-  color:var(--ink);
-  margin-bottom:16px;
-  letter-spacing:-.5px;
-  animation:fadeUp .9s ease .35s both;
-  max-width:900px;
+  font-family:'Syne',sans-serif;
+  font-size:clamp(46px,7.5vw,96px);
+  font-weight:800;line-height:1.0;
+  color:#fff;
+  margin-bottom:28px;
+  letter-spacing:-2px;
+  animation:fadeUp .9s ease .25s both;
 }
-.hero-title em{font-style:italic;color:var(--ink);}
-
-.hero-rule{
-  width:0;height:1px;
-  background:var(--line2);
-  animation:lineGrow 1.4s ease .7s forwards;
-  margin:28px auto;max-width:120px;
-}
+.hero-title .gold{color:var(--gold);}
+.hero-title .coral{color:var(--coral);}
 
 .hero-sub{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(18px,2.2vw,24px);
-  font-weight:300;font-style:italic;
-  color:var(--ink-muted);max-width:520px;
-  line-height:1.75;margin-bottom:48px;
-  animation:fadeUp .9s ease .55s both;
+  font-size:clamp(16px,2vw,20px);
+  font-weight:400;
+  color:rgba(255,255,255,.6);
+  max-width:520px;
+  margin:0 auto 52px;
+  line-height:1.8;
+  animation:fadeUp .9s ease .4s both;
 }
 
 .hero-actions{
   display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;
-  animation:fadeUp .8s ease .7s both;
+  animation:fadeUp .8s ease .55s both;
 }
-.btn-primary{
-  font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;
-  letter-spacing:4px;text-transform:uppercase;
-  color:var(--warm);background:var(--ink);
-  border:none;border-radius:2px;padding:18px 44px;
-  cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block;
-}
-.btn-primary:hover{background:var(--ink-soft);transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,169,110,.25);}
-.btn-ghost{
-  font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:2.5px;text-transform:uppercase;
-  color:var(--ink-muted);background:transparent;
-  border:1px solid var(--line2);border-radius:2px;
-  padding:18px 28px;cursor:pointer;transition:all .25s;
+.btn-ghost-light{
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;
+  color:rgba(255,255,255,.7);background:transparent;
+  border:1px solid rgba(255,255,255,.2);border-radius:8px;
+  padding:16px 32px;cursor:pointer;transition:all .25s;
   text-decoration:none;display:inline-block;
 }
-.btn-ghost:hover{border-color:var(--line3);color:var(--ink);}
+.btn-ghost-light:hover{border-color:rgba(255,255,255,.5);color:#fff;}
 
 .hero-footnote{
-  margin-top:48px;
-  font-family:'DM Mono',monospace;font-size:12px;
-  letter-spacing:2px;text-transform:uppercase;color:var(--ink);
-  animation:fadeUp .8s ease .85s both;
+  margin-top:32px;
+  font-size:12px;font-weight:400;
+  color:rgba(255,255,255,.3);
+  animation:fadeUp .8s ease .7s both;
+  letter-spacing:.3px;
 }
 
 .scroll-hint{
-  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
   display:flex;flex-direction:column;align-items:center;gap:8px;
-  animation:fadeIn 1s ease 1.2s both;
+  animation:fadeIn 1s ease 1.1s both;
 }
 .scroll-hint span{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:3px;text-transform:uppercase;color:var(--ink);
+  font-size:10px;font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(255,255,255,.25);
 }
 .scroll-arrow{
-  width:1px;height:36px;
-  background:linear-gradient(180deg,var(--ink-muted),transparent);
+  width:1px;height:32px;
+  background:linear-gradient(180deg,rgba(240,165,0,.5),transparent);
   animation:float 2s ease-in-out infinite;
 }
 
+/* ── PROBLEM ── */
+.problem-section{
+  background:var(--cream);
+  padding:100px 48px;text-align:center;
+  border-bottom:1px solid var(--line);
+}
+.problem-inner{max-width:800px;margin:0 auto;}
+.problem-quote{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(26px,4vw,50px);
+  font-weight:700;
+  line-height:1.2;color:var(--ink);
+  margin-bottom:28px;letter-spacing:-1px;
+}
+.problem-quote .em{color:var(--coral);}
+.problem-attr{
+  font-size:16px;font-weight:400;
+  color:var(--ink-muted);
+}
+
+/* ── HOW IT WORKS ── */
 .section{
-  position:relative;z-index:1;
   padding:100px 48px;
   max-width:1100px;margin:0 auto;
 }
 .sec-eyebrow{
-  font-family:'DM Mono',monospace;font-size:12px;
-  letter-spacing:3px;text-transform:uppercase;color:var(--ink);
-  margin-bottom:16px;
+  font-size:11px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--coral);margin-bottom:16px;
 }
 .sec-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(32px,4vw,52px);font-weight:300;
-  color:var(--ink);line-height:1.15;margin-bottom:16px;
+  font-family:'Syne',sans-serif;
+  font-size:clamp(30px,4.5vw,56px);font-weight:800;
+  color:var(--ink);line-height:1.1;
+  letter-spacing:-1.5px;margin-bottom:16px;
 }
-.sec-title em{font-style:italic;color:var(--ink);}
+.sec-title .accent{color:var(--coral);}
 .sec-body{
-  font-size:15px;font-weight:300;color:var(--ink-muted);
-  line-height:1.9;max-width:560px;margin-bottom:40px;
-}
-.sec-rule{
-  width:40px;height:1px;
-  background:var(--line2);
-  margin:20px 0 32px;
-}
-
-.problem-section{
-  position:relative;z-index:1;
-  background:var(--paper);
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-  padding:100px 48px;text-align:center;
-}
-.problem-quote{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(24px,3.5vw,44px);font-weight:300;
-  line-height:1.4;color:var(--ink);
-  max-width:760px;margin:0 auto 24px;
-}
-.problem-quote em{font-style:italic;color:var(--ink);}
-.problem-attr{
-  font-family:'DM Mono',monospace;font-size:12px;
-  letter-spacing:3px;text-transform:uppercase;color:var(--ink);
+  font-size:17px;font-weight:400;color:var(--ink-muted);
+  line-height:1.8;max-width:540px;
 }
 
 .steps-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--line);
-  border:1px solid var(--line);margin-top:48px;
+  gap:2px;background:var(--line);
+  border:1px solid var(--line);margin-top:56px;
+  border-radius:12px;overflow:hidden;
 }
 .step{
-  background:var(--warm);padding:40px 32px;
+  background:var(--paper);padding:44px 36px;
   transition:background .25s;
 }
-.step:hover{background:var(--paper);}
+.step:hover{background:var(--cream);}
 .step-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:44px;font-weight:300;
-  color:var(--ink);line-height:1;
-  margin-bottom:20px;opacity:.6;
+  font-family:'Syne',sans-serif;
+  font-size:52px;font-weight:800;
+  line-height:1;margin-bottom:20px;
+  background:linear-gradient(135deg,var(--gold),var(--coral));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
 }
 .step-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:20px;font-weight:400;
-  color:var(--ink);margin-bottom:10px;
+  font-family:'Syne',sans-serif;
+  font-size:19px;font-weight:700;
+  color:var(--ink);margin-bottom:12px;letter-spacing:-.3px;
 }
-.step-title em{font-style:italic;color:var(--ink);}
 .step-desc{
-  font-size:13px;font-weight:300;
+  font-size:15px;font-weight:400;
   color:var(--ink-muted);line-height:1.75;
 }
 
-.answer-section{
+/* ── USE CASES (dark) ── */
+.usecases-section{
+  background:var(--dark);
+  padding:100px 0;
+  position:relative;overflow:hidden;
+}
+.usecases-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(45,27,105,.55) 0%,transparent 65%);
+}
+.usecases-inner{
   position:relative;z-index:1;
-  background:var(--paper);
-  border-top:1px solid var(--line);
-  padding:120px 48px;
-  text-align:center;
+  max-width:1100px;margin:0 auto;padding:0 48px;
 }
-.answer-inner{max-width:680px;margin:0 auto;}
-.answer-context{
-  font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:3px;text-transform:uppercase;
-  color:var(--ink);margin-bottom:32px;
-  display:flex;align-items:center;justify-content:center;gap:12px;
+.usecases-eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:16px;
 }
-.answer-context::before,.answer-context::after{
-  content:'';width:24px;height:1px;background:var(--line2);
+.usecases-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(30px,4.5vw,56px);font-weight:800;
+  color:#fff;line-height:1.1;margin-bottom:56px;
+  letter-spacing:-1.5px;
 }
-.answer-occasion{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(14px,1.5vw,17px);font-weight:300;
-  letter-spacing:2px;text-transform:uppercase;
-  color:var(--ink-muted);margin-bottom:20px;
-}
-.answer-frame{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(60px,10vw,120px);font-weight:300;
-  color:var(--ink);line-height:1;
-  letter-spacing:-2px;margin-bottom:16px;
-  animation:goldPulse 4s ease-in-out infinite;
-}
-.answer-frame em{font-style:italic;color:var(--ink);}
-.answer-qualifier{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(13px,1.4vw,16px);font-weight:300;
-  font-style:italic;color:var(--ink-muted);
-  margin-bottom:48px;letter-spacing:.3px;
-}
-.answer-rule{
-  width:0;height:1px;max-width:60px;
-  background:var(--line2);
-  margin:0 auto 48px;
-  animation:lineGrow 1.2s ease .3s forwards;
-}
-.answer-note{
-  font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:3px;text-transform:uppercase;
-  color:var(--ink);
-}
-
-.benefits-section{
-  position:relative;z-index:1;
-  padding:100px 48px;
-  max-width:1100px;margin:0 auto;
-}
-.benefits-grid{
+.usecases-title .accent{color:var(--gold);}
+.cases-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:24px;margin-top:48px;
+  gap:16px;
 }
-.benefit-card{
-  background:var(--paper);border:1px solid var(--line);
-  padding:32px 28px;transition:border-color .25s;
+.case-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:12px;padding:36px 32px;
+  transition:all .3s;position:relative;overflow:hidden;
 }
-.benefit-card:hover{border-color:var(--line2);}
-.bc-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:13px;letter-spacing:3px;
-  color:var(--ink);margin-bottom:16px;font-weight:300;
+.case-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  border-radius:12px 12px 0 0;
 }
-.bc-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:20px;font-weight:400;color:var(--ink);
-  margin-bottom:10px;line-height:1.3;
+.case-card:nth-child(1)::before{background:linear-gradient(90deg,var(--gold),var(--coral));}
+.case-card:nth-child(2)::before{background:linear-gradient(90deg,var(--purple),var(--gold));}
+.case-card:nth-child(3)::before{background:linear-gradient(90deg,var(--mint),var(--purple));}
+.case-card:hover{background:rgba(255,255,255,.09);transform:translateY(-4px);border-color:rgba(255,255,255,.18);}
+.case-icon{font-size:30px;margin-bottom:20px;display:block;}
+.case-quote{
+  font-family:'Syne',sans-serif;
+  font-size:16px;font-weight:600;
+  color:#fff;line-height:1.55;margin-bottom:14px;letter-spacing:-.2px;
 }
-.bc-title em{font-style:italic;color:var(--ink);}
-.bc-desc{font-size:13px;font-weight:300;color:var(--ink-muted);line-height:1.75;}
+.case-desc{
+  font-size:14px;font-weight:400;
+  color:rgba(255,255,255,.45);line-height:1.7;
+}
 
+/* ── EDITORIAL BANNER ── */
 .editorial-section{
-  position:relative;z-index:1;
-  background:var(--paper);
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-  padding:100px 48px;text-align:center;
+  background:var(--gold);
+  padding:80px 48px;text-align:center;
 }
-.editorial-inner{max-width:680px;margin:0 auto;}
-.editorial-glyph{
-  font-family:'Cormorant Garamond',serif;
-  font-size:52px;color:var(--ink);
-  line-height:1;margin-bottom:20px;opacity:.5;
-}
+.editorial-inner{max-width:720px;margin:0 auto;}
 .editorial-quote{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(20px,2.8vw,30px);
-  font-weight:300;font-style:italic;
-  color:var(--ink);line-height:1.6;margin-bottom:24px;
-}
-.editorial-source{
-  font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:3px;text-transform:uppercase;color:var(--ink);
+  font-family:'Syne',sans-serif;
+  font-size:clamp(22px,3.5vw,40px);
+  font-weight:800;
+  color:var(--dark);line-height:1.2;
+  letter-spacing:-1px;
 }
 
+/* ── PRICING ── */
 .pricing-section{
-  position:relative;z-index:1;
   padding:100px 48px;
   max-width:800px;margin:0 auto;text-align:center;
 }
 .price-card{
-  background:var(--paper);border:1px solid var(--line2);
-  padding:56px 48px;margin-top:48px;position:relative;
-  overflow:hidden;
+  background:var(--dark);
+  border-radius:16px;
+  padding:64px 56px;margin-top:48px;
+  position:relative;overflow:hidden;
 }
 .price-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;
-  height:2px;
-  background:var(--line2);
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--gold),var(--coral),var(--purple));
 }
 .price-badge{
-  font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:3px;text-transform:uppercase;
-  color:var(--ink);background:var(--gold-bg);
-  border:1px solid var(--line2);
-  padding:5px 14px;display:inline-block;margin-bottom:28px;
+  display:inline-block;
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);background:rgba(240,165,0,.12);
+  border:1px solid rgba(240,165,0,.25);
+  border-radius:100px;padding:6px 18px;margin-bottom:28px;
 }
 .price-amount{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(52px,7vw,80px);font-weight:300;
-  color:var(--ink);line-height:1;margin-bottom:4px;
+  font-family:'Syne',sans-serif;
+  font-size:clamp(56px,8vw,88px);font-weight:800;
+  color:#fff;line-height:1;margin-bottom:6px;letter-spacing:-2px;
 }
-.price-amount sup{font-size:40%;vertical-align:top;margin-top:.4em;color:var(--ink);}
+.price-amount sup{font-size:40%;vertical-align:top;margin-top:.4em;color:var(--gold);}
 .price-period{
-  font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:3px;text-transform:uppercase;
-  color:var(--ink-muted);margin-bottom:32px;
+  font-size:14px;font-weight:500;
+  color:rgba(255,255,255,.4);margin-bottom:24px;letter-spacing:.3px;
+}
+.price-tagline{
+  font-family:'Syne',sans-serif;
+  font-size:18px;font-weight:600;
+  color:rgba(255,255,255,.8);margin-bottom:36px;line-height:1.55;
 }
 .price-items{
-  list-style:none;display:flex;flex-direction:column;gap:10px;
-  margin-bottom:40px;text-align:left;max-width:320px;
+  list-style:none;display:flex;flex-direction:column;gap:12px;
+  margin-bottom:44px;text-align:left;max-width:320px;
   margin-left:auto;margin-right:auto;
 }
 .price-items li{
   display:flex;align-items:center;gap:12px;
-  font-size:14px;font-weight:300;color:var(--ink-soft);
+  font-size:15px;font-weight:400;color:rgba(255,255,255,.65);
 }
-.price-items li::before{content:'✦';font-size:9px;color:var(--ink);flex-shrink:0;}
+.price-items li::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--gold);flex-shrink:0;
+}
+.btn-primary{
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;
+  color:#fff;
+  background:linear-gradient(135deg,var(--coral),#FF7A4F);
+  border:none;border-radius:8px;padding:18px 44px;
+  cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block;
+  box-shadow:0 4px 24px rgba(255,79,31,.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,79,31,.5);}
 .price-note{
-  font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:2px;text-transform:uppercase;color:var(--ink);
-  margin-top:20px;
+  font-size:12px;font-weight:400;
+  color:rgba(255,255,255,.2);margin-top:20px;letter-spacing:.3px;
 }
 .price-launch{
-  font-family:'Cormorant Garamond',serif;
-  font-size:14px;font-style:italic;
-  color:var(--ink-muted);margin-top:12px;
+  font-size:13px;font-style:italic;
+  color:rgba(255,255,255,.35);margin-top:10px;
 }
-.perks-badge{
-  display:inline-flex;align-items:center;gap:7px;
-  border:1px solid var(--line2);
-  background:var(--gold-bg);
-  padding:5px 12px;
-  font-family:'DM Mono',monospace;
-  font-size:8px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--ink);
-  margin-top:16px;
-}
-.perks-badge::before{content:'✦';font-size:7px;}
 
+/* ── FINAL CTA ── */
 .final-cta{
-  position:relative;z-index:1;
-  background:var(--paper);
-  border-top:1px solid var(--line);
+  background:var(--coral);
   padding:100px 48px;text-align:center;
+  position:relative;overflow:hidden;
 }
-.final-inner{max-width:640px;margin:0 auto;}
-.final-wordmark{
-  font-family:'Cormorant Garamond',serif;
-  font-weight:300;font-size:12px;
-  letter-spacing:9px;text-transform:uppercase;
-  color:var(--ink);margin-bottom:28px;
-  display:flex;align-items:center;justify-content:center;gap:16px;
+.final-cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(255,255,255,.08) 0%,transparent 70%);
 }
-.final-wordmark::before,.final-wordmark::after{
-  content:'';width:40px;height:1px;
-  background:var(--line2);
+.final-inner{max-width:660px;margin:0 auto;position:relative;z-index:1;}
+.final-label{
+  font-size:11px;font-weight:700;letter-spacing:3px;
+  text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:24px;
 }
-.final-wordmark::after{background:var(--line2);}
 .final-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(34px,5vw,60px);font-weight:300;
-  color:var(--ink);line-height:1.15;margin-bottom:16px;
+  font-family:'Syne',sans-serif;
+  font-size:clamp(34px,5.5vw,64px);font-weight:800;
+  color:#fff;line-height:1.1;margin-bottom:20px;letter-spacing:-2px;
 }
-.final-title em{font-style:italic;color:var(--ink);}
 .final-sub{
-  font-size:14px;font-weight:300;
-  color:var(--ink-muted);margin-bottom:40px;line-height:1.8;
+  font-size:18px;font-weight:400;
+  color:rgba(255,255,255,.75);margin-bottom:44px;line-height:1.7;
 }
-.final-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
+.btn-white{
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;
+  color:var(--coral);background:#fff;
+  border:none;border-radius:8px;padding:18px 48px;
+  cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block;
+  box-shadow:0 4px 24px rgba(0,0,0,.18);
+}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(0,0,0,.28);}
 
+/* ── FOOTER ── */
 footer{
-  position:relative;z-index:1;
-  padding:32px 48px;
-  border-top:1px solid var(--line);
+  padding:36px 48px;
+  border-top:1px solid rgba(255,255,255,.06);
   display:flex;align-items:center;justify-content:space-between;
-  background:var(--warm);
+  background:var(--dark);
 }
 .footer-brand{
-  font-family:'Cormorant Garamond',serif;
-  font-size:12px;letter-spacing:6px;
-  text-transform:uppercase;color:var(--ink);
+  font-family:'Syne',sans-serif;
+  font-size:16px;font-weight:800;letter-spacing:-.3px;
+  color:#fff;
 }
+.footer-brand span{color:var(--gold);}
 .footer-links{display:flex;gap:24px;}
 .footer-link{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:2px;text-transform:uppercase;
-  color:var(--ink);text-decoration:none;transition:color .2s;
+  font-size:12px;font-weight:500;
+  color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s;
 }
-.footer-link:hover{color:var(--ink-muted);}
+.footer-link:hover{color:#fff;}
 .footer-note{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:1px;text-transform:uppercase;color:var(--ink);
+  font-size:11px;font-weight:400;
+  color:rgba(255,255,255,.2);letter-spacing:.3px;
 }
 
 @media(max-width:768px){
-  nav{padding:0 24px;}
+  nav{padding:0 20px;}
   .hero{padding:100px 24px 140px;}
-  .section,.benefits-section,.pricing-section{padding:72px 24px;}
-  .problem-section,.answer-section,.editorial-section,.final-cta{padding:72px 24px;}
-  .steps-grid{grid-template-columns:1fr;}
-  .benefits-grid{grid-template-columns:1fr;}
-  footer{flex-direction:column;gap:16px;text-align:center;padding:28px 20px;}
+  .section{padding:72px 24px;}
+  .problem-section{padding:72px 24px;}
+  .usecases-inner{padding:0 24px;}
+  .usecases-section{padding:72px 0;}
+  .pricing-section{padding:72px 24px;}
+  .editorial-section{padding:64px 24px;}
+  .final-cta{padding:72px 24px;}
+  .steps-grid{grid-template-columns:1fr;border-radius:8px;}
+  .cases-grid{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:20px;text-align:center;padding:28px 20px;}
   .footer-links{justify-content:center;flex-wrap:wrap;gap:12px;}
   .nav-links{display:none;}
+  .price-card{padding:40px 28px;}
 }
 @media(max-width:600px){
-  /* nav */
-  .nav-wordmark{font-size:13px;letter-spacing:7px;}
-  .nav-join{font-size:11px;padding:9px 18px;}
-
-  /* hero */
-  .hero-eyebrow{font-size:10px;letter-spacing:3px;}
-  .hero-sub{font-size:18px;line-height:1.75;}
-  .hero-footnote{font-size:10px;}
-  .btn-primary{font-size:13px;padding:16px 32px;letter-spacing:3px;}
-  .btn-ghost{font-size:10px;padding:16px 24px;letter-spacing:2px;}
-
-  /* DM Mono labels / eyebrows — up from 8–9px desktop, but proportional */
-  .sec-eyebrow,.problem-attr,.answer-context,.answer-note,
-  .editorial-source,.price-badge,.price-note,.perks-badge,
-  .footer-note,.bc-num{font-size:11px;letter-spacing:2px;}
-  .price-period{font-size:11px;letter-spacing:2px;}
-
-  /* How it works */
-  .sec-body{font-size:16px;line-height:1.8;}
-  .step-num{font-size:40px;}
-  .step-title{font-size:21px;}
-  .step-desc{font-size:15px;line-height:1.8;}
-
-  /* answer section */
-  .answer-occasion{font-size:13px;letter-spacing:1px;}
-  .answer-qualifier{font-size:14px;}
-
-  /* benefits */
-  .bc-title{font-size:21px;}
-  .bc-desc{font-size:15px;line-height:1.8;}
-
-  /* editorial */
-  .editorial-quote{font-size:22px;line-height:1.6;}
-
-  /* pricing */
-  .price-items li{font-size:15px;}
-  .price-launch{font-size:13px;}
-  .price-card{padding:36px 20px;}
-  .price-items{max-width:100%;}
-
-  /* final CTA */
-  .final-wordmark{font-size:13px;letter-spacing:7px;}
-  .final-sub{font-size:15px;line-height:1.8;}
-
-  /* footer */
-  .footer-brand{font-size:12px;letter-spacing:5px;}
-  .footer-link{font-size:9px;letter-spacing:1px;}
+  .hero-title{letter-spacing:-1.5px;}
+  .sec-title{letter-spacing:-1px;}
+  .final-title{letter-spacing:-1.5px;}
+  .problem-quote{letter-spacing:-.5px;}
+  .usecases-title{letter-spacing:-1px;}
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="/" class="nav-wordmark">Lorgner</a>
+  <a href="/" class="nav-wordmark">Lorgner<span>.</span></a>
   <div class="nav-links">
     <a href="#how-it-works" class="nav-link">How it works</a>
     <a href="/founder" class="nav-link">From the Founder</a>
@@ -546,20 +475,20 @@ footer{
 </nav>
 
 <section class="hero">
-  <div class="hero-eyebrow">Lorgner</div>
-  <h1 class="hero-title">
-    A tailor-made personal stylist<br>
-    <em>for your glasses.</em>
-  </h1>
-  <div class="hero-rule"></div>
-  <p class="hero-sub">
-    Got a drawer full of glasses? A few pairs in the car, a few at home? We tell you exactly which one to wear — for any outfit, any occasion.
-  </p>
-  <div class="hero-actions">
-    <a href="/join" class="btn-primary">Get Started — $14.99/month</a>
-    <a href="#how-it-works" class="btn-ghost">See How It Works</a>
+  <div class="hero-content">
+    <div class="hero-tag">Your personal eyewear stylist</div>
+    <h1 class="hero-title">
+      A tailor-made stylist<br>
+      <span class="gold">for your</span> <span class="coral">glasses.</span>
+    </h1>
+    <p class="hero-sub">
+      Got a drawer full of glasses? A few pairs in the car, a few at home? We tell you exactly which one to wear — for any outfit, any occasion.
+    </p>
+    <div class="hero-actions">
+      <a href="#how-it-works" class="btn-ghost-light">See How It Works</a>
+    </div>
+    <div class="hero-footnote">Starting at $14.99/month · cancel anytime</div>
   </div>
-  <div class="hero-footnote">Introductory price for new members · cancel anytime</div>
   <div class="scroll-hint">
     <span>Scroll</span>
     <div class="scroll-arrow"></div>
@@ -567,94 +496,103 @@ footer{
 </section>
 
 <section class="problem-section">
-  <div class="problem-quote reveal">
-    Do you have a drawer full of glasses? A few pairs in your car, a few at home? <em>If you answered yes, you need Lorgner.</em>
+  <div class="problem-inner reveal">
+    <div class="problem-quote">
+      Do you have a drawer full of glasses?<br>
+      A few pairs in your car, a few at home?<br>
+      <span class="em">If you answered yes, you need Lorgner.</span>
+    </div>
+    <p class="problem-attr">A tailor-made answer — based on the glasses you already own.</p>
   </div>
-  <div class="problem-attr">A tailor-made answer — based on the glasses you already own.</div>
 </section>
 
 <section class="section" id="how-it-works">
   <div class="reveal">
     <div class="sec-eyebrow">How it works</div>
-    <h2 class="sec-title">Easy and simple.<br><em>Tailor-made for you.</em></h2>
-    <div class="sec-rule"></div>
-    <p class="sec-body">Upload photos of all your glasses. Ask your on-demand stylist which pair to wear and get a tailor-made answer.</p>
+    <h2 class="sec-title">Easy and simple.<br><span class="accent">Tailor-made for you.</span></h2>
+    <p class="sec-body" style="margin-top:16px;">Upload photos of all your glasses. Ask your on-demand stylist which pair to wear and get a tailor-made answer.</p>
   </div>
   <div class="steps-grid reveal">
     <div class="step">
-      <div class="step-num">I</div>
-      <div class="step-title">Upload your <em>glasses</em></div>
+      <div class="step-num">01</div>
+      <div class="step-title">Upload your glasses</div>
       <div class="step-desc">Add a photo of each pair you own. Lorgner keeps track of all of them.</div>
     </div>
     <div class="step">
-      <div class="step-num">II</div>
-      <div class="step-title">Ask your <em>stylist</em></div>
+      <div class="step-num">02</div>
+      <div class="step-title">Ask your stylist</div>
       <div class="step-desc">Heading to a wedding? Virtual interview? Going on vacation? Tell us what you're doing.</div>
     </div>
     <div class="step">
-      <div class="step-num">III</div>
-      <div class="step-title">Get a <em>tailor-made answer</em></div>
-      <div class="step-desc">A personalized recommendation based on the glasses you already own.</div>
+      <div class="step-num">03</div>
+      <div class="step-title">Get your answer</div>
+      <div class="step-desc">A personalized recommendation based on the glasses you already own. Tailor-made, every time.</div>
     </div>
   </div>
 </section>
 
-<section class="benefits-section reveal" id="membership">
-  <div class="sec-eyebrow">What you can ask</div>
-  <h2 class="sec-title">Real questions.<br><em>Tailor-made answers.</em></h2>
-  <div class="sec-rule"></div>
-  <div class="benefits-grid">
-    <div class="benefit-card">
-      <div class="bc-num">Example I</div>
-      <div class="bc-title"><em>"I have an upcoming wedding</em> and I want to wear a formal gown — which glasses should I wear?"</div>
-      <div class="bc-desc">Lorgner looks at every pair you own and picks the one made for that moment.</div>
+<section class="usecases-section">
+  <div class="usecases-inner reveal">
+    <div class="usecases-eyebrow">What you can ask</div>
+    <h2 class="usecases-title">Real questions.<br><span class="accent">Tailor-made answers.</span></h2>
+    <div class="cases-grid">
+      <div class="case-card">
+        <span class="case-icon">💍</span>
+        <div class="case-quote">"I have an upcoming wedding and I want to wear a formal gown — which glasses should I wear?"</div>
+        <div class="case-desc">Lorgner looks at every pair you own and picks the one made for that moment.</div>
+      </div>
+      <div class="case-card">
+        <span class="case-icon">💼</span>
+        <div class="case-quote">"I have a virtual interview — white blouse, black blazer. Which glasses should I wear?"</div>
+        <div class="case-desc">Get a confident answer before you log on, not after you've already been seen.</div>
+      </div>
+      <div class="case-card">
+        <span class="case-icon">✈️</span>
+        <div class="case-quote">"I'm going on vacation and want to look relaxed and stylish — which glasses?"</div>
+        <div class="case-desc">Lorgner knows your collection. It knows which pair travels with you.</div>
+      </div>
     </div>
-    <div class="benefit-card">
-      <div class="bc-num">Example II</div>
-      <div class="bc-title"><em>"I have a virtual interview</em> — white blouse, black blazer. Which glasses should I wear?"</div>
-      <div class="bc-desc">Get a confident answer before you log on, not after you've already been seen.</div>
-    </div>
-    <div class="benefit-card">
-      <div class="bc-num">Example III</div>
-      <div class="bc-title"><em>"I'm going on vacation</em> and want to look relaxed and stylish — which glasses?"</div>
-      <div class="bc-desc">Lorgner knows your collection. It knows which pair travels with you.</div>
-    </div>
+  </div>
+</section>
+
+<section class="editorial-section">
+  <div class="editorial-inner reveal">
+    <div class="editorial-quote">Wearing glasses doesn't have to be boring — add some spice to your glasses game.</div>
   </div>
 </section>
 
 <section class="pricing-section reveal">
   <div class="sec-eyebrow">Membership</div>
-  <h2 class="sec-title">50 cents a day.<br><em>Look stylish doing it.</em></h2>
+  <h2 class="sec-title">50 cents a day.<br><span class="accent">Look stylish doing it.</span></h2>
   <div class="price-card">
     <div class="price-badge">Introductory Price</div>
     <div class="price-amount"><sup>$</sup>14.99</div>
     <div class="price-period">Per month · Cancel any time</div>
+    <div class="price-tagline">Sip that cup of coffee and look stylish doing it.<br>Grow your style with Lorgner.</div>
     <ul class="price-items">
       <li>On-demand tailor-made styling</li>
       <li>All your glasses saved and remembered</li>
       <li>Ask as many times as you want, any occasion</li>
     </ul>
-    <a href="/join" class="btn-primary" style="display:inline-block;min-width:280px;">Get Started</a>
+    <a href="/join" class="btn-primary" style="min-width:280px;">Get Started</a>
     <div class="price-note">Secured by Stripe</div>
-    <div class="price-launch">For 50 cents a day, sip that cup of coffee and look stylish doing it.</div>
+    <div class="price-launch">Introductory price for new members, then $24.99/month.</div>
   </div>
 </section>
 
 <section class="final-cta" id="join">
   <div class="final-inner reveal">
-    <div class="final-wordmark">Lorgner</div>
-    <h2 class="final-title">Wearing glasses<br>doesn't have to be boring.<br><em>Add some spice.</em></h2>
+    <div class="final-label">Ready?</div>
+    <h2 class="final-title">Wearing glasses doesn't have to be boring.</h2>
     <p class="final-sub">
-      Grow your style with Lorgner. Upload your glasses, ask your stylist, get a tailor-made answer.
+      Upload your glasses, ask your stylist, get a tailor-made answer in seconds.
     </p>
-    <div class="final-actions">
-      <a href="/join" class="btn-primary">Get Started — $14.99/month</a>
-    </div>
+    <a href="/join" class="btn-white">Get Started — $14.99/month</a>
   </div>
 </section>
 
 <footer>
-  <div class="footer-brand">Lorgner</div>
+  <div class="footer-brand">Lorgner<span>.</span></div>
   <div class="footer-links">
     <a href="/wedding" class="footer-link">Wedding Parties</a>
     <a href="/journal" class="footer-link">Journal</a>
@@ -685,7 +623,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 window.addEventListener('scroll', () => {
-  document.querySelector('nav').style.boxShadow = window.scrollY > 40 ? '0 4px 32px rgba(0,0,0,.6)' : 'none';
+  document.querySelector('nav').style.borderBottomColor =
+    window.scrollY > 40 ? 'rgba(240,165,0,.28)' : 'rgba(240,165,0,.15)';
 });
 </script>
 </body>
